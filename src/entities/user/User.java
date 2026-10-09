@@ -8,7 +8,7 @@ public abstract class User{
     private String contactNumber;
     private String email;
 
-    User(int userId,
+    protected User(int userId,
         String firstName,
         String middleName,
         String lastName,
