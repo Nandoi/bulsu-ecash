@@ -6,4 +6,4 @@ Del Carmen, Joshua
 Manarang, Jullian
 Jumaquio, Michelle
 
-A java system for centralized ecash payement systen in Bulacan State University.
+A java system for centralized ecash payement system in Bulacan State University.
