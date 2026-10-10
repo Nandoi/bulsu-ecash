@@ -3,13 +3,8 @@ package entities.transaction;
 import entities.user.Cashier;
 import entities.user.Vendor;
 import entities.wallet.StoreWallet;
-import enums.TransactionStatus;
-
-public class CashOut {
+public class CashOut extends TransactionRecord {
     private int cashOutId;
-    private double amount;
-    private String dateTime;
-    private TransactionStatus status;
 
     //Related objects na gagamitin
     private Cashier cashier;
@@ -23,29 +18,15 @@ public class CashOut {
         Vendor vendor,
         StoreWallet storeWallet
     ){
+        super(amount, dateTime);
         this.cashOutId = cashOutId;
-        this.amount = amount;
-        this.dateTime = dateTime;
         this.cashier = cashier;
         this.vendor = vendor;
         this.storeWallet = storeWallet;
-        this.status = TransactionStatus.PENDING;
     }
 
     public int getCashOutId() {
         return cashOutId;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getDateTime() {
-        return dateTime;
-    }
-
-    public TransactionStatus getStatus() {
-        return status;
     }
 
     public Cashier getCashier() {
@@ -58,13 +39,5 @@ public class CashOut {
 
     public StoreWallet getStoreWallet() {
         return storeWallet;
-    }
-
-    public void markSuccessful() {
-        status = TransactionStatus.SUCCESSFUL;
-    }
-
-    public void markFailed() {
-        status = TransactionStatus.FAILED;
     }
 }
