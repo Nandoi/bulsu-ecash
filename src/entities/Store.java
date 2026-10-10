@@ -9,7 +9,7 @@ public class Store {
     private String location;
     private StoreWallet storeWallet;
 
-    Store(int storeId,
+    public Store(int storeId,
         String storeName,
         String storeType,
         String location,
