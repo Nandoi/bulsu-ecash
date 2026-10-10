@@ -2,12 +2,8 @@ package entities.transaction;
 
 import entities.user.Cashier;
 import entities.wallet.StudentWallet;
-import enums.TransactionStatus;
-public class TopUp{
+public class TopUp extends TransactionRecord{
     private int topUpId;
-    private double amount;
-    private String dateTime;
-    private TransactionStatus status;
 
     //Related objects na gagamitin
     private Cashier cashier;
@@ -19,30 +15,15 @@ public class TopUp{
         Cashier cashier,
         StudentWallet studentWallet
     ){
+        super(amount, dateTime);
         this.topUpId = topUpId;
-        this.amount = amount;
-        this.dateTime = dateTime;
         this.cashier = cashier;
         this.studentWallet = studentWallet;
-        this.status = TransactionStatus.PENDING;
     }
 
     public int getTopUpId() {
         return topUpId;
     }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getDateTime() {
-        return dateTime;
-    }
-
-    public TransactionStatus getStatus() {
-        return status;
-    }
-
     public Cashier getCashier() {
         return cashier;
     }
@@ -50,13 +31,4 @@ public class TopUp{
     public StudentWallet getStudentWallet() {
         return studentWallet;
     }
-
-    public void markSuccessful() {
-        status = TransactionStatus.SUCCESSFUL;
-    }
-
-    public void markFailed() {
-        status = TransactionStatus.FAILED;
-    }
-
 }
