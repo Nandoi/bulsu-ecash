@@ -1,7 +1,7 @@
 package entities.user;
 
 public class Cashier extends User{
-    Cashier(int userId,
+    public Cashier(int userId,
         String firstName,
         String middleName,
         String lastName,
