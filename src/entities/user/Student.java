@@ -40,4 +40,9 @@ public class Student extends User{
     public StudentWallet getStudentWallet() {
         return studentWallet;
     }
+
+    @Override
+    public String getUserType() {
+        return "STUDENT";
+    }
 }
