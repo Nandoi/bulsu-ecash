@@ -2,6 +2,7 @@ import datas.DataStore;
 import entities.Account;
 import entities.user.Student;
 import entities.wallet.StudentWallet;
+import services.Authorization;
 
 public class Main {
 
@@ -30,8 +31,23 @@ public class Main {
 
         DataStore.addAccount(account);
 
+        //
         Account foundAccount = DataStore.findAccountById(1001);
 
         System.out.println(foundAccount.getUser().getFirstName());
+
+        //
+        Account loggedInAccount = Authorization.login(1001, "1234");
+
+        if (loggedInAccount != null) {
+            System.out.println("Login successful!");
+
+            System.out.println(
+                "Welcome, " +
+                loggedInAccount.getUser().getFirstName()
+            );
+        } else {
+            System.out.println("Login failed.");
+        }
     }
 }
