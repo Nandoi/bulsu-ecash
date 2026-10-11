@@ -1,9 +1,7 @@
-import entities.Card;
-import entities.Store;
+import datas.DataStore;
+import entities.Account;
 import entities.user.Student;
-import entities.user.Vendor;
 import entities.wallet.StudentWallet;
-import entities.wallet.StoreWallet;
 
 public class Main {
 
@@ -24,38 +22,16 @@ public class Main {
             studentWallet
         );
 
-        Card card = new Card(
-            1,
-            "04A1B29C77",
+        Account account = new Account(
+            1001,
+            "1234",
             student
         );
 
-        StoreWallet storeWallet = new StoreWallet(201);
+        DataStore.addAccount(account);
 
-        Store store = new Store(
-            1,
-            "Campus Chicken",
-            "Food",
-            "Main Campus",
-            storeWallet
-        );
+        Account foundAccount = DataStore.findAccountById(1001);
 
-        Vendor vendor = new Vendor(
-            2,
-            "Juan",
-            "D.",
-            "Santos",
-            "09999999999",
-            "juan@email.com",
-            store
-        );
-        
-        //Pang test lang ng relation, so working na ang card to get student to get studentwallet
-        //also working na ang vendor to access store wallet.
-        System.out.println(card.getStudent().getFirstName() + " " + student.getLastName());
-        System.out.println(card.getStudent().getStudentWallet().getBalance());
-
-        System.out.println(vendor.getStore().getStoreName());
-        System.out.println(vendor.getStore().getStoreWallet().getBalance());
+        System.out.println(foundAccount.getUser().getFirstName());
     }
 }
