@@ -16,6 +16,10 @@ public class Account {
         this.status = AccountStatus.ACTIVE;
     }
 
+    public int getAccountId(){
+        return accountId;
+    }
+
     public AccountStatus getStatus() {
         return status;
     }
