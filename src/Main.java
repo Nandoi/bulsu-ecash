@@ -6,22 +6,23 @@ import entities.Store;
 import entities.user.Student;
 import entities.user.Vendor;
 import entities.user.Cashier;
-import entities.user.User;
 
 import entities.wallet.StudentWallet;
 import entities.wallet.StoreWallet;
 
 import services.Authorization;
+import services.Registration;
 
 public class Main {
 
     public static void main(String[] args) {
 
         // =========================
-        // STUDENT
+        // AUTHORIZED STUDENT
         // =========================
 
-        StudentWallet studentWallet = new StudentWallet(101);
+        StudentWallet studentWallet =
+            new StudentWallet(101);
 
         Student student = new Student(
             1,
@@ -36,18 +37,15 @@ public class Main {
             studentWallet
         );
 
-        Account studentAccount = new Account(
-            1001,
-            "1234",
-            student
-        );
+        DataStore.addAuthorizedStudent(student);
 
 
         // =========================
-        // VENDOR
+        // AUTHORIZED VENDOR
         // =========================
 
-        StoreWallet storeWallet = new StoreWallet(201);
+        StoreWallet storeWallet =
+            new StoreWallet(201);
 
         Store store = new Store(
             1,
@@ -67,15 +65,11 @@ public class Main {
             store
         );
 
-        Account vendorAccount = new Account(
-            1002,
-            "5678",
-            vendor
-        );
+        DataStore.addAuthorizedVendor(vendor);
 
 
         // =========================
-        // CASHIER
+        // AUTHORIZED CASHIER
         // =========================
 
         Cashier cashier = new Cashier(
@@ -87,70 +81,72 @@ public class Main {
             "maria@email.com"
         );
 
-        Account cashierAccount = new Account(
-            1003,
-            "9999",
-            cashier
-        );
+        DataStore.addAuthorizedCashier(cashier);
 
 
         // =========================
-        // ADD ACCOUNTS TO DATASTORE
+        // REGISTER
         // =========================
 
-        DataStore.addAccount(studentAccount);
-        DataStore.addAccount(vendorAccount);
-        DataStore.addAccount(cashierAccount);
+        Account studentAccount =
+            Registration.registerStudent(
+                1001,
+                "1234",
+                "2025-001234"
+            );
+
+        Account vendorAccount =
+            Registration.registerVendor(
+                1002,
+                "5678",
+                2
+            );
+
+        Account cashierAccount =
+            Registration.registerCashier(
+                1003,
+                "9999",
+                3
+            );
 
 
         // =========================
-        // TEST LOGIN
+        // RESULTS
         // =========================
 
-        testLogin(1001, "1234");
-        testLogin(1002, "5678");
-        testLogin(1003, "9999");
-    }
+        if (studentAccount != null) {
+            System.out.println("Student registered successfully.");
+        }
+
+        if (vendorAccount != null) {
+            System.out.println("Vendor registered successfully.");
+        }
+
+        if (cashierAccount != null) {
+            System.out.println("Cashier registered successfully.");
+        }
 
 
-    public static void testLogin(int accountId, String pin) {
+        // =========================
+        // LOGIN AFTER REGISTRATION
+        // =========================
 
         Account loggedInAccount =
-            Authorization.login(accountId, pin);
+            Authorization.login(1002, "5678");
 
         if (loggedInAccount != null) {
 
-            User user = loggedInAccount.getUser();
-
-            System.out.println("--------------------");
-            System.out.println("Login successful!");
+            System.out.println();
+            System.out.println("Login successful.");
             System.out.println(
-                "Welcome, " + user.getFirstName()
+                "Welcome, " +
+                loggedInAccount.getUser().getFirstName()
             );
 
             System.out.println(
-                "User Type: " + user.getUserType()
+                "User Type: " +
+                loggedInAccount.getUser().getUserType()
             );
-
-            String userType = user.getUserType();
-
-            if (userType.equals("STUDENT")) {
-
-                System.out.println("Opening Student Menu...");
-
-            } else if (userType.equals("VENDOR")) {
-
-                System.out.println("Opening Vendor Menu...");
-
-            } else if (userType.equals("CASHIER")) {
-
-                System.out.println("Opening Cashier Menu...");
-            }
-
-        } else {
-
-            System.out.println("--------------------");
-            System.out.println("Login failed.");
         }
     }
 }
