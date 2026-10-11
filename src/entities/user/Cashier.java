@@ -10,4 +10,9 @@ public class Cashier extends User{
     ){
         super(userId, firstName, middleName, lastName, contactNumber, email);
     }
+
+    @Override
+    public String getUserType() {
+        return "CASHIER";
+    }
 }

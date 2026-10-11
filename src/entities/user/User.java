@@ -47,4 +47,5 @@ public abstract class User{
         return email;
     }
 
+    public abstract String getUserType();
 }
