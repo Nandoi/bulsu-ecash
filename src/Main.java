@@ -1,28 +1,27 @@
 import datas.DataStore;
 
-import entities.Account;
+import entities.Card;
 import entities.Store;
+
+import entities.transaction.Transaction;
 
 import entities.user.Student;
 import entities.user.Vendor;
-import entities.user.Cashier;
 
 import entities.wallet.StudentWallet;
 import entities.wallet.StoreWallet;
 
-import services.Authorization;
-import services.Registration;
+import services.Payment;
 
 public class Main {
 
     public static void main(String[] args) {
 
         // =========================
-        // AUTHORIZED STUDENT
+        // STUDENT
         // =========================
 
-        StudentWallet studentWallet =
-            new StudentWallet(101);
+        StudentWallet studentWallet = new StudentWallet(101);
 
         Student student = new Student(
             1,
@@ -37,15 +36,25 @@ public class Main {
             studentWallet
         );
 
-        DataStore.addAuthorizedStudent(student);
+
+        // =========================
+        // STUDENT CARD
+        // =========================
+
+        Card card = new Card(
+            301,
+            "CARD-001",
+            student
+        );
+
+        DataStore.addCard(card);
 
 
         // =========================
-        // AUTHORIZED VENDOR
+        // STORE
         // =========================
 
-        StoreWallet storeWallet =
-            new StoreWallet(201);
+        StoreWallet storeWallet = new StoreWallet(201);
 
         Store store = new Store(
             1,
@@ -54,6 +63,11 @@ public class Main {
             "Main Campus",
             storeWallet
         );
+
+
+        // =========================
+        // VENDOR
+        // =========================
 
         Vendor vendor = new Vendor(
             2,
@@ -65,88 +79,108 @@ public class Main {
             store
         );
 
-        DataStore.addAuthorizedVendor(vendor);
+
+        // =========================
+        // STUDENT INITIAL BALANCE
+        // =========================
+
+        studentWallet.addBalance(500.00);
 
 
         // =========================
-        // AUTHORIZED CASHIER
+        // BEFORE PAYMENT
         // =========================
 
-        Cashier cashier = new Cashier(
-            3,
-            "Maria",
-            "A.",
-            "Cruz",
-            "09888888888",
-            "maria@email.com"
+        System.out.println("===== BEFORE PAYMENT =====");
+
+        System.out.println(
+            "Student Balance: " +
+            studentWallet.getBalance()
         );
 
-        DataStore.addAuthorizedCashier(cashier);
+        System.out.println(
+            "Store Balance: " +
+            storeWallet.getBalance()
+        );
 
 
         // =========================
-        // REGISTER
+        // PAYMENT
         // =========================
 
-        Account studentAccount =
-            Registration.registerStudent(
-                1001,
-                "1234",
-                "2025-001234"
-            );
+        System.out.println();
+        System.out.println("===== PROCESSING PAYMENT =====");
 
-        Account vendorAccount =
-            Registration.registerVendor(
-                1002,
-                "5678",
-                2
-            );
-
-        Account cashierAccount =
-            Registration.registerCashier(
-                1003,
-                "9999",
-                3
-            );
+        Transaction transaction = Payment.processPayment(
+            5001,
+            150.00,
+            "2026-10-11 20:30",
+            "CARD-001",
+            vendor
+        );
 
 
         // =========================
-        // RESULTS
+        // PAYMENT RESULT
         // =========================
 
-        if (studentAccount != null) {
-            System.out.println("Student registered successfully.");
-        }
+        System.out.println();
 
-        if (vendorAccount != null) {
-            System.out.println("Vendor registered successfully.");
-        }
+        if (transaction != null) {
 
-        if (cashierAccount != null) {
-            System.out.println("Cashier registered successfully.");
-        }
+            System.out.println("===== TRANSACTION RESULT =====");
 
-
-        // =========================
-        // LOGIN AFTER REGISTRATION
-        // =========================
-
-        Account loggedInAccount =
-            Authorization.login(1002, "5678");
-
-        if (loggedInAccount != null) {
-
-            System.out.println();
-            System.out.println("Login successful.");
             System.out.println(
-                "Welcome, " +
-                loggedInAccount.getUser().getFirstName()
+                "Transaction ID: " +
+                transaction.getTransactionId()
             );
 
             System.out.println(
-                "User Type: " +
-                loggedInAccount.getUser().getUserType()
+                "Amount: " +
+                transaction.getAmount()
             );
+
+            System.out.println(
+                "Status: " +
+                transaction.getStatus()
+            );
+
+            System.out.println(
+                "Student: " +
+                transaction.getCard().getStudent().getFirstName()
+            );
+
+            System.out.println(
+                "Vendor: " +
+                transaction.getVendor().getFirstName()
+            );
+
+            System.out.println(
+                "Store: " +
+                transaction.getVendor().getStore().getStoreName()
+            );
+
+        } else {
+
+            System.out.println("Payment could not be processed.");
         }
+
+
+        // =========================
+        // AFTER PAYMENT
+        // =========================
+
+        System.out.println();
+        System.out.println("===== AFTER PAYMENT =====");
+
+        System.out.println(
+            "Student Balance: " +
+            studentWallet.getBalance()
+        );
+
+        System.out.println(
+            "Store Balance: " +
+            storeWallet.getBalance()
+        );
     }
 }
