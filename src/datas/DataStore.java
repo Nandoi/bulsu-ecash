@@ -3,6 +3,8 @@ package datas;
 import java.util.ArrayList;
 
 import entities.Account;
+import entities.Card;
+import entities.transaction.Transaction;
 import entities.user.Cashier;
 import entities.user.Student;
 import entities.user.Vendor;
@@ -12,6 +14,8 @@ public class DataStore {
     private static ArrayList<Student> authorizedStudents = new ArrayList<>();
     private static ArrayList<Vendor> authorizedVendors = new ArrayList<>();
     private static ArrayList<Cashier> authorizedCashiers = new ArrayList<>();
+    private static ArrayList<Card> cards = new ArrayList<>();
+    private static ArrayList<Transaction> transactions = new ArrayList<>();
 
     // ACCOUNT
 
@@ -94,6 +98,40 @@ public class DataStore {
 
             if (cashier.getUserId() == userId) {
                 return cashier;
+            }
+        }
+
+        return null;
+    }
+
+    //CARD
+    public static void addCard(Card card) {
+        cards.add(card);
+    }
+
+    public static Card findCardByUid(String cardUid) {
+
+        for (Card card : cards) {
+
+            if (card.getCardUid().equals(cardUid)) {
+                return card;
+            }
+        }
+
+        return null;
+    }
+
+    //TRANSACTION
+    public static void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
+
+    public static Transaction findTransactionById(int transactionId) {
+
+        for (Transaction transaction : transactions) {
+
+            if (transaction.getTransactionId() == transactionId) {
+                return transaction;
             }
         }
 
