@@ -19,4 +19,9 @@ public class Vendor extends User{
     public Store getStore(){
         return store;
     }
+
+    @Override
+    public String getUserType() {
+        return "STUDENT";
+    }
 }

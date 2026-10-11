@@ -37,7 +37,12 @@ public class Student extends User{
         return yearLevel;
     }
 
-    public StudentWallet getStudentWallet() {
+    public StudentWallet getStudentWallet(){
         return studentWallet;
+    }
+
+    @Override
+    public String getUserType(){
+        return "STUDENT";
     }
 }

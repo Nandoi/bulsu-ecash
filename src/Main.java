@@ -1,6 +1,7 @@
 import datas.DataStore;
 import entities.Account;
 import entities.user.Student;
+import entities.user.User;
 import entities.wallet.StudentWallet;
 import services.Authorization;
 
@@ -40,13 +41,29 @@ public class Main {
         Account loggedInAccount = Authorization.login(1001, "1234");
 
         if (loggedInAccount != null) {
-            System.out.println("Login successful!");
 
-            System.out.println(
-                "Welcome, " +
-                loggedInAccount.getUser().getFirstName()
-            );
+            User user = loggedInAccount.getUser();
+
+            String userType = user.getUserType();
+
+            System.out.println("Login successful!");
+            System.out.println("User Type: " + userType);
+
+            if (userType.equals("STUDENT")) {
+
+                System.out.println("Student Menu");
+
+            } else if (userType.equals("VENDOR")) {
+
+                System.out.println("Vendor Menu");
+
+            } else if (userType.equals("CASHIER")) {
+
+                System.out.println("Cashier Menu");
+            }
+
         } else {
+
             System.out.println("Login failed.");
         }
     }
