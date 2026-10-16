@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import entities.Account;
 import entities.Card;
+import entities.transaction.CashOut;
+import entities.transaction.TopUp;
 import entities.transaction.Transaction;
 import entities.user.Cashier;
 import entities.user.Student;
@@ -16,6 +18,8 @@ public class DataStore {
     private static ArrayList<Cashier> authorizedCashiers = new ArrayList<>();
     private static ArrayList<Card> cards = new ArrayList<>();
     private static ArrayList<Transaction> transactions = new ArrayList<>();
+    private static ArrayList<TopUp> topUps = new ArrayList<>();
+    private static ArrayList<CashOut> cashOuts = new ArrayList<>(); 
 
     // ACCOUNT
 
@@ -132,6 +136,39 @@ public class DataStore {
 
             if (transaction.getTransactionId() == transactionId) {
                 return transaction;
+            }
+        }
+
+        return null;
+    }
+
+    // TOP UP
+
+    public static void addTopUp(TopUp topUp) {
+        topUps.add(topUp);
+    }
+
+    public static TopUp findTopUpById(int topUpId) {
+        for (TopUp topUp : topUps) {
+            if (topUp.getTopUpId() == topUpId) {
+                return topUp;
+            }
+        }
+
+        return null;
+    }
+
+
+    // CASH OUT
+
+    public static void addCashOut(CashOut cashOut) {
+        cashOuts.add(cashOut);
+    }
+
+    public static CashOut findCashOutById(int cashOutId) {
+        for (CashOut cashOut : cashOuts) {
+            if (cashOut.getCashOutId() == cashOutId) {
+                return cashOut;
             }
         }
 
