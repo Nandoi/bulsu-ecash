@@ -13,6 +13,8 @@ public abstract class TransactionRecord {
         this.status = TransactionStatus.PENDING;
     }
 
+    public abstract String getTransactionType();
+
     public double getAmount() {
         return amount;
     }

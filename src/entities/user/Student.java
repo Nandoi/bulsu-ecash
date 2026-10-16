@@ -24,6 +24,11 @@ public class Student extends User{
         this.yearLevel = yearLevel;
         this.studentWallet = studentWallet;
     }
+    
+    @Override
+    public String getUserType() {
+        return "STUDENT";
+    }
 
     public String getStudentNumber(){
         return studentNumber;
@@ -39,10 +44,5 @@ public class Student extends User{
 
     public StudentWallet getStudentWallet() {
         return studentWallet;
-    }
-
-    @Override
-    public String getUserType() {
-        return "STUDENT";
     }
 }

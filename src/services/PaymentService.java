@@ -64,24 +64,24 @@ public class PaymentService {
 
 
         // Create transaction record
-        Payment transaction = new Payment(paymentId, amount, dateTime, card, studentWallet, vendor, storeWallet);
+        Payment payment = new Payment(paymentId, amount, dateTime, card, studentWallet, vendor, storeWallet);
 
         // Wallets must be active
         if (!studentWallet.isActive() || !storeWallet.isActive()) {
-            transaction.markFailed();
-            DataStore.addPayment(transaction);
+            payment.markFailed();
+            DataStore.addPayment(payment);
 
-            return transaction;
+            return payment;
         }
 
         // Try deducting from student
         boolean deducted = studentWallet.deductBalance(amount);
 
         if (!deducted) {
-            transaction.markFailed();
-            DataStore.addPayment(transaction);
+            payment.markFailed();
+            DataStore.addPayment(payment);
 
-            return transaction;
+            return payment;
         }
 
         // Credit store wallet
@@ -91,17 +91,17 @@ public class PaymentService {
             // Return money to student
             studentWallet.addBalance(amount);
 
-            transaction.markFailed();
-            DataStore.addPayment(transaction);
+            payment.markFailed();
+            DataStore.addPayment(payment);
 
-            return transaction;
+            return payment;
         }
 
 
-        transaction.markSuccessful();
+        payment.markSuccessful();
 
-        DataStore.addPayment(transaction);
+        DataStore.addPayment(payment);
 
-        return transaction;
+        return payment;
     }
 }

@@ -17,12 +17,11 @@ public class DataStore {
     private static ArrayList<Vendor> authorizedVendors = new ArrayList<>();
     private static ArrayList<Cashier> authorizedCashiers = new ArrayList<>();
     private static ArrayList<Card> cards = new ArrayList<>();
-    private static ArrayList<Payment> paymentTransactions = new ArrayList<>();
+    private static ArrayList<Payment> payments = new ArrayList<>();
     private static ArrayList<TopUp> topUps = new ArrayList<>();
     private static ArrayList<CashOut> cashOuts = new ArrayList<>(); 
 
     // ACCOUNT
-
     public static void addAccount(Account account) {
         accounts.add(account);
     }
@@ -53,7 +52,6 @@ public class DataStore {
 
 
     // STUDENT
-
     public static void addAuthorizedStudent(Student student) {
         authorizedStudents.add(student);
     }
@@ -72,7 +70,6 @@ public class DataStore {
 
 
     // VENDOR
-
     public static void addAuthorizedVendor(Vendor vendor) {
         authorizedVendors.add(vendor);
     }
@@ -91,7 +88,6 @@ public class DataStore {
 
 
     // CASHIER
-
     public static void addAuthorizedCashier(Cashier cashier) {
         authorizedCashiers.add(cashier);
     }
@@ -108,7 +104,7 @@ public class DataStore {
         return null;
     }
 
-    //CARD
+    // CARD
     public static void addCard(Card card) {
         cards.add(card);
     }
@@ -125,14 +121,14 @@ public class DataStore {
         return null;
     }
 
-    //TRANSACTION
+    // PAYMENT
     public static void addPayment(Payment payment) {
-        paymentTransactions.add(payment);
+        payments.add(payment);
     }
 
     public static Payment findPaymentById(int paymentId) {
 
-        for (Payment payment : paymentTransactions) {
+        for (Payment payment : payments) {
 
             if (payment.getPaymentId() == paymentId) {
                 return payment;
@@ -143,7 +139,6 @@ public class DataStore {
     }
 
     // TOP UP
-
     public static void addTopUp(TopUp topUp) {
         topUps.add(topUp);
     }
@@ -160,7 +155,6 @@ public class DataStore {
 
 
     // CASH OUT
-
     public static void addCashOut(CashOut cashOut) {
         cashOuts.add(cashOut);
     }
