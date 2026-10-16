@@ -1,13 +1,13 @@
 package services;
 
-import datas.DataStore;
+import data.DataStore;
 import entities.Account;
 import entities.user.Cashier;
 import entities.user.Student;
 import entities.user.User;
 import entities.user.Vendor;
 
-public class Registration {
+public class RegistrationService {
     // STUDENT
     public static Account registerStudent(int accountId, String pin, String studentNumber){
         Student student = DataStore.findStudentByStudentNumber(studentNumber);

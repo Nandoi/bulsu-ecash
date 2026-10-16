@@ -1,10 +1,9 @@
 package services;
 
-import datas.DataStore;
-
+import data.DataStore;
 import entities.Card;
 
-import entities.transaction.Transaction;
+import entities.transaction.Payment;
 
 import entities.user.Student;
 import entities.user.Vendor;
@@ -12,16 +11,16 @@ import entities.user.Vendor;
 import entities.wallet.StudentWallet;
 import entities.wallet.StoreWallet;
 
-public class Payment {
+public class PaymentService {
 
-    public static Transaction processPayment(int transactionId, double amount, String dateTime, String cardUid, Vendor vendor) {
+    public static Payment processPayment(int paymentId, double amount, String dateTime, String cardUid, Vendor vendor) {
         // Invalid amount
         if (amount <= 0){
             return null;
         }
 
-        // Transaction ID must be unique
-        if (DataStore.findTransactionById(transactionId) != null) {
+        // Payment ID must be unique
+        if (DataStore.findPaymentById(paymentId) != null) {
             return null;
         }
 
@@ -65,12 +64,12 @@ public class Payment {
 
 
         // Create transaction record
-        Transaction transaction = new Transaction(transactionId, amount, dateTime, card, studentWallet, vendor, storeWallet);
+        Payment transaction = new Payment(paymentId, amount, dateTime, card, studentWallet, vendor, storeWallet);
 
         // Wallets must be active
         if (!studentWallet.isActive() || !storeWallet.isActive()) {
             transaction.markFailed();
-            DataStore.addTransaction(transaction);
+            DataStore.addPayment(transaction);
 
             return transaction;
         }
@@ -80,7 +79,7 @@ public class Payment {
 
         if (!deducted) {
             transaction.markFailed();
-            DataStore.addTransaction(transaction);
+            DataStore.addPayment(transaction);
 
             return transaction;
         }
@@ -93,7 +92,7 @@ public class Payment {
             studentWallet.addBalance(amount);
 
             transaction.markFailed();
-            DataStore.addTransaction(transaction);
+            DataStore.addPayment(transaction);
 
             return transaction;
         }
@@ -101,7 +100,7 @@ public class Payment {
 
         transaction.markSuccessful();
 
-        DataStore.addTransaction(transaction);
+        DataStore.addPayment(transaction);
 
         return transaction;
     }

@@ -1,9 +1,8 @@
-import datas.DataStore;
-
+import data.DataStore;
 import entities.Card;
 import entities.Store;
 
-import entities.transaction.Transaction;
+import entities.transaction.Payment;
 
 import entities.user.Student;
 import entities.user.Vendor;
@@ -11,7 +10,7 @@ import entities.user.Vendor;
 import entities.wallet.StudentWallet;
 import entities.wallet.StoreWallet;
 
-import services.Payment;
+import services.PaymentService;
 
 public class Main {
 
@@ -111,7 +110,7 @@ public class Main {
         System.out.println();
         System.out.println("===== PROCESSING PAYMENT =====");
 
-        Transaction transaction = Payment.processPayment(
+        Payment payment = PaymentService.processPayment(
             5001,
             150.00,
             "2026-10-11 20:30",
@@ -126,38 +125,38 @@ public class Main {
 
         System.out.println();
 
-        if (transaction != null) {
+        if (payment != null) {
 
-            System.out.println("===== TRANSACTION RESULT =====");
+            System.out.println("===== PAYMENT RESULT =====");
 
             System.out.println(
-                "Transaction ID: " +
-                transaction.getTransactionId()
+                "Payment ID: " +
+                payment.getPaymentId()
             );
 
             System.out.println(
                 "Amount: " +
-                transaction.getAmount()
+                payment.getAmount()
             );
 
             System.out.println(
                 "Status: " +
-                transaction.getStatus()
+                payment.getStatus()
             );
 
             System.out.println(
                 "Student: " +
-                transaction.getCard().getStudent().getFirstName()
+                payment.getCard().getStudent().getFirstName()
             );
 
             System.out.println(
                 "Vendor: " +
-                transaction.getVendor().getFirstName()
+                payment.getVendor().getFirstName()
             );
 
             System.out.println(
                 "Store: " +
-                transaction.getVendor().getStore().getStoreName()
+                payment.getVendor().getStore().getStoreName()
             );
 
         } else {
