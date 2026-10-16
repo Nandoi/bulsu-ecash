@@ -11,18 +11,17 @@ public class CashOut extends TransactionRecord {
     private Vendor vendor;
     private StoreWallet storeWallet;
 
-    public CashOut(int cashOutId,
-        double amount,
-        String dateTime,
-        Cashier cashier,
-        Vendor vendor,
-        StoreWallet storeWallet
-    ){
+    public CashOut(int cashOutId, double amount, String dateTime, Cashier cashier, Vendor vendor, StoreWallet storeWallet){
         super(amount, dateTime);
         this.cashOutId = cashOutId;
         this.cashier = cashier;
         this.vendor = vendor;
         this.storeWallet = storeWallet;
+    }
+
+    @Override
+    public String getTransactionType() {
+        return "CASH_OUT";
     }
 
     public int getCashOutId() {

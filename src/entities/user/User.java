@@ -23,6 +23,8 @@ public abstract class User{
         this.email = email;
     }
 
+    public abstract String getUserType();
+
     public int getUserId(){
         return userId;
     }
@@ -46,6 +48,4 @@ public abstract class User{
     public String getEmail(){
         return email;
     }
-
-    public abstract String getUserType();
 }

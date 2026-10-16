@@ -14,21 +14,18 @@ public class Payment extends TransactionRecord {
     private Vendor vendor;
     private StoreWallet storeWallet;
 
-    public Payment(int paymentId,
-        double amount,
-        String dateTime,
-        Card card,
-        StudentWallet studentWallet,
-        Vendor vendor,
-        StoreWallet storeWallet
-    ){
+    public Payment(int paymentId, double amount, String dateTime, Card card, StudentWallet studentWallet, Vendor vendor, StoreWallet storeWallet){
         super(amount, dateTime);
-
         this.paymentId = paymentId;
         this.card = card;
         this.studentWallet = studentWallet;
         this.vendor = vendor;
         this.storeWallet = storeWallet;
+    }
+
+    @Override
+    public String getTransactionType() {
+        return "PAYMENT";
     }
 
     public int getPaymentId() {
