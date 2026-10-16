@@ -1,4 +1,4 @@
-package datas;
+package data;
 
 import java.util.ArrayList;
 
@@ -6,7 +6,7 @@ import entities.Account;
 import entities.Card;
 import entities.transaction.CashOut;
 import entities.transaction.TopUp;
-import entities.transaction.Transaction;
+import entities.transaction.Payment;
 import entities.user.Cashier;
 import entities.user.Student;
 import entities.user.Vendor;
@@ -17,7 +17,7 @@ public class DataStore {
     private static ArrayList<Vendor> authorizedVendors = new ArrayList<>();
     private static ArrayList<Cashier> authorizedCashiers = new ArrayList<>();
     private static ArrayList<Card> cards = new ArrayList<>();
-    private static ArrayList<Transaction> transactions = new ArrayList<>();
+    private static ArrayList<Payment> paymentTransactions = new ArrayList<>();
     private static ArrayList<TopUp> topUps = new ArrayList<>();
     private static ArrayList<CashOut> cashOuts = new ArrayList<>(); 
 
@@ -126,16 +126,16 @@ public class DataStore {
     }
 
     //TRANSACTION
-    public static void addTransaction(Transaction transaction) {
-        transactions.add(transaction);
+    public static void addPayment(Payment payment) {
+        paymentTransactions.add(payment);
     }
 
-    public static Transaction findTransactionById(int transactionId) {
+    public static Payment findPaymentById(int paymentId) {
 
-        for (Transaction transaction : transactions) {
+        for (Payment payment : paymentTransactions) {
 
-            if (transaction.getTransactionId() == transactionId) {
-                return transaction;
+            if (payment.getPaymentId() == paymentId) {
+                return payment;
             }
         }
 

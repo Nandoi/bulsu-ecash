@@ -5,8 +5,8 @@ import entities.user.Vendor;
 import entities.wallet.StudentWallet;
 import entities.wallet.StoreWallet; 
 
-public class Transaction extends TransactionRecord {
-    private int transactionId;
+public class Payment extends TransactionRecord {
+    private int paymentId;
 
     //Related objects na gagamitin
     private Card card;
@@ -14,7 +14,7 @@ public class Transaction extends TransactionRecord {
     private Vendor vendor;
     private StoreWallet storeWallet;
 
-    public Transaction(int transactionId,
+    public Payment(int paymentId,
         double amount,
         String dateTime,
         Card card,
@@ -24,15 +24,15 @@ public class Transaction extends TransactionRecord {
     ){
         super(amount, dateTime);
 
-        this.transactionId = transactionId;
+        this.paymentId = paymentId;
         this.card = card;
         this.studentWallet = studentWallet;
         this.vendor = vendor;
         this.storeWallet = storeWallet;
     }
 
-    public int getTransactionId() {
-        return transactionId;
+    public int getPaymentId() {
+        return paymentId;
     }
 
     public Card getCard() {

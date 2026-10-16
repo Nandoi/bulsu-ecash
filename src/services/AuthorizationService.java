@@ -1,9 +1,9 @@
 package services;
 
-import datas.DataStore;
+import data.DataStore;
 import entities.Account;
 
-public class Authorization {
+public class AuthorizationService {
     public static Account login(int accountId, String pin) {
 
         Account account = DataStore.findAccountById(accountId);
