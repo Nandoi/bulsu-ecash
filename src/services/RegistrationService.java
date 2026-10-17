@@ -51,7 +51,7 @@ public class RegistrationService {
             return null;
         }
 
-        int accountId  = DataStore.generateAccountId();
+        int accountId  = DataStore.generateNextAccountId();
 
         Account account = new Account(accountId, pin, user);
 
