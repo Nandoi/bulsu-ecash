@@ -22,18 +22,18 @@ public class DataStore {
     private static ArrayList<CashOut> cashOuts = new ArrayList<>(); 
 
     // ACCOUNT
-    private static int accountId = 5000;
+    private static int accountId = 5001;
 
-    public static int generateAccountId() {
+    public static int generateNextAccountId() {
         return accountId++;
-    }
-
-    public static void addAccount(Account account) {
-        accounts.add(account);
     }
 
     public static int getNextAccountId() {
         return accountId;
+    }
+
+    public static void addAccount(Account account) {
+        accounts.add(account);
     }
 
     public static Account findAccountById(int accountId) {
@@ -44,7 +44,6 @@ public class DataStore {
                 return account;
             }
         }
-
         return null;
     }
 
@@ -56,7 +55,6 @@ public class DataStore {
                 return account;
             }
         }
-
         return null;
     }
 

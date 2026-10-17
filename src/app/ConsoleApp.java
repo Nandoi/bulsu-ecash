@@ -12,8 +12,8 @@ import services.RegistrationService;
 
 import ui.ConsoleUi;
 
-public class Application {
-    static Scanner sc = new Scanner(System.in);
+public class ConsoleApp {
+    private static final Scanner sc = new Scanner(System.in);
 
     public static void start() {
         TempData.load();
@@ -27,7 +27,7 @@ public class Application {
             ConsoleUi.showOption(2, "Register");
             ConsoleUi.showExitOption("Exit");
 
-            System.out.print("Enter Choice: ");
+            System.out.print("\n  Enter Choice: ");
             int choice = sc.nextInt();
             sc.nextLine();
 
@@ -57,6 +57,7 @@ public class Application {
         sc.close();
     }
 
+
     private static void login() {
         ConsoleUi.showSection("LOGIN");
 
@@ -80,6 +81,7 @@ public class Application {
         pause();
     }
 
+
     private static void register() {
         ConsoleUi.showSection("REGISTER");
 
@@ -88,94 +90,115 @@ public class Application {
         ConsoleUi.showOption(3, "Cashier");
         ConsoleUi.showExitOption("Back");
 
-        System.out.print("\nSelect role: ");
+        System.out.print("\n  Select role: ");
         int role = sc.nextInt();
         sc.nextLine();
 
-        if (role == 0) {
-            return;
-        }
-
-        Account account = null;
-
         switch (role) {
             case 1:
-                ConsoleUi.showSection("STUDENT REGISTRATION");
-
-                System.out.println("Account ID: " + DataStore.getNextAccountId());
-
-                System.out.print("Student Number: ");
-                String studentNumber = sc.nextLine();
-
-                System.out.print("Create PIN: ");
-                String studentPin = sc.nextLine();
-
-                System.out.print("Confirm PIN: ");
-                String studentConfirmPin = sc.nextLine();
-
-                if (!studentPin.equals(studentConfirmPin)) {
-                    ConsoleUi.showError("PINs do not match.");
-                    pause();
-                    return;
-                }
-
-                account = RegistrationService.registerStudent(studentPin, studentNumber);
+                registerStudent();
                 break;
 
             case 2:
-                ConsoleUi.showSection("VENDOR REGISTRATION");
-
-                System.out.println("Account ID: " + DataStore.getNextAccountId());
-
-                System.out.print("Vendor User ID: ");
-                int vendorId = sc.nextInt();
-                sc.nextLine();
-
-                System.out.print("Create PIN: ");
-                String vendorPin = sc.nextLine();
-
-                System.out.print("Confirm PIN: ");
-                String vendorConfirmPin = sc.nextLine();
-
-                if (!vendorPin.equals(vendorConfirmPin)) {
-                    ConsoleUi.showError("PINs do not match.");
-                    pause();
-                    return;
-                }
-
-                account = RegistrationService.registerVendor(vendorPin, vendorId);
+                registerVendor();
                 break;
 
             case 3:
-                ConsoleUi.showSection("CASHIER REGISTRATION");
-
-                System.out.println("Account ID: " + DataStore.getNextAccountId());
-
-                System.out.print("Cashier User ID: ");
-                int cashierId = sc.nextInt();
-                sc.nextLine();
-
-                System.out.print("Create PIN: ");
-                String cashierPin = sc.nextLine();
-
-                System.out.print("Confirm PIN: ");
-                String cashierConfirmPin = sc.nextLine();
-
-                if (!cashierPin.equals(cashierConfirmPin)) {
-                    ConsoleUi.showError("PINs do not match.");
-                    pause();
-                    return;
-                }
-
-                account = RegistrationService.registerCashier(cashierPin, cashierId);
+                registerCashier();
                 break;
+
+            case 0:
+                return;
 
             default:
                 ConsoleUi.showError("Invalid role.");
                 pause();
-                return;
+                break;
+        }
+    }
+
+
+    private static void registerStudent() {
+        ConsoleUi.showSection("STUDENT REGISTRATION");
+
+        System.out.println("Account ID: " + DataStore.getNextAccountId());
+
+        System.out.print("Student Number: ");
+        String studentNumber = sc.nextLine();
+
+        System.out.print("Create PIN: ");
+        String pin = sc.nextLine();
+
+        System.out.print("Confirm PIN: ");
+        String confirmPin = sc.nextLine();
+
+        if (!pin.equals(confirmPin)) {
+            ConsoleUi.showError("PINs do not match.");
+            pause();
+            return;
         }
 
+        Account account = RegistrationService.registerStudent(pin, studentNumber);
+
+        showRegistrationResult(account);
+    }
+
+
+    private static void registerVendor() {
+        ConsoleUi.showSection("VENDOR REGISTRATION");
+
+        System.out.println("Account ID: " + DataStore.getNextAccountId());
+
+        System.out.print("Vendor ID: ");
+        int vendorId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Create PIN: ");
+        String pin = sc.nextLine();
+
+        System.out.print("Confirm PIN: ");
+        String confirmPin = sc.nextLine();
+
+        if (!pin.equals(confirmPin)) {
+            ConsoleUi.showError("PINs do not match.");
+            pause();
+            return;
+        }
+
+        Account account = RegistrationService.registerVendor(pin, vendorId);
+
+        showRegistrationResult(account);
+    }
+
+
+    private static void registerCashier() {
+        ConsoleUi.showSection("CASHIER REGISTRATION");
+
+        System.out.println("Account ID: " + DataStore.getNextAccountId());
+
+        System.out.print("Cashier ID: ");
+        int cashierId = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Create PIN: ");
+        String pin = sc.nextLine();
+
+        System.out.print("Confirm PIN: ");
+        String confirmPin = sc.nextLine();
+
+        if (!pin.equals(confirmPin)) {
+            ConsoleUi.showError("PINs do not match.");
+            pause();
+            return;
+        }
+
+        Account account = RegistrationService.registerCashier(pin, cashierId);
+
+        showRegistrationResult(account);
+    }
+
+
+    private static void showRegistrationResult(Account account) {
         if (account == null) {
             ConsoleUi.showError("Registration failed.");
             ConsoleUi.showInfo("Check your authorized information.");
@@ -188,6 +211,7 @@ public class Application {
 
         pause();
     }
+
 
     private static void pause() {
         System.out.println();
