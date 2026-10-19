@@ -21,6 +21,18 @@ public class DataStore {
     private static ArrayList<TopUp> topUps = new ArrayList<>();
     private static ArrayList<CashOut> cashOuts = new ArrayList<>(); 
 
+    public static ArrayList<Payment> getPayments() {
+        return payments;
+    }
+
+    public static ArrayList<TopUp> getTopUps() {
+        return topUps;
+    }
+
+    public static ArrayList<CashOut> getCashOuts() {
+        return cashOuts;
+    }
+
     // ACCOUNT
     private static int nextAccountId = 5001;
 
