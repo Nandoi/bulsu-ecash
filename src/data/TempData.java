@@ -19,6 +19,7 @@ public class TempData {
         
         // STUDENT
         StudentWallet studentWallet = new StudentWallet(101);
+        studentWallet.addBalance(500.00);
 
         Student student = new Student(
             1001,
@@ -42,7 +43,6 @@ public class TempData {
 
         // VENDOR AND STORE
         StoreWallet storeWallet = new StoreWallet(201);
-        studentWallet.addBalance(500.00);
 
         Store store = new Store(
             1,

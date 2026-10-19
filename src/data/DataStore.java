@@ -153,6 +153,12 @@ public class DataStore {
     }
 
     // TOP UP
+    private static int nextTopUpId = 7001;
+
+    public static int generateNextTopUpId() {
+        return nextTopUpId++;
+    }
+
     public static void addTopUp(TopUp topUp) {
         topUps.add(topUp);
     }
