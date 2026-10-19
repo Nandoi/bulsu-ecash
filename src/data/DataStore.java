@@ -130,6 +130,12 @@ public class DataStore {
     }
 
     // PAYMENT
+    private static int nextPaymentId = 6001;
+
+    public static int generateNextPaymentId() {
+        return nextPaymentId++;
+    }
+    
     public static void addPayment(Payment payment) {
         payments.add(payment);
     }

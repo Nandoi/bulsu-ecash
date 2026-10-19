@@ -42,6 +42,7 @@ public class TempData {
 
         // VENDOR AND STORE
         StoreWallet storeWallet = new StoreWallet(201);
+        studentWallet.addBalance(500.00);
 
         Store store = new Store(
             1,
