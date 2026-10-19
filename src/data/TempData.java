@@ -1,5 +1,6 @@
 package data;
 
+import entities.Account;
 import entities.Card;
 import entities.Store;
 import entities.user.Cashier;
@@ -71,13 +72,21 @@ public class TempData {
             "maria@email.com"
         );
 
+        Account studentAccount = new Account(DataStore.generateNextAccountId(), "1124", student);
+        Account vendorAccount = new Account(DataStore.generateNextAccountId(), "2222", vendor);
+        Account cashierAccount = new Account(DataStore.generateNextAccountId(), "3333", cashier);
 
+        
+        
         // SAVING OF TEMPORARY DATA
         DataStore.addAuthorizedStudent(student);
         DataStore.addAuthorizedVendor(vendor);
         DataStore.addAuthorizedCashier(cashier);
         DataStore.addCard(card);
-
+        
+        DataStore.addAccount(studentAccount);
+        DataStore.addAccount(vendorAccount);
+        DataStore.addAccount(cashierAccount);
         loaded = true;
     }
 }

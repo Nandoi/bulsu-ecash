@@ -6,11 +6,15 @@ import data.DataStore;
 import data.TempData;
 
 import entities.Account;
-
+import entities.user.Cashier;
+import entities.user.Student;
+import entities.user.Vendor;
 import services.AuthenticationService;
 import services.RegistrationService;
-
+import ui.CashierMenu;
 import ui.ConsoleUi;
+import ui.StudentMenu;
+import ui.VendorMenu;
 
 public class ConsoleApp {
     private static final Scanner sc = new Scanner(System.in);
@@ -74,11 +78,8 @@ public class ConsoleApp {
             ConsoleUi.showError("Invalid Account ID or PIN.");
         } else {
             ConsoleUi.showSuccess("Login successful.");
-            ConsoleUi.showInfo("Welcome, " + account.getUser().getFirstName() + "!");
-            ConsoleUi.showInfo("Role: " + account.getUser().getUserType());
         }
-
-        pause();
+        openUserMenu(account);
     }
 
 
@@ -211,6 +212,29 @@ public class ConsoleApp {
 
         pause();
     }
+
+    private static void openUserMenu(Account account) {
+    String userType = account.getUser().getUserType();
+
+    switch (userType) {
+        case "STUDENT":
+            StudentMenu.show((Student) account.getUser(), sc);
+            break;
+
+        case "VENDOR":
+            VendorMenu.show((Vendor) account.getUser(), sc);
+            break;
+
+        case "CASHIER":
+            CashierMenu.show((Cashier) account.getUser(), sc);
+            break;
+
+        default:
+            ConsoleUi.showError("Unknown user type.");
+            pause();
+            break;
+    }
+}
 
 
     private static void pause() {
