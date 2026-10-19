@@ -217,7 +217,7 @@ public class ConsoleApp {
     }
 
     private static void openUserMenu(Account account) {
-    String userType = account.getUser().getUserType();
+        String userType = account.getUser().getUserType();
 
     switch (userType) {
         case "STUDENT":

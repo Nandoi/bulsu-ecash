@@ -3,6 +3,13 @@ package ui;
 import java.util.Scanner;
 import entities.user.Vendor;
 
+import java.time.LocalDateTime;
+
+import data.DataStore;
+import entities.transaction.Payment;
+import enums.TransactionStatus;
+import services.PaymentService;
+
 public class VendorMenu {
 
     public static void show(Vendor vendor, Scanner sc) {
@@ -25,8 +32,7 @@ public class VendorMenu {
 
             switch (choice) {
                 case 1:
-                    ConsoleUi.showInfo("Payment processing will be connected next.");
-                    pause(sc);
+                    processPayment(vendor, sc);
                     break;
 
                 case 0:
@@ -39,6 +45,43 @@ public class VendorMenu {
                     break;
             }
         }
+    }
+
+    private static void processPayment(Vendor vendor, Scanner sc) {
+        ConsoleUi.showSection("PROCESS PAYMENT");
+
+        System.out.print("Card UID: ");
+        String cardUid = sc.nextLine();
+
+        System.out.print("Amount: PHP ");
+        double amount = sc.nextDouble();
+        sc.nextLine();
+
+        int paymentId = DataStore.generateNextPaymentId();
+        String dateTime = LocalDateTime.now().toString();
+
+        Payment payment = PaymentService.processPayment(paymentId, amount, dateTime, cardUid, vendor);
+
+        if (payment == null) {
+            ConsoleUi.showError("Payment could not be processed.");
+            ConsoleUi.showInfo("Check the Card UID and payment amount.");
+            pause(sc);
+            return;
+        }
+
+        if (payment.getStatus() == TransactionStatus.FAILED) {
+            ConsoleUi.showError("Payment failed.");
+            ConsoleUi.showInfo("Check the student's balance or wallet status.");
+            pause(sc);
+            return;
+        }
+
+        ConsoleUi.showSuccess("Payment successful.");
+        ConsoleUi.showInfo("Payment ID: " + payment.getPaymentId());
+        ConsoleUi.showBalance("Amount", payment.getAmount());
+        ConsoleUi.showBalance("Store Wallet Balance", vendor.getStore().getStoreWallet().getBalance());
+
+        pause(sc);
     }
 
     private static void pause(Scanner sc) {
