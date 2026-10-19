@@ -19,7 +19,7 @@ public class StudentMenu {
 
             System.out.println();
             ConsoleUi.showOption(1, "View Profile");
-            ConsoleUi.showOption(2, "View Transaction History");
+            ConsoleUi.showOption(2, "View Payment History");
             ConsoleUi.showExitOption("Logout");
 
             System.out.print("\n  Enter Choice: ");
@@ -34,6 +34,7 @@ public class StudentMenu {
 
                 case 2:
                     showPaymentHistory(student);
+                    pause(sc);
                     break;
 
                 case 0:
