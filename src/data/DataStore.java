@@ -22,14 +22,14 @@ public class DataStore {
     private static ArrayList<CashOut> cashOuts = new ArrayList<>(); 
 
     // ACCOUNT
-    private static int accountId = 5001;
+    private static int nextAccountId = 5001;
 
     public static int generateNextAccountId() {
-        return accountId++;
+        return nextAccountId++;
     }
 
     public static int getNextAccountId() {
-        return accountId;
+        return nextAccountId;
     }
 
     public static void addAccount(Account account) {
