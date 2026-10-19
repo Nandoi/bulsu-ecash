@@ -76,9 +76,12 @@ public class ConsoleApp {
 
         if (account == null) {
             ConsoleUi.showError("Invalid Account ID or PIN.");
-        } else {
-            ConsoleUi.showSuccess("Login successful.");
+            pause();
+            return;
         }
+
+        ConsoleUi.showSuccess("Login successful.");
+
         openUserMenu(account);
     }
 
