@@ -175,6 +175,12 @@ public class DataStore {
 
 
     // CASH OUT
+    private static int nextCashOutId = 8001;
+
+    public static int generateNextCashOutId() {
+        return nextCashOutId++;
+    }
+
     public static void addCashOut(CashOut cashOut) {
         cashOuts.add(cashOut);
     }
