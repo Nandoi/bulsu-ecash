@@ -94,6 +94,11 @@ public class VendorMenu {
         ConsoleUi.showBalance("Amount", payment.getAmount());
         ConsoleUi.showBalance("Store Wallet Balance", vendor.getStore().getStoreWallet().getBalance());
 
+        ConsoleUi.showReceipt(
+                "PAYMENT", payment.getPaymentId(), payment.getAmount(), payment.getDateTime(),
+                "Student Wallet (Card " + payment.getCard().getCardUid() + ")",
+                vendor.getStore().getStoreName());
+
         pause(sc);
     }
 
