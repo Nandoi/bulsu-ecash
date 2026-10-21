@@ -5,8 +5,10 @@ import entities.user.Student;
 
 import data.DataStore;
 import entities.transaction.Payment;
+import entities.transaction.TopUp;
 
 public class StudentMenu {
+    private static final double LOW_BALANCE_THRESHOLD = 100.00;
 
     public static void show(Student student, Scanner sc) {
         boolean running = true;
@@ -16,10 +18,14 @@ public class StudentMenu {
 
             ConsoleUi.showInfo("Welcome, " + student.getFirstName() + "!");
             ConsoleUi.showBalance("Wallet Balance", student.getStudentWallet().getBalance());
+            if (student.getStudentWallet().getBalance() < LOW_BALANCE_THRESHOLD) {
+                ConsoleUi.showInfo("Warning: Your wallet balance is below PHP "
+                        + String.format("%.2f", LOW_BALANCE_THRESHOLD) + ".");
+            }
 
             System.out.println();
             ConsoleUi.showOption(1, "View Profile");
-            ConsoleUi.showOption(2, "View Payment History");
+            ConsoleUi.showOption(2, "View Transaction History");
             ConsoleUi.showExitOption("Logout");
 
             System.out.print("\n  Enter Choice: ");
@@ -33,7 +39,7 @@ public class StudentMenu {
                     break;
 
                 case 2:
-                    showPaymentHistory(student);
+                    showTransactionHistory(student);
                     pause(sc);
                     break;
 
@@ -59,8 +65,8 @@ public class StudentMenu {
         System.out.println("Email: " + student.getEmail());
     }
 
-    private static void showPaymentHistory(Student student) {
-        ConsoleUi.showSection("PAYMENT HISTORY");
+    private static void showTransactionHistory(Student student) {
+        ConsoleUi.showSection("TRANSACTION HISTORY");
 
         boolean found = false;
 
@@ -77,8 +83,20 @@ public class StudentMenu {
             }
         }
 
+        for (TopUp topUp : DataStore.getTopUps()) {
+            if (topUp.getStudentWallet() == student.getStudentWallet()) {
+                System.out.println("Top Up ID: " + topUp.getTopUpId());
+                System.out.println("Type: TOP_UP");
+                System.out.println("Amount: PHP " + topUp.getAmount());
+                System.out.println("Date: " + topUp.getDateTime());
+                System.out.println("Status: " + topUp.getStatus());
+                System.out.println("----------------------------------------");
+                found = true;
+            }
+        }
+
         if (!found) {
-            ConsoleUi.showInfo("No payment records found.");
+            ConsoleUi.showInfo("No transaction records found.");
         }
     }
 
