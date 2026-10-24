@@ -94,8 +94,13 @@ public class CashierMenu {
         ConsoleUi.showBalance("Student Wallet Balance", topUp.getStudentWallet().getBalance());
 
         ConsoleUi.showReceipt(
-                "TOP_UP", topUp.getTopUpId(), topUp.getAmount(), topUp.getDateTime(),
-                "Cashier " + cashier.getFirstName(), "Student " + studentNumber);
+            topUp.getTransactionType(), 
+            topUp.getTopUpId(), 
+            topUp.getAmount(), 
+            topUp.getDateTime(),
+            "Cashier " + cashier.getFirstName(), 
+            "Student " + studentNumber
+        );
 
         ConsoleUi.pause(sc);
     }
@@ -142,8 +147,13 @@ public class CashierMenu {
         ConsoleUi.showBalance("Store Wallet Balance", cashOut.getStoreWallet().getBalance());
 
         ConsoleUi.showReceipt(
-                "CASH_OUT", cashOut.getCashOutId(), cashOut.getAmount(), cashOut.getDateTime(),
-                vendor.getStore().getStoreName(), "Cashier " + cashier.getFirstName());
+            cashOut.getTransactionType(), 
+            cashOut.getCashOutId(), 
+            cashOut.getAmount(), 
+            cashOut.getDateTime(),
+            vendor.getStore().getStoreName(), 
+            "Cashier " + cashier.getFirstName()
+        );
 
         ConsoleUi.pause(sc);
     }
