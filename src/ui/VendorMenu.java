@@ -4,7 +4,6 @@ import java.util.Scanner;
 import entities.user.Vendor;
 
 import data.DataStore;
-import entities.transaction.CashOut;
 import entities.transaction.Payment;
 import enums.TransactionStatus;
 import services.PaymentService;
@@ -38,12 +37,12 @@ public class VendorMenu {
 
                 case 2:
                     showPaymentHistory(vendor);
-                    pause(sc);
+                    ConsoleUi.pause(sc);
                     break;
 
                 case 3:
-                    showCashOutHistory(vendor);
-                    pause(sc);
+                    TransactionHistory.showCashOutHistory(vendor);
+                    ConsoleUi.pause(sc);
                     break;
 
                 case 0:
@@ -52,7 +51,7 @@ public class VendorMenu {
 
                 default:
                     ConsoleUi.showError("Invalid choice.");
-                    pause(sc);
+                    ConsoleUi.pause(sc);
                     break;
             }
         }
@@ -73,14 +72,14 @@ public class VendorMenu {
         if (payment == null) {
             ConsoleUi.showError("Payment could not be processed.");
             ConsoleUi.showInfo("Check the Card UID and payment amount.");
-            pause(sc);
+            ConsoleUi.pause(sc);
             return;
         }
 
         if (payment.getStatus() == TransactionStatus.FAILED) {
             ConsoleUi.showError("Payment failed.");
             ConsoleUi.showInfo("Check the student's balance or wallet status.");
-            pause(sc);
+            ConsoleUi.pause(sc);
             return;
         }
 
@@ -94,7 +93,7 @@ public class VendorMenu {
                 "Student Wallet (Card " + payment.getCard().getCardUid() + ")",
                 vendor.getStore().getStoreName());
 
-        pause(sc);
+        ConsoleUi.pause(sc);
     }
 
     private static void showPaymentHistory(Vendor vendor) {
@@ -117,33 +116,5 @@ public class VendorMenu {
         if (!found) {
             ConsoleUi.showInfo("No payment records found.");
         }
-    }
-
-    private static void showCashOutHistory(Vendor vendor) {
-        ConsoleUi.showSection("CASH OUT HISTORY");
-
-        boolean found = false;
-
-        for (CashOut cashOut : DataStore.getCashOuts()) {
-            if (cashOut.getVendor() == vendor) {
-                System.out.println("Cash Out ID: " + cashOut.getCashOutId());
-                System.out.println("Amount: PHP " + cashOut.getAmount());
-                System.out.println("Date: " + cashOut.getDateTime());
-                System.out.println("Status: " + cashOut.getStatus());
-                System.out.println("----------------------------------------");
-
-                found = true;
-            }
-        }
-
-        if (!found) {
-            ConsoleUi.showInfo("No cash out records found.");
-        }
-    }
-
-    private static void pause(Scanner sc) {
-        System.out.println();
-        System.out.print("Press ENTER to continue...");
-        sc.nextLine();
     }
 }

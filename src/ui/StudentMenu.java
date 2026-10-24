@@ -3,10 +3,6 @@ package ui;
 import java.util.Scanner;
 import entities.user.Student;
 
-import data.DataStore;
-import entities.transaction.Payment;
-import entities.transaction.TopUp;
-
 public class StudentMenu {
     private static final double LOW_BALANCE_THRESHOLD = 100.00;
 
@@ -35,12 +31,12 @@ public class StudentMenu {
             switch (choice) {
                 case 1:
                     showProfile(student);
-                    pause(sc);
+                    ConsoleUi.pause(sc);
                     break;
 
                 case 2:
-                    showTransactionHistory(student);
-                    pause(sc);
+                    TransactionHistory.showTransactionHistory(student);
+                    ConsoleUi.pause(sc);
                     break;
 
                 case 0:
@@ -49,7 +45,7 @@ public class StudentMenu {
 
                 default:
                     ConsoleUi.showError("Invalid choice.");
-                    pause(sc);
+                    ConsoleUi.pause(sc);
                     break;
             }
         }
@@ -63,46 +59,5 @@ public class StudentMenu {
         System.out.println("Program: " + student.getProgram());
         System.out.println("Year Level: " + student.getYearLevel());
         System.out.println("Email: " + student.getEmail());
-    }
-
-    private static void showTransactionHistory(Student student) {
-        ConsoleUi.showSection("TRANSACTION HISTORY");
-
-        boolean found = false;
-
-        for (Payment payment : DataStore.getPayments()) {
-            if (payment.getStudentWallet() == student.getStudentWallet()) {
-                System.out.println("Payment ID: " + payment.getPaymentId());
-                System.out.println("Amount: PHP " + payment.getAmount());
-                System.out.println("Date: " + payment.getDateTime());
-                System.out.println("Status: " + payment.getStatus());
-                System.out.println("Store: " + payment.getVendor().getStore().getStoreName());
-                System.out.println("----------------------------------------");
-
-                found = true;
-            }
-        }
-
-        for (TopUp topUp : DataStore.getTopUps()) {
-            if (topUp.getStudentWallet() == student.getStudentWallet()) {
-                System.out.println("Top Up ID: " + topUp.getTopUpId());
-                System.out.println("Type: TOP_UP");
-                System.out.println("Amount: PHP " + topUp.getAmount());
-                System.out.println("Date: " + topUp.getDateTime());
-                System.out.println("Status: " + topUp.getStatus());
-                System.out.println("----------------------------------------");
-                found = true;
-            }
-        }
-
-        if (!found) {
-            ConsoleUi.showInfo("No transaction records found.");
-        }
-    }
-
-    private static void pause(Scanner sc) {
-        System.out.println();
-        System.out.print("Press ENTER to continue...");
-        sc.nextLine();
     }
 }

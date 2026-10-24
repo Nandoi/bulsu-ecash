@@ -1,5 +1,7 @@
 package ui;
 
+import java.util.Scanner;
+
 public class ConsoleUi {
     private static final String LINE = "============================================================";
 
@@ -54,5 +56,11 @@ public class ConsoleUi {
         System.out.println("From: " + sender);
         System.out.println("To: " + receiver);
         System.out.println("Status: SUCCESSFUL");
+    }
+
+    public static void pause(Scanner sc){
+        System.out.println();
+        System.out.print("Press ENTER to continue...");
+        sc.nextLine();
     }
 }
