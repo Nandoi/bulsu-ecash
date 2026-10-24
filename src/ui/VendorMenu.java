@@ -70,10 +70,7 @@ public class VendorMenu {
         double amount = sc.nextDouble();
         sc.nextLine();
 
-        int paymentId = DataStore.generateNextPaymentId();
-        String dateTime = LocalDateTime.now().toString();
-
-        Payment payment = PaymentService.processPayment(paymentId, amount, dateTime, cardUid, vendor);
+        Payment payment = PaymentService.processPayment(amount, cardUid, vendor);
 
         if (payment == null) {
             ConsoleUi.showError("Payment could not be processed.");

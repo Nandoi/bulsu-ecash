@@ -13,14 +13,13 @@ import entities.wallet.StoreWallet;
 
 public class PaymentService {
 
-    public static Payment processPayment(int paymentId, double amount, String dateTime, String cardUid, Vendor vendor) {
-        // Invalid amount
-        if (amount <= 0){
-            return null;
-        }
+    public static Payment processPayment(double amount, String cardUid, Vendor vendor) {
 
-        // Payment ID must be unique
-        if (DataStore.findPaymentById(paymentId) != null) {
+        int paymentId = DataStore.generateNextPaymentId();
+        String dateTime = java.time.LocalDateTime.now().toString();
+
+        // Dapat greater than 0 yung amount na iinput ni vendor.
+        if (amount <= 0){
             return null;
         }
 
