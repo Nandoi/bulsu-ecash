@@ -10,15 +10,13 @@ import entities.wallet.StudentWallet;
 
 public class TopUpService {
 
-    public static TopUp processTopUp(int topUpId, double amount, String dateTime, String studentNumber, Cashier cashier) {
+    public static TopUp processTopUp(double amount, String studentNumber, Cashier cashier) {
+
+        int topUpId = DataStore.generateNextTopUpId();
+        String dateTime = java.time.LocalDateTime.now().toString();
 
         // Invalid amount
         if (amount <= 0) {
-            return null;
-        }
-
-        // TopUp ID must be unique
-        if (DataStore.findTopUpById(topUpId) != null) {
             return null;
         }
 
@@ -42,7 +40,7 @@ public class TopUpService {
         }
 
         // Create TopUp record
-        TopUp topUp = new TopUp(topUpId, amount, dateTime, cashier, studentWallet);
+        TopUp topUp = new TopUp(topUpId, amount, dateTime, cashier, student, studentWallet);
 
         // Wallet must be active
         if (!studentWallet.isActive()) {

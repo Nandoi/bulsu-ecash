@@ -10,15 +10,13 @@ import entities.wallet.StoreWallet;
 
 public class CashOutService {
 
-    public static CashOut processCashOut(int cashOutId, double amount, String dateTime, Vendor vendor, Cashier cashier) {
+    public static CashOut processCashOut(double amount, Vendor vendor, Cashier cashier) {
+
+        int cashOutId = DataStore.generateNextCashOutId();
+        String dateTime = java.time.LocalDateTime.now().toString();
 
         // Invalid amount
         if (amount <= 0) {
-            return null;
-        }
-
-        // CashOut ID must be unique
-        if (DataStore.findCashOutById(cashOutId) != null) {
             return null;
         }
 

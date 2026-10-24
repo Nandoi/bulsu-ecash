@@ -40,10 +40,6 @@ public class DataStore {
         return nextAccountId++;
     }
 
-    public static int getNextAccountId() {
-        return nextAccountId;
-    }
-
     public static void addAccount(Account account) {
         accounts.add(account);
     }
@@ -152,18 +148,6 @@ public class DataStore {
         payments.add(payment);
     }
 
-    public static Payment findPaymentById(int paymentId) {
-
-        for (Payment payment : payments) {
-
-            if (payment.getPaymentId() == paymentId) {
-                return payment;
-            }
-        }
-
-        return null;
-    }
-
     // TOP UP
     private static int nextTopUpId = 7001;
 
@@ -173,16 +157,6 @@ public class DataStore {
 
     public static void addTopUp(TopUp topUp) {
         topUps.add(topUp);
-    }
-
-    public static TopUp findTopUpById(int topUpId) {
-        for (TopUp topUp : topUps) {
-            if (topUp.getTopUpId() == topUpId) {
-                return topUp;
-            }
-        }
-
-        return null;
     }
 
 
@@ -195,15 +169,5 @@ public class DataStore {
 
     public static void addCashOut(CashOut cashOut) {
         cashOuts.add(cashOut);
-    }
-
-    public static CashOut findCashOutById(int cashOutId) {
-        for (CashOut cashOut : cashOuts) {
-            if (cashOut.getCashOutId() == cashOutId) {
-                return cashOut;
-            }
-        }
-
-        return null;
     }
 }

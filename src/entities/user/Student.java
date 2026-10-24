@@ -13,12 +13,29 @@ public class Student extends User{
         String lastName,
         String contactNumber,
         String email,
+        String street,
+        String barangay,
+        String cityMunicipality,
+        String province,
+        String zipCode,
         String studentNumber,
         String program,
         int yearLevel,
         StudentWallet studentWallet
     ){
-        super(userId, firstName, middleName, lastName, contactNumber, email);
+        super(
+            userId, 
+            firstName, 
+            middleName, 
+            lastName, 
+            contactNumber, 
+            email,
+            street,
+            barangay,
+            cityMunicipality,
+            province,
+            zipCode
+        );
         this.studentNumber = studentNumber;
         this.program = program;
         this.yearLevel = yearLevel;
