@@ -3,8 +3,6 @@ package ui;
 import java.util.Scanner;
 import entities.user.Vendor;
 
-import java.time.LocalDateTime;
-
 import data.DataStore;
 import entities.transaction.CashOut;
 import entities.transaction.Payment;

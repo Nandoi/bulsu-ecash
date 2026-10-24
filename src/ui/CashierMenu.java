@@ -1,8 +1,6 @@
 package ui;
 
-import java.time.LocalDateTime;
 import java.util.Scanner;
-
 import data.DataStore;
 import entities.transaction.CashOut;
 import entities.transaction.TopUp;
@@ -121,10 +119,7 @@ public class CashierMenu {
             return;
         }
 
-        int cashOutId = DataStore.generateNextCashOutId();
-        String dateTime = LocalDateTime.now().toString();
-
-        CashOut cashOut = CashOutService.processCashOut(cashOutId, amount, dateTime, vendor, cashier);
+        CashOut cashOut = CashOutService.processCashOut(amount, vendor, cashier);
 
         if (cashOut == null) {
             ConsoleUi.showError("Cash Out could not be processed.");
