@@ -41,13 +41,13 @@ public class CashierMenu {
                     break;
 
                 case 3:
-                    TransactionHistory.showTopUpHistory(cashier);
+                    showTopUpHistory(cashier);
                     ConsoleUi.pause(sc);
                     break;
 
                 case 4:
-                    TransactionHistory.showCashOutHistory(cashier);
-                    ConsoleUi.pause(sc);;
+                    showCashOutHistory(cashier);
+                    ConsoleUi.pause(sc);
                     break;
 
                 case 0:
@@ -156,5 +156,52 @@ public class CashierMenu {
         );
 
         ConsoleUi.pause(sc);
+    }
+
+    private static void showTopUpHistory(Cashier cashier) {
+        ConsoleUi.showSection("TOP UP RECORDS");
+
+        boolean found = false;
+
+        for (TopUp topUp : DataStore.getTopUps()) {
+            if (topUp.getCashier() == cashier) {
+                System.out.println("Top Up ID: " + topUp.getTopUpId());
+                System.out.println("Type: " + topUp.getTransactionType());
+                System.out.println("Amount: PHP " + topUp.getAmount());
+                System.out.println("Date: " + topUp.getDateTime());
+                System.out.println("Status: " + topUp.getStatus());
+                System.out.println("----------------------------------------");
+
+                found = true;
+            }
+        }
+
+        if (!found) {
+            ConsoleUi.showInfo("No top up records found.");
+        }
+    }
+
+    private static void showCashOutHistory(Cashier cashier) {
+        ConsoleUi.showSection("CASH OUT RECORDS");
+
+        boolean found = false;
+
+        for (CashOut cashOut : DataStore.getCashOuts()) {
+            if (cashOut.getCashier() == cashier) {
+                System.out.println("Cash Out ID: " + cashOut.getCashOutId());
+                System.out.println("Type: " + cashOut.getTransactionType());
+                System.out.println("Vendor: " + cashOut.getVendor().getFirstName());
+                System.out.println("Amount: PHP " + cashOut.getAmount());
+                System.out.println("Date: " + cashOut.getDateTime());
+                System.out.println("Status: " + cashOut.getStatus());
+                System.out.println("----------------------------------------");
+
+                found = true;
+            }
+        }
+
+        if (!found) {
+            ConsoleUi.showInfo("No cash out records found.");
+        }
     }
 }

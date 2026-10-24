@@ -86,6 +86,6 @@ public abstract class User{
     }
 
     public String getFullAddress() {
-        return street + ", " + barangay + ", " + cityMunicipality + ", " + province + zipCode;
+        return street + ", " + barangay + ", " + cityMunicipality + ", " + province + " " + zipCode;
     }
 }
