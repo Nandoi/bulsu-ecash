@@ -4,21 +4,13 @@ import java.util.Scanner;
 import entities.user.Student;
 
 public class StudentMenu {
-    private static final double LOW_BALANCE_THRESHOLD = 100.00;
-
     public static void show(Student student, Scanner sc) {
         boolean running = true;
 
         while (running) {
             ConsoleUi.showSection("STUDENT MENU");
-
             ConsoleUi.showInfo("Welcome, " + student.getFirstName() + "!");
             ConsoleUi.showBalance("Wallet Balance", student.getStudentWallet().getBalance());
-            if (student.getStudentWallet().getBalance() < LOW_BALANCE_THRESHOLD) {
-                ConsoleUi.showInfo("Warning: Your wallet balance is below PHP "
-                        + String.format("%.2f", LOW_BALANCE_THRESHOLD) + ".");
-            }
-
             System.out.println();
             ConsoleUi.showOption(1, "View Profile");
             ConsoleUi.showOption(2, "View Transaction History");
