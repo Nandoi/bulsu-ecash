@@ -41,6 +41,4 @@ public class Card {
     public void markExpired(){
         status = CardStatus.EXPIRED;
     }
-
-
 }
