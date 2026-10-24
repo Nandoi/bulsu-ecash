@@ -74,10 +74,7 @@ public class CashierMenu {
         double amount = sc.nextDouble();
         sc.nextLine();
 
-        int topUpId = DataStore.generateNextTopUpId();
-        String dateTime = LocalDateTime.now().toString();
-
-        TopUp topUp = TopUpService.processTopUp(topUpId, amount, dateTime, studentNumber, cashier);
+        TopUp topUp = TopUpService.processTopUp(amount, studentNumber, cashier);
 
         if (topUp == null) {
             ConsoleUi.showError("Top Up could not be processed.");
