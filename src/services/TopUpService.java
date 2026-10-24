@@ -40,7 +40,7 @@ public class TopUpService {
         }
 
         // Create TopUp record
-        TopUp topUp = new TopUp(topUpId, amount, dateTime, cashier, studentWallet);
+        TopUp topUp = new TopUp(topUpId, amount, dateTime, cashier, student, studentWallet);
 
         // Wallet must be active
         if (!studentWallet.isActive()) {

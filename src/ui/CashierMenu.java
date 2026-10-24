@@ -5,6 +5,7 @@ import data.DataStore;
 import entities.transaction.CashOut;
 import entities.transaction.TopUp;
 import entities.user.Cashier;
+import entities.user.Student;
 import entities.user.Vendor;
 import enums.TransactionStatus;
 import services.CashOutService;
@@ -165,11 +166,17 @@ public class CashierMenu {
 
         for (TopUp topUp : DataStore.getTopUps()) {
             if (topUp.getCashier() == cashier) {
+                Student student = topUp.getStudent();
+
                 System.out.println("Top Up ID: " + topUp.getTopUpId());
                 System.out.println("Type: " + topUp.getTransactionType());
-                System.out.println("Amount: PHP " + topUp.getAmount());
                 System.out.println("Date: " + topUp.getDateTime());
                 System.out.println("Status: " + topUp.getStatus());
+                System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
+                System.out.println();
+                System.out.println("Received By: " + student.getFirstName() + " " + student.getLastName());
+                System.out.println("Student Number: " + student.getStudentNumber());
+                System.out.println("Handled By: " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
                 System.out.println("----------------------------------------");
 
                 found = true;
@@ -190,10 +197,13 @@ public class CashierMenu {
             if (cashOut.getCashier() == cashier) {
                 System.out.println("Cash Out ID: " + cashOut.getCashOutId());
                 System.out.println("Type: " + cashOut.getTransactionType());
-                System.out.println("Vendor: " + cashOut.getVendor().getFirstName());
-                System.out.println("Amount: PHP " + cashOut.getAmount());
                 System.out.println("Date: " + cashOut.getDateTime());
                 System.out.println("Status: " + cashOut.getStatus());
+                System.out.printf("Amount: PHP %.2f%n", cashOut.getAmount());
+                System.out.println();
+                System.out.println("Requested By: " + cashOut.getVendor().getFirstName() + " " + cashOut.getVendor().getLastName());
+                System.out.println("Store: " + cashOut.getVendor().getStore().getStoreName());
+                System.out.println("Handled By: " + cashOut.getCashier().getFirstName() + " " + cashOut.getCashier().getLastName());
                 System.out.println("----------------------------------------");
 
                 found = true;

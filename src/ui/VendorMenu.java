@@ -3,9 +3,10 @@ package ui;
 import java.util.Scanner;
 
 import data.DataStore;
-import entities.user.Vendor;
 import entities.transaction.CashOut;
 import entities.transaction.Payment;
+import entities.user.Student;
+import entities.user.Vendor;
 import enums.TransactionStatus;
 import services.PaymentService;
 
@@ -108,10 +109,19 @@ public class VendorMenu {
 
         for (Payment payment : DataStore.getPayments()) {
             if (payment.getVendor() == vendor) {
+                Student student = payment.getCard().getStudent();
+
                 System.out.println("Payment ID: " + payment.getPaymentId());
-                System.out.println("Amount: PHP " + payment.getAmount());
+                System.out.println("Type: " + payment.getTransactionType());
                 System.out.println("Date: " + payment.getDateTime());
                 System.out.println("Status: " + payment.getStatus());
+                System.out.println("Amount: PHP " + payment.getAmount());
+                System.out.println();
+                System.out.println("Paid By: " + student.getFirstName() + " " + student.getLastName());
+                System.out.println("Student Number: " + student.getStudentNumber());
+                System.out.println("Card UID: " + payment.getCard().getCardUid());
+                System.out.println("Received By: " + payment.getVendor().getStore().getStoreName());
+                System.out.println("Handled By: " + payment.getVendor().getFirstName() + " " + payment.getVendor().getLastName());
                 System.out.println("----------------------------------------");
 
                 found = true;
@@ -132,9 +142,13 @@ public class VendorMenu {
             if (cashOut.getVendor() == vendor) {
                 System.out.println("Cash Out ID: " + cashOut.getCashOutId());
                 System.out.println("Type: " + cashOut.getTransactionType());
-                System.out.println("Amount: PHP " + cashOut.getAmount());
                 System.out.println("Date: " + cashOut.getDateTime());
                 System.out.println("Status: " + cashOut.getStatus());
+                System.out.printf("Amount: PHP %.2f%n", cashOut.getAmount());
+                System.out.println();
+                System.out.println("Requested By: " + cashOut.getVendor().getFirstName() + " " + cashOut.getVendor().getLastName());
+                System.out.println("Store: " + cashOut.getVendor().getStore().getStoreName());
+                System.out.println("Processed By: " + cashOut.getCashier().getFirstName() + " " + cashOut.getCashier().getLastName());
                 System.out.println("----------------------------------------");
 
                 found = true;
