@@ -40,10 +40,6 @@ public class DataStore {
         return nextAccountId++;
     }
 
-    public static int getNextAccountId() {
-        return nextAccountId;
-    }
-
     public static void addAccount(Account account) {
         accounts.add(account);
     }

@@ -1,8 +1,6 @@
 package ui;
 
 import java.util.Scanner;
-
-import data.DataStore;
 import entities.Account;
 import services.RegistrationService;
 
@@ -46,8 +44,6 @@ public class RegistrationUi {
     private static void registerStudent(Scanner sc) {
         ConsoleUi.showSection("STUDENT REGISTRATION");
 
-        System.out.println("Account ID: " + DataStore.getNextAccountId());
-
         System.out.print("Student Number: ");
         String studentNumber = sc.nextLine();
 
@@ -63,16 +59,13 @@ public class RegistrationUi {
             return;
         }
 
-        Account account =
-                RegistrationService.registerStudent(pin, studentNumber);
+        Account account = RegistrationService.registerStudent(pin, studentNumber);
 
         showRegistrationResult(account, sc);
     }
 
     private static void registerVendor(Scanner sc) {
         ConsoleUi.showSection("VENDOR REGISTRATION");
-
-        System.out.println("Account ID: " + DataStore.getNextAccountId());
 
         System.out.print("Vendor ID: ");
         int vendorId = sc.nextInt();
@@ -90,16 +83,13 @@ public class RegistrationUi {
             return;
         }
 
-        Account account =
-                RegistrationService.registerVendor(pin, vendorId);
+        Account account = RegistrationService.registerVendor(pin, vendorId);
 
         showRegistrationResult(account, sc);
     }
 
     private static void registerCashier(Scanner sc) {
         ConsoleUi.showSection("CASHIER REGISTRATION");
-
-        System.out.println("Account ID: " + DataStore.getNextAccountId());
 
         System.out.print("Cashier ID: ");
         int cashierId = sc.nextInt();
@@ -117,30 +107,20 @@ public class RegistrationUi {
             return;
         }
 
-        Account account =
-                RegistrationService.registerCashier(pin, cashierId);
+        Account account = RegistrationService.registerCashier(pin, cashierId);
 
         showRegistrationResult(account, sc);
     }
 
-    private static void showRegistrationResult(
-            Account account,
-            Scanner sc
-    ) {
+    private static void showRegistrationResult(Account account, Scanner sc) {
         if (account == null) {
             ConsoleUi.showError("Registration failed.");
             ConsoleUi.showInfo("Check your authorized information.");
         } else {
             ConsoleUi.showSuccess("Registration successful.");
-            ConsoleUi.showInfo(
-                    "Account ID: " + account.getAccountId()
-            );
-            ConsoleUi.showInfo(
-                    "Role: " + account.getUser().getUserType()
-            );
-            ConsoleUi.showInfo(
-                    "Use your Account ID and PIN when logging in."
-            );
+            ConsoleUi.showInfo("Account ID: " + account.getAccountId());
+            ConsoleUi.showInfo("Role: " + account.getUser().getUserType());
+            ConsoleUi.showInfo("Use your Account ID and PIN when logging in.");
         }
 
         ConsoleUi.pause(sc);
