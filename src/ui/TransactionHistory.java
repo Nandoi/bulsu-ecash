@@ -44,6 +44,28 @@ public class TransactionHistory {
             ConsoleUi.showInfo("No transaction records found.");
         }
     }
+    
+    public static void showPaymentHistory(Vendor vendor) {
+        ConsoleUi.showSection("PAYMENT HISTORY");
+
+        boolean found = false;
+
+        for (Payment payment : DataStore.getPayments()) {
+            if (payment.getVendor() == vendor) {
+                System.out.println("Payment ID: " + payment.getPaymentId());
+                System.out.println("Amount: PHP " + payment.getAmount());
+                System.out.println("Date: " + payment.getDateTime());
+                System.out.println("Status: " + payment.getStatus());
+                System.out.println("----------------------------------------");
+
+                found = true;
+            }
+        }
+
+        if (!found) {
+            ConsoleUi.showInfo("No payment records found.");
+        }
+    }
 
     public static void showCashOutHistory(Vendor vendor) {
         ConsoleUi.showSection("CASH OUT HISTORY");

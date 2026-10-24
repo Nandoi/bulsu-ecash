@@ -2,8 +2,6 @@ package ui;
 
 import java.util.Scanner;
 import entities.user.Vendor;
-
-import data.DataStore;
 import entities.transaction.Payment;
 import enums.TransactionStatus;
 import services.PaymentService;
@@ -36,7 +34,7 @@ public class VendorMenu {
                     break;
 
                 case 2:
-                    showPaymentHistory(vendor);
+                    TransactionHistory.showPaymentHistory(vendor);
                     ConsoleUi.pause(sc);
                     break;
 
@@ -94,27 +92,5 @@ public class VendorMenu {
                 vendor.getStore().getStoreName());
 
         ConsoleUi.pause(sc);
-    }
-
-    private static void showPaymentHistory(Vendor vendor) {
-        ConsoleUi.showSection("PAYMENT HISTORY");
-
-        boolean found = false;
-
-        for (Payment payment : DataStore.getPayments()) {
-            if (payment.getVendor() == vendor) {
-                System.out.println("Payment ID: " + payment.getPaymentId());
-                System.out.println("Amount: PHP " + payment.getAmount());
-                System.out.println("Date: " + payment.getDateTime());
-                System.out.println("Status: " + payment.getStatus());
-                System.out.println("----------------------------------------");
-
-                found = true;
-            }
-        }
-
-        if (!found) {
-            ConsoleUi.showInfo("No payment records found.");
-        }
     }
 }
