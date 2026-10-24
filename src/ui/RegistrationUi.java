@@ -8,12 +8,10 @@ public class RegistrationUi {
 
     public static void show(Scanner sc) {
         ConsoleUi.showSection("REGISTER");
-
         ConsoleUi.showOption(1, "Student");
         ConsoleUi.showOption(2, "Vendor");
         ConsoleUi.showOption(3, "Cashier");
         ConsoleUi.showExitOption("Back");
-
         System.out.print("\nSelect role: ");
         int choice = sc.nextInt();
         sc.nextLine();
@@ -89,23 +87,19 @@ public class RegistrationUi {
             ConsoleUi.showInfo("Role: " + account.getUser().getUserType());
             ConsoleUi.showInfo("Use your Account ID and PIN when logging in.");
         }
-
         ConsoleUi.pause(sc);
     }
 
     private static String getConfirmedPin(Scanner sc) {
         System.out.print("Create PIN: ");
         String pin = sc.nextLine();
-
         System.out.print("Confirm PIN: ");
         String confirmPin = sc.nextLine();
-
         if (!pin.equals(confirmPin)) {
             ConsoleUi.showError("PINs do not match.");
             ConsoleUi.pause(sc);
             return null;
         }
-
         return pin;
     }
 }

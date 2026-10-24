@@ -85,25 +85,21 @@ public class ConsoleApp {
     }
 
     private static void openUserMenu(Account account){
-        String userType = account.getUser().getUserType();
+        if (account.getUser() instanceof Student) {
+            Student student = (Student) account.getUser();
+            StudentMenu.show(student, sc);
 
-        switch(userType){
-            case "STUDENT":
-                StudentMenu.show((Student) account.getUser(), sc);
-                break;
+        } else if (account.getUser() instanceof Vendor) {
+            Vendor vendor = (Vendor) account.getUser();
+            VendorMenu.show(vendor, sc);
 
-            case "VENDOR":
-                VendorMenu.show((Vendor) account.getUser(), sc);
-                break;
+        } else if (account.getUser() instanceof Cashier) {
+            Cashier cashier = (Cashier) account.getUser();
+            CashierMenu.show(cashier, sc);
 
-            case "CASHIER":
-                CashierMenu.show((Cashier) account.getUser(), sc);
-                break;
-
-            default:
-                ConsoleUi.showError("Unknown user type.");
-                ConsoleUi.pause(sc);
-                break;
+        } else {
+            ConsoleUi.showError("Unknown user type.");
+            ConsoleUi.pause(sc);
         }
     }
 }
