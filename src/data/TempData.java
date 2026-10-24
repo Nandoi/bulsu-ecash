@@ -34,12 +34,7 @@ public class TempData {
             studentWallet
         );
 
-        Card card = new Card(
-            301,
-            "CARD-001",
-            student
-        );
-
+        Card card = new Card("CARD-001",student);
 
         // VENDOR AND STORE
         StoreWallet storeWallet = new StoreWallet(201);

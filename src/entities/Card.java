@@ -4,20 +4,14 @@ import enums.CardStatus;
 import entities.user.Student;
 
 public class Card {
-    private int cardId;
     private String cardUid;
     private CardStatus status;
     private Student student;
 
-    public Card(int cardId, String cardUid, Student student) {
-        this.cardId = cardId;
+    public Card(String cardUid, Student student) {
         this.cardUid = cardUid;
         this.student = student;
         this.status = CardStatus.ACTIVE;
-    }
-
-    public int getCardId() {
-        return cardId;
     }
 
     public String getCardUid() {
