@@ -46,16 +46,26 @@ public class ConsoleUi {
         System.out.printf("%s: PHP %.2f%n", label, amount);
     }
 
-    public static void showReceipt(String type, int transactionId, double amount,
-                                   String dateTime, String sender, String receiver) {
-        showSection("TRANSACTION RECEIPT");
-        System.out.println("Type: " + type);
-        System.out.println("Transaction ID: " + transactionId);
-        System.out.printf("Amount: PHP %.2f%n", amount);
-        System.out.println("Date: " + dateTime);
-        System.out.println("From: " + sender);
-        System.out.println("To: " + receiver);
-        System.out.println("Status: SUCCESSFUL");
+    public static boolean confirmTransaction(Scanner sc) {
+        while (true) {
+            System.out.println();
+            showOption(1, "Confirm");
+            showExitOption("Cancel");
+            System.out.print("\nEnter Choice: ");
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            if (choice == 1) {
+                return true;
+            }
+
+            if (choice == 0) {
+                return false;
+            }
+
+            showError("Invalid choice.");
+        }
     }
 
     public static void pause(Scanner sc){

@@ -7,6 +7,7 @@ import entities.transaction.CashOut;
 import entities.transaction.Payment;
 import entities.user.Student;
 import entities.user.Vendor;
+import entities.Card;
 import enums.TransactionStatus;
 import services.PaymentService;
 
@@ -62,15 +63,57 @@ public class VendorMenu {
     private static void processPayment(Vendor vendor, Scanner sc) {
         ConsoleUi.showSection("PROCESS PAYMENT");
 
+        //Ask for card UID and validation
         System.out.print("Card UID: ");
         String cardUid = sc.nextLine();
 
+        Card card = DataStore.findCardByUid(cardUid);
+
+        if (card == null) {
+            ConsoleUi.showError("Card not found.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        Student student = card.getStudent();
+
+        //Ask for amount and validation
         System.out.print("Amount: PHP ");
         double amount = sc.nextDouble();
         sc.nextLine();
 
+        if (amount <= 0){
+            ConsoleUi.showError("Amount must be greater than 0.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        if (amount > student.getStudentWallet().getBalance()) {
+            ConsoleUi.showError("Insufficient student wallet balance.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        //Ask for confirmation and display transaction details
+        ConsoleUi.showSection("CONFIRM PAYMENT");
+        System.out.println("Student: " + student.getFirstName() + " " + student.getLastName());
+        System.out.println("Student Number: " + student.getStudentNumber());
+        System.out.println("Card UID: " + card.getCardUid());
+        System.out.printf("Payment Amount: PHP %.2f%n", amount);
+        System.out.println("Store: " + vendor.getStore().getStoreName());
+        System.out.println("Handled By: " + vendor.getFirstName() + " " + vendor.getLastName());
+
+        //A boolean method to confirm the transaction, if not confirmed, return to the menu
+        if (!ConsoleUi.confirmTransaction(sc)) {
+            ConsoleUi.showInfo("Payment cancelled.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        //If boolean method returns true, process the payment
         Payment payment = PaymentService.processPayment(amount, cardUid, vendor);
 
+        //If payment service returns null, display error message and return to the menu
         if (payment == null) {
             ConsoleUi.showError("Payment could not be processed.");
             ConsoleUi.showInfo("Check the Card UID and payment amount.");
@@ -85,19 +128,10 @@ public class VendorMenu {
             return;
         }
 
+        //If payment is successful, display success message
         ConsoleUi.showSuccess("Payment successful.");
         ConsoleUi.showInfo("Payment ID: " + payment.getPaymentId());
-        ConsoleUi.showBalance("Amount", payment.getAmount());
         ConsoleUi.showBalance("Store Wallet Balance", vendor.getStore().getStoreWallet().getBalance());
-
-        ConsoleUi.showReceipt(
-            payment.getTransactionType(),
-            payment.getPaymentId(),
-            payment.getAmount(),
-            payment.getDateTime(),
-            "Student Wallet (Card " + payment.getCard().getCardUid() + ")",
-            vendor.getStore().getStoreName()
-        );
 
         ConsoleUi.pause(sc);
     }

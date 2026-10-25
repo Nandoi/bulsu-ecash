@@ -66,15 +66,55 @@ public class CashierMenu {
     private static void processTopUp(Cashier cashier, Scanner sc) {
         ConsoleUi.showSection("PROCESS STUDENT TOP UP");
 
+        //Ask for student number and validation
         System.out.print("Student Number: ");
         String studentNumber = sc.nextLine();
 
+        Student student = DataStore.findStudentByStudentNumber(studentNumber);
+
+        if (student == null) {
+            ConsoleUi.showError("Student not found.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        if (!student.getStudentWallet().isActive()) {
+            ConsoleUi.showError("Student wallet is inactive.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        //Ask  for amount and validation
         System.out.print("Amount: PHP ");
         double amount = sc.nextDouble();
         sc.nextLine();
 
+        if (amount <= 0) {
+            ConsoleUi.showError("Amount must be greater than 0.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        //Ask for confirmation and display transaction details
+        ConsoleUi.showSection("CONFIRM TOP UP");
+        System.out.println("Student: " + student.getFirstName() + " " + student.getLastName());
+        System.out.println("Student Number: " + student.getStudentNumber());
+        System.out.printf("Current Balance: PHP %.2f%n", student.getStudentWallet().getBalance());
+        System.out.printf("Top Up Amount: PHP %.2f%n", amount);
+        System.out.printf("Balance After Top Up: PHP %.2f%n", student.getStudentWallet().getBalance() + amount);
+        System.out.println("Handled By: " + cashier.getFirstName() + " " + cashier.getLastName());
+
+        //A boolean method to confirm the transaction, if not confirmed, return to the menu
+        if (!ConsoleUi.confirmTransaction(sc)) {
+            ConsoleUi.showInfo("Top Up cancelled.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        //If boolean method returns true, process the top up
         TopUp topUp = TopUpService.processTopUp(amount, studentNumber, cashier);
 
+        //If topupservice returns null, display error message and return to the menu
         if (topUp == null) {
             ConsoleUi.showError("Top Up could not be processed.");
             ConsoleUi.showInfo("Check the Student Number and amount.");
@@ -91,17 +131,7 @@ public class CashierMenu {
 
         ConsoleUi.showSuccess("Top Up successful.");
         ConsoleUi.showInfo("Top Up ID: " + topUp.getTopUpId());
-        ConsoleUi.showBalance("Amount", topUp.getAmount());
         ConsoleUi.showBalance("Student Wallet Balance", topUp.getStudentWallet().getBalance());
-
-        ConsoleUi.showReceipt(
-            topUp.getTransactionType(), 
-            topUp.getTopUpId(), 
-            topUp.getAmount(), 
-            topUp.getDateTime(),
-            "Cashier " + cashier.getFirstName(), 
-            "Student " + studentNumber
-        );
 
         ConsoleUi.pause(sc);
     }
@@ -109,12 +139,9 @@ public class CashierMenu {
     private static void processCashOut(Cashier cashier, Scanner sc) {
         ConsoleUi.showSection("PROCESS VENDOR CASH OUT");
 
+        //Ask for vendor ID and validation
         System.out.print("Vendor ID: ");
         int vendorId = sc.nextInt();
-        sc.nextLine();
-
-        System.out.print("Amount: PHP ");
-        double amount = sc.nextDouble();
         sc.nextLine();
 
         Vendor vendor = DataStore.findVendorByUserId(vendorId);
@@ -125,8 +152,42 @@ public class CashierMenu {
             return;
         }
 
+        //Ask for amount and validation
+        System.out.print("Amount: PHP ");
+        double amount = sc.nextDouble();
+        sc.nextLine();
+
+        if (amount <= 0) {
+            ConsoleUi.showError("Amount must be greater than 0.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        if (amount > vendor.getStore().getStoreWallet().getBalance()) {
+            ConsoleUi.showError("Insufficient store wallet balance.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        //Ask for confirmation and display transaction details
+        ConsoleUi.showSection("CONFIRM CASH OUT");
+        System.out.println("Vendor: " + vendor.getFirstName() + " " + vendor.getLastName());
+        System.out.println("Vendor ID: " + vendor.getUserId());
+        System.out.println("Store: " + vendor.getStore().getStoreName());
+        System.out.printf("Cash Out Amount: PHP %.2f%n", amount);
+        System.out.println("Handled By: " + cashier.getFirstName() + " " + cashier.getLastName());
+
+        //A boolean method to confirm the transaction, if not confirmed, return to the menu
+        if (!ConsoleUi.confirmTransaction(sc)) {
+            ConsoleUi.showInfo("Cash Out cancelled.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
+        //If boolean method returns true, process the cash out
         CashOut cashOut = CashOutService.processCashOut(amount, vendor, cashier);
 
+        //If cashoutservice returns null, display error message and return to the menu
         if (cashOut == null) {
             ConsoleUi.showError("Cash Out could not be processed.");
             ConsoleUi.showInfo("Check the Vendor ID and amount.");
@@ -143,18 +204,7 @@ public class CashierMenu {
 
         ConsoleUi.showSuccess("Cash Out successful.");
         ConsoleUi.showInfo("Cash Out ID: " + cashOut.getCashOutId());
-        ConsoleUi.showInfo("Vendor: " + vendor.getFirstName());
-        ConsoleUi.showBalance("Amount", cashOut.getAmount());
         ConsoleUi.showBalance("Store Wallet Balance", cashOut.getStoreWallet().getBalance());
-
-        ConsoleUi.showReceipt(
-            cashOut.getTransactionType(), 
-            cashOut.getCashOutId(), 
-            cashOut.getAmount(), 
-            cashOut.getDateTime(),
-            vendor.getStore().getStoreName(), 
-            "Cashier " + cashier.getFirstName()
-        );
 
         ConsoleUi.pause(sc);
     }
