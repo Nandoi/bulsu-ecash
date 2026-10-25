@@ -29,10 +29,7 @@ public class ConsoleApp {
             ConsoleUi.showOption(1, "Login");
             ConsoleUi.showOption(2, "Register");
             ConsoleUi.showExitOption("Exit");
-
-            System.out.print("\n  Enter Choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = ConsoleUi.readInt(sc, "\n  Enter Choice: ");
 
             switch (choice) {
                 case 1:
@@ -64,9 +61,7 @@ public class ConsoleApp {
     private static void login() {
         ConsoleUi.showSection("LOGIN");
 
-        System.out.print("Account ID: ");
-        int accountId = sc.nextInt();
-        sc.nextLine();
+        int accountId = ConsoleUi.readInt(sc, "Account ID: ");
 
         System.out.print("PIN: ");
         String pin = sc.nextLine();

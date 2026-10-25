@@ -51,10 +51,7 @@ public class ConsoleUi {
             System.out.println();
             showOption(1, "Confirm");
             showExitOption("Cancel");
-            System.out.print("\nEnter Choice: ");
-
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = readInt(sc, "\nEnter Choice: ");
 
             if (choice == 1) {
                 return true;
@@ -65,6 +62,19 @@ public class ConsoleUi {
             }
 
             showError("Invalid choice.");
+        }
+    }
+
+    public static int readInt(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine();
+
+            try {
+                return Integer.parseInt(input.trim());
+            } catch (NumberFormatException e) {
+                showError("Please enter a valid number.");
+            }
         }
     }
 

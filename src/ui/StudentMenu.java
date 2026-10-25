@@ -20,9 +20,7 @@ public class StudentMenu {
             ConsoleUi.showOption(2, "View Transaction History");
             ConsoleUi.showExitOption("Logout");
 
-            System.out.print("\n  Enter Choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
 
             switch (choice) {
                 case 1:

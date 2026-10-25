@@ -30,9 +30,7 @@ public class CashierMenu {
             ConsoleUi.showOption(6, "View Transaction Summary");
             ConsoleUi.showExitOption("Logout");
 
-            System.out.print("\nEnter Choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
 
             switch (choice) {
                 case 1:

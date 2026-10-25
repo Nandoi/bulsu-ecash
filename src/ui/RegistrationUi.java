@@ -12,9 +12,7 @@ public class RegistrationUi {
         ConsoleUi.showOption(2, "Vendor");
         ConsoleUi.showOption(3, "Cashier");
         ConsoleUi.showExitOption("Back");
-        System.out.print("\nSelect role: ");
-        int choice = sc.nextInt();
-        sc.nextLine();
+        int choice = ConsoleUi.readInt(sc, "\nEnter Role: ");
 
         switch (choice) {
             case 1:
