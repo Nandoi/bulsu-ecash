@@ -175,12 +175,6 @@ public class CashierMenu {
             return;
         }
 
-        if (amount > vendor.getStore().getStoreWallet().getBalance()) {
-            ConsoleUi.showError("Insufficient store wallet balance.");
-            ConsoleUi.pause(sc);
-            return;
-        }
-
         //Ask for confirmation and display transaction details
         ConsoleUi.showSection("CONFIRM CASH OUT");
         System.out.println("Vendor: " + vendor.getFirstName() + " " + vendor.getLastName());

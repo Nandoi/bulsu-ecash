@@ -91,12 +91,6 @@ public class VendorMenu {
             return;
         }
 
-        if (amount > student.getStudentWallet().getBalance()) {
-            ConsoleUi.showError("Insufficient student wallet balance.");
-            ConsoleUi.pause(sc);
-            return;
-        }
-
         //Ask for confirmation and display transaction details
         ConsoleUi.showSection("CONFIRM PAYMENT");
         System.out.println("Student: " + student.getFirstName() + " " + student.getLastName());
