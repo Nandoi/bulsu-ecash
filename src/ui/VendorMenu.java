@@ -73,6 +73,13 @@ public class VendorMenu {
             return;
         }
 
+        if (!card.isActive()) {
+            ConsoleUi.showError("Card is not active.");
+            ConsoleUi.showInfo("Card Status: " + card.getStatus());
+            ConsoleUi.pause(sc);
+            return;
+        }
+
         Student student = card.getStudent();
 
         //Ask for amount and validation
