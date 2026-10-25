@@ -393,6 +393,11 @@ public class CashierMenu {
         System.out.print("New Card UID: ");
         String newCardUid = sc.nextLine();
 
+        if (newCardUid.isEmpty()) {
+            ConsoleUi.showError("Card UID cannot be empty.");
+            return;
+        }
+
         if (DataStore.findCardByUid(newCardUid) != null) {
             ConsoleUi.showError("Card UID already exists.");
             return;
