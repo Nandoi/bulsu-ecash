@@ -36,7 +36,7 @@ public class StudentMenu {
                     break;
 
                 case 3:
-                    reportLostCard(student);
+                    reportLostCard(student, sc);
                     ConsoleUi.pause(sc);
                     break;
                 
@@ -108,7 +108,7 @@ public class StudentMenu {
         }
     }
 
-    private static void reportLostCard(Student student){
+    private static void reportLostCard(Student student, Scanner sc){
         ConsoleUi.showSection("REPORT LOST CARD");
 
         Card activeCard = null;
@@ -127,6 +127,11 @@ public class StudentMenu {
 
         System.out.println("Card UID: " + activeCard.getCardUid());
         System.out.println("Current Status: " + activeCard.getStatus());
+
+        if (!ConsoleUi.confirmTransaction(sc)) {
+            ConsoleUi.showInfo("Report lost card cancelled.");
+            return;
+        }
 
         activeCard.markLost();
 
