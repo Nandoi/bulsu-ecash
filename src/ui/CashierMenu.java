@@ -142,9 +142,7 @@ public class CashierMenu {
         ConsoleUi.showSection("PROCESS VENDOR CASH OUT");
 
         //Ask for vendor ID and validation
-        System.out.print("Vendor ID: ");
-        int vendorId = sc.nextInt();
-        sc.nextLine();
+        int vendorId = ConsoleUi.readInt(sc, "Vendor ID: ");
 
         Vendor vendor = DataStore.findVendorByUserId(vendorId);
 
