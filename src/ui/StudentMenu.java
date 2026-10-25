@@ -61,6 +61,11 @@ public class StudentMenu {
         System.out.println("Year Level: " + student.getYearLevel());
         System.out.println("Address: " + student.getFullAddress());
         System.out.println("Email: " + student.getEmail());
+
+        Card card = DataStore.findCardByStudent(student);
+
+        System.out.println("Card UID: " + card.getCardUid());
+        System.out.println("Card Status: " + card.getStatus());
     }
 
     private static void showTransactionHistory(Student student) {

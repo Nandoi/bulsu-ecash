@@ -10,6 +10,7 @@ import entities.transaction.Payment;
 import entities.user.Cashier;
 import entities.user.Student;
 import entities.user.Vendor;
+import enums.CardStatus;
 
 public class DataStore {
     private static ArrayList<Account> accounts = new ArrayList<>();
@@ -140,6 +141,16 @@ public class DataStore {
         for (Card card : cards) {
 
             if (card.getCardUid().equals(cardUid)) {
+                return card;
+            }
+        }
+
+        return null;
+    }
+
+    public static Card findCardByStudent(Student student){
+        for (Card card : cards) {
+            if (card.getStudent() == student && card.getStatus() != CardStatus.REPLACED){
                 return card;
             }
         }
