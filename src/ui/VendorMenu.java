@@ -76,9 +76,7 @@ public class VendorMenu {
         Student student = card.getStudent();
 
         //Ask for amount and validation
-        System.out.print("Amount: PHP ");
-        double amount = sc.nextDouble();
-        sc.nextLine();
+        double amount = ConsoleUi.readDouble(sc, "Amount: PHP ");
 
         if (amount <= 0){
             ConsoleUi.showError("Amount must be greater than 0.");

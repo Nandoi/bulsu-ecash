@@ -78,6 +78,19 @@ public class ConsoleUi {
         }
     }
 
+    public static double readDouble(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine();
+
+            try {
+                return Double.parseDouble(input.trim());
+            } catch (NumberFormatException e) {
+                showError("Please enter a valid amount.");
+            }
+        }
+    }
+
     public static void pause(Scanner sc){
         System.out.println();
         System.out.print("Press ENTER to continue...");
