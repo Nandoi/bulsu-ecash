@@ -27,6 +27,7 @@ public class CashierMenu {
             ConsoleUi.showOption(3, "View Top Up Records");
             ConsoleUi.showOption(4, "View Cash Out Records");   
             ConsoleUi.showOption(5, "Search Student Top Up Records");
+            ConsoleUi.showOption(6, "View Transaction Summary");
             ConsoleUi.showExitOption("Logout");
 
             System.out.print("\nEnter Choice: ");
@@ -54,6 +55,11 @@ public class CashierMenu {
 
                 case 5:
                     searchStudentTopUpRecords(sc);
+                    ConsoleUi.pause(sc);
+                    break;
+
+                case 6:
+                    showTransactionSummary(cashier);
                     ConsoleUi.pause(sc);
                     break;
                     
@@ -300,5 +306,54 @@ public class CashierMenu {
         if (!found){
             ConsoleUi.showInfo("No top up records found for this student.");
         }
+    }
+
+    private static void showTransactionSummary(Cashier cashier) {
+        ConsoleUi.showSection("TRANSACTION SUMMARY");
+        int successfulTopUps = 0;
+        int failedTopUps = 0;
+        double totalTopUpAmount = 0;
+        
+        int successfulCashOuts = 0;
+        int failedCashOuts = 0;
+        double totalCashOutAmount = 0;
+
+        //Count top up transactions handled by the cashier
+        for (TopUp topUp : DataStore.getTopUps()) {
+            if (topUp.getCashier() == cashier) {
+                if (topUp.getStatus() == TransactionStatus.SUCCESSFUL) {
+                    successfulTopUps++;
+                    totalTopUpAmount += topUp.getAmount();
+                } else if (topUp.getStatus() == TransactionStatus.FAILED) {
+                    failedTopUps++;
+                }
+            }
+        }
+
+        //Count cash out transactions handled by the cashier
+        for (CashOut cashOut : DataStore.getCashOuts()) {
+            if (cashOut.getCashier() == cashier) {
+                if (cashOut.getStatus() == TransactionStatus.SUCCESSFUL) {
+                    successfulCashOuts++;
+                    totalCashOutAmount += cashOut.getAmount();
+                } else if (cashOut.getStatus() == TransactionStatus.FAILED) {
+                    failedCashOuts++;
+                }
+            }
+        }
+
+        System.out.println("Cashier: " + cashier.getFirstName() + " " + cashier.getLastName());
+
+        System.out.println();
+        System.out.println("TOP UPS");
+        System.out.println("Successful Transactions: " + successfulTopUps);
+        System.out.println("Failed Transactions: " + failedTopUps);
+        System.out.printf("Total Top Up Amount: PHP %.2f%n", totalTopUpAmount);
+
+        System.out.println();
+        System.out.println("CASH OUTS");
+        System.out.println("Successful Transactions: " + successfulCashOuts);
+        System.out.println("Failed Transactions: " + failedCashOuts);
+        System.out.printf("Total Cash Out Amount: PHP %.2f%n", totalCashOutAmount);
     }
 }
