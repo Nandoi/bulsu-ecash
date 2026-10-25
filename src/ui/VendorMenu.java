@@ -146,7 +146,7 @@ public class VendorMenu {
                 System.out.println("Type: " + payment.getTransactionType());
                 System.out.println("Date: " + payment.getDateTime());
                 System.out.println("Status: " + payment.getStatus());
-                System.out.println("Amount: PHP " + payment.getAmount());
+                System.out.println("Amount: PHP %.2f%n" + payment.getAmount());
                 System.out.println();
                 System.out.println("Paid By: " + student.getFirstName() + " " + student.getLastName());
                 System.out.println("Student Number: " + student.getStudentNumber());
