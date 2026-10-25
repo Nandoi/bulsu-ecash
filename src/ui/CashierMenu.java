@@ -7,6 +7,8 @@ import entities.transaction.TopUp;
 import entities.user.Cashier;
 import entities.user.Student;
 import entities.user.Vendor;
+import entities.Card;
+import enums.CardStatus;
 import enums.TransactionStatus;
 import services.CashOutService;
 import services.TopUpService;
@@ -28,6 +30,7 @@ public class CashierMenu {
             ConsoleUi.showOption(4, "View Cash Out Records");   
             ConsoleUi.showOption(5, "Search Student Top Up Records");
             ConsoleUi.showOption(6, "View Transaction Summary");
+            ConsoleUi.showOption(7, "Replace Student Card");
             ConsoleUi.showExitOption("Logout");
 
             int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
@@ -58,6 +61,11 @@ public class CashierMenu {
 
                 case 6:
                     showTransactionSummary(cashier);
+                    ConsoleUi.pause(sc);
+                    break;
+                
+                case 7:
+                    replaceStudentCard(sc);
                     ConsoleUi.pause(sc);
                     break;
                     
@@ -347,5 +355,65 @@ public class CashierMenu {
         System.out.println("Successful Transactions: " + successfulCashOuts);
         System.out.println("Failed Transactions: " + failedCashOuts);
         System.out.printf("Total Cash Out Amount: PHP %.2f%n", totalCashOutAmount);
+    }
+
+    private static void replaceStudentCard(Scanner sc) {
+        ConsoleUi.showSection("REPLACE STUDENT CARD");
+
+        System.out.print("Student Number: ");
+        String studentNumber = sc.nextLine();
+
+        Student student = DataStore.findStudentByStudentNumber(studentNumber);
+
+        if (student == null) {
+            ConsoleUi.showError("Student not found.");
+            return;
+        }
+
+        Card lostCard = null;
+
+        for (Card card : DataStore.getCards()) {
+            if (card.getStudent() == student && card.getStatus() == CardStatus.LOST) {
+                lostCard = card;
+                break;
+            }
+        }
+
+        if (lostCard == null) {
+            ConsoleUi.showError("No lost card found for this student.");
+            return;
+        }
+
+        System.out.print("New Card UID: ");
+        String newCardUid = sc.nextLine();
+
+        if (DataStore.findCardByUid(newCardUid) != null) {
+            ConsoleUi.showError("Card UID already exists.");
+            return;
+        }
+
+        ConsoleUi.showSection("CONFIRM CARD REPLACEMENT");
+
+        System.out.println("Student: " + student.getFirstName() + " " + student.getLastName());
+        System.out.println("Student Number: " + student.getStudentNumber());
+        System.out.println("Old Card UID: " + lostCard.getCardUid());
+        System.out.println("Old Card Status: " + lostCard.getStatus());
+        System.out.println("New Card UID: " + newCardUid);
+        System.out.printf("Wallet Balance: PHP %.2f%n", student.getStudentWallet().getBalance());
+
+        if (!ConsoleUi.confirmTransaction(sc)) {
+            ConsoleUi.showInfo("Card replacement cancelled.");
+            return;
+        }
+
+        lostCard.markReplaced();
+
+        Card newCard = new Card(newCardUid, student);
+        DataStore.addCard(newCard);
+
+        ConsoleUi.showSuccess("Card replacement successful.");
+        System.out.println("Old Card Status: " + lostCard.getStatus());
+        System.out.println("New Card Status: " + newCard.getStatus());
+        System.out.printf("Wallet Balance: PHP %.2f%n", student.getStudentWallet().getBalance());
     }
 }
