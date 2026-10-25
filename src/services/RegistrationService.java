@@ -6,17 +6,41 @@ import entities.user.Cashier;
 import entities.user.Student;
 import entities.user.User;
 import entities.user.Vendor;
+import entities.Card;
+import entities.wallet.StudentWallet;
 
 public class RegistrationService {
     // STUDENT
-    public static Account registerStudent(String pin, String studentNumber){
+    public static Account registerStudent(String pin, String studentNumber) {
         Student student = DataStore.findStudentByStudentNumber(studentNumber);
 
-        if (student == null){
+        if (student == null) {
             return null;
         }
 
-        return createAccount(pin, student);
+        if (DataStore.findAccountByUserId(student.getUserId()) != null) {
+            return null;
+        }
+
+        if (student.getStudentWallet() != null) {
+            return null;
+        }
+
+        StudentWallet studentWallet = new StudentWallet(DataStore.generateNextStudentWalletId());
+
+        if (!student.assignStudentWallet(studentWallet)) {
+            return null;
+        }
+
+        Account account = new Account(DataStore.generateNextAccountId(), pin, student);
+
+        DataStore.addAccount(account);
+
+        Card card = new Card(DataStore.generateNextCardUid(), student);
+
+        DataStore.addCard(card);
+
+        return account;
     }
 
 

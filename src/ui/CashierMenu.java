@@ -96,6 +96,12 @@ public class CashierMenu {
             return;
         }
 
+        if (student.getStudentWallet() == null) {
+            ConsoleUi.showError("Student does not have an eCash account.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
         //Ask  for amount and validation
         double amount = ConsoleUi.readDouble(sc, "Amount: PHP ");
 

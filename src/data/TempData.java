@@ -16,37 +16,41 @@ public class TempData {
         if (loaded) {
             return;
         }
-        
-        StudentWallet studentWallet1 = new StudentWallet(101);
-        StudentWallet studentWallet2 = new StudentWallet(102);
-        StudentWallet studentWallet3 = new StudentWallet(103);
-        StudentWallet studentWallet4 = new StudentWallet(104);
-        StudentWallet studentWallet5 = new StudentWallet(105);
-        studentWallet1.addBalance(500);
-        studentWallet2.addBalance(1000);
-        studentWallet3.addBalance(250);
-        studentWallet4.addBalance(750);
-        studentWallet5.addBalance(1500);
 
+        // =========================
+        // STUDENTS
+        // =========================
 
+        // Student 1
         Student student1 = new Student(
                 1001,
                 "Fernando",
                 "Vargas",
                 "Vidal",
                 "09171234567",
-                "fernando.vidal@email.com",
-                "123 Mabini Street",
+                "fernandoiiividal@email.com",
+                "1 Iris Street St. Michael Homes",
                 "Lias",
                 "Marilao",
                 "Bulacan",
                 "3019",
                 "2025004302",
                 "BSIT",
-                2,
-                studentWallet1
+                2
         );
 
+        StudentWallet studentWallet1 = new StudentWallet(DataStore.generateNextStudentWalletId());
+
+        student1.assignStudentWallet(studentWallet1);
+
+        studentWallet1.addBalance(500);
+
+        Card card1 = new Card("CARD-001", student1);
+
+        Account studentAccount1 = new Account(DataStore.generateNextAccountId(), "1124", student1);
+
+
+        // Student 2
         Student student2 = new Student(
                 1002,
                 "Andrea",
@@ -61,10 +65,21 @@ public class TempData {
                 "3000",
                 "2025004303",
                 "BSIT",
-                2,
-                studentWallet2
+                2
         );
 
+        StudentWallet studentWallet2 = new StudentWallet(DataStore.generateNextStudentWalletId());
+
+        student2.assignStudentWallet(studentWallet2);
+        
+        studentWallet2.addBalance(500);
+
+        Card card2 = new Card("CARD-002", student2);
+
+        Account studentAccount2 = new Account(DataStore.generateNextAccountId(), "2222", student2);
+
+
+        // Student 3
         Student student3 = new Student(
                 1003,
                 "Joshua",
@@ -79,10 +94,10 @@ public class TempData {
                 "3015",
                 "2025004304",
                 "BSIT",
-                2,
-                studentWallet3
+                2
         );
 
+        // Student 4
         Student student4 = new Student(
                 1004,
                 "Angela",
@@ -97,10 +112,11 @@ public class TempData {
                 "3022",
                 "2025004305",
                 "BSIT",
-                2,
-                studentWallet4
+                2
         );
 
+
+        // Student 5
         Student student5 = new Student(
                 1005,
                 "Miguel",
@@ -115,42 +131,26 @@ public class TempData {
                 "3020",
                 "2025004306",
                 "BSIT",
-                2,
-                studentWallet5
+                2
         );
 
-        Card card1 = new Card("CARD-001", student1);
-        Card card2 = new Card("CARD-002", student2);
-        Card card3 = new Card("CARD-003", student3);
-        Card card4 = new Card("CARD-004", student4);
-        Card card5 = new Card("CARD-005", student5);
 
-        // STORE WALLET
+        // =========================
+        // STORES AND VENDORS
+        // =========================
+
+        // Store 1
         StoreWallet storeWallet1 = new StoreWallet(201);
         storeWallet1.addBalance(3000);
-        StoreWallet storeWallet2 = new StoreWallet(202);
-        storeWallet2.addBalance(1500);
 
-
-        // STORE
         Store store1 = new Store(
-            1,
-            "BulSU Canteen",
-            "Food",
-            "Main Campus",
-            storeWallet1
+                1,
+                "BulSU Canteen",
+                "Food",
+                "Main Campus",
+                storeWallet1
         );
 
-        Store store2 = new Store(
-            2,
-            "BulSU Print Shop",
-            "Printing",
-            "Main Campus",
-            storeWallet2
-        );
-
-
-        // VENDOR
         Vendor vendor1 = new Vendor(
                 2001,
                 "Juan",
@@ -166,23 +166,39 @@ public class TempData {
                 store1
         );
 
+
+        // Store 2
+        StoreWallet storeWallet2 = new StoreWallet(202);
+        storeWallet2.addBalance(1500);
+
+        Store store2 = new Store(
+                2,
+                "BulSU Print Shop",
+                "Printing",
+                "Main Campus",
+                storeWallet2
+        );
+
         Vendor vendor2 = new Vendor(
-            2002,
-            "Carlos",
-            "Reyes",
-            "Mendoza",
-            "09178881234",
-            "carlos.mendoza@email.com",
-            "17 Rizal Street",
-            "Sumapang Matanda",
-            "Malolos",
-            "Bulacan",
-            "3000",
-            store2
+                2002,
+                "Carlos",
+                "Reyes",
+                "Mendoza",
+                "09178881234",
+                "carlos.mendoza@email.com",
+                "17 Rizal Street",
+                "Sumapang Matanda",
+                "Malolos",
+                "Bulacan",
+                "3000",
+                store2
         );
 
 
-        // CASHIER
+        // =========================
+        // CASHIERS
+        // =========================
+
         Cashier cashier1 = new Cashier(
                 3001,
                 "Maria",
@@ -198,60 +214,56 @@ public class TempData {
         );
 
         Cashier cashier2 = new Cashier(
-            3002,
-            "Paolo",
-            "Santos",
-            "Garcia",
-            "09179991234",
-            "paolo.garcia@email.com",
-            "55 Bonifacio Street",
-            "Mojon",
-            "Malolos",
-            "Bulacan",
-            "3000"
+                3002,
+                "Paolo",
+                "Santos",
+                "Garcia",
+                "09179991234",
+                "paolo.garcia@email.com",
+                "55 Bonifacio Street",
+                "Mojon",
+                "Malolos",
+                "Bulacan",
+                "3000"
         );
 
-        // DUMMY ACCOUNTS
-        Account studentAccount1 = new Account(DataStore.generateNextAccountId(), "1124", student1);
-        Account studentAccount2 = new Account(DataStore.generateNextAccountId(), "2222", student2);
+
+        // =========================
+        // PRE-CREATED ACCOUNTS
+        // =========================
 
         Account vendorAccount1 = new Account(DataStore.generateNextAccountId(), "3333", vendor1);
 
         Account cashierAccount1 = new Account(DataStore.generateNextAccountId(), "4444", cashier1);
 
 
-        
-        
-        // SAVING OF TEMPORARY DATA
+        // =========================
+        // SAVE TEMPORARY DATA
+        // =========================
 
-        // AUTHORIZED STUDENTS mga pwede na mag register
+        // Authorized students
         DataStore.addAuthorizedStudent(student1);
         DataStore.addAuthorizedStudent(student2);
         DataStore.addAuthorizedStudent(student3);
         DataStore.addAuthorizedStudent(student4);
         DataStore.addAuthorizedStudent(student5);
 
-        // CARDS
+        // Student cards
         DataStore.addCard(card1);
         DataStore.addCard(card2);
-        DataStore.addCard(card3);
-        DataStore.addCard(card4);
-        DataStore.addCard(card5);
-        
-        // VENDORS
+
+        // Authorized vendors
         DataStore.addAuthorizedVendor(vendor1);
         DataStore.addAuthorizedVendor(vendor2);
 
-        // CASHIER
+        // Authorized cashiers
         DataStore.addAuthorizedCashier(cashier1);
         DataStore.addAuthorizedCashier(cashier2);
 
-        // Adding of Accounts
+        // Existing accounts
         DataStore.addAccount(studentAccount1);
         DataStore.addAccount(studentAccount2);
-
         DataStore.addAccount(vendorAccount1);
-
         DataStore.addAccount(cashierAccount1);
 
         loaded = true;

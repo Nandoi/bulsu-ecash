@@ -4,8 +4,8 @@ import  entities.wallet.StudentWallet;
 public class Student extends User{
     private String studentNumber;
     private String program;
-    private int yearLevel;
-    private StudentWallet studentWallet;    
+    private int yearLevel;    
+    private StudentWallet studentWallet;
 
     public Student(int userId,
         String firstName,
@@ -20,8 +20,7 @@ public class Student extends User{
         String zipCode,
         String studentNumber,
         String program,
-        int yearLevel,
-        StudentWallet studentWallet
+        int yearLevel
     ){
         super(
             userId, 
@@ -39,7 +38,6 @@ public class Student extends User{
         this.studentNumber = studentNumber;
         this.program = program;
         this.yearLevel = yearLevel;
-        this.studentWallet = studentWallet;
     }
     
     @Override
@@ -61,5 +59,14 @@ public class Student extends User{
 
     public StudentWallet getStudentWallet() {
         return studentWallet;
+    }
+
+    public boolean assignStudentWallet(StudentWallet studentWallet) {
+        if (this.studentWallet != null || studentWallet == null) {
+            return false;
+        }
+
+        this.studentWallet = studentWallet;
+        return true;
     }
 }
