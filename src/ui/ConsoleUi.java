@@ -1,9 +1,12 @@
 package ui;
 
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ConsoleUi {
     private static final String LINE = "============================================================";
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a");
 
     public static void showTitle() {
         System.out.println();
@@ -95,5 +98,9 @@ public class ConsoleUi {
         System.out.println();
         System.out.print("Press ENTER to continue...");
         sc.nextLine();
+    }
+
+    public static String formatDateTime(String dateTime) {
+        return LocalDateTime.parse(dateTime).format(DATE_TIME_FORMATTER);
     }
 }

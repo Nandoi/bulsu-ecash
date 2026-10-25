@@ -30,7 +30,7 @@ public class PaymentService {
             return null;
         }
 
-        // Card cannot be LOST, REPLACED or EXPIRED
+        // Card must be ACTIVE
         if (!card.isActive()){
             return null;
         }

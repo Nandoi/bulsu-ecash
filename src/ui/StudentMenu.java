@@ -61,6 +61,11 @@ public class StudentMenu {
         System.out.println("Year Level: " + student.getYearLevel());
         System.out.println("Address: " + student.getFullAddress());
         System.out.println("Email: " + student.getEmail());
+
+        Card card = DataStore.findCardByStudent(student);
+
+        System.out.println("Card UID: " + card.getCardUid());
+        System.out.println("Card Status: " + card.getStatus());
     }
 
     private static void showTransactionHistory(Student student) {
@@ -73,7 +78,7 @@ public class StudentMenu {
             if (payment.getStudentWallet() == student.getStudentWallet()) {
                 System.out.println("Payment ID: " + payment.getPaymentId());
                 System.out.println("Type: " + payment.getTransactionType());
-                System.out.println("Date: " + payment.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(payment.getDateTime()));
                 System.out.println("Status: " + payment.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", payment.getAmount());
                 System.out.println();
@@ -91,7 +96,7 @@ public class StudentMenu {
             if (topUp.getStudentWallet() == student.getStudentWallet()) {
                 System.out.println("Top Up ID: " + topUp.getTopUpId());
                 System.out.println("Type: " + topUp.getTransactionType());
-                System.out.println("Date: " + topUp.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
                 System.out.println("Status: " + topUp.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
                 System.out.println();

@@ -175,12 +175,6 @@ public class CashierMenu {
             return;
         }
 
-        if (amount > vendor.getStore().getStoreWallet().getBalance()) {
-            ConsoleUi.showError("Insufficient store wallet balance.");
-            ConsoleUi.pause(sc);
-            return;
-        }
-
         //Ask for confirmation and display transaction details
         ConsoleUi.showSection("CONFIRM CASH OUT");
         System.out.println("Vendor: " + vendor.getFirstName() + " " + vendor.getLastName());
@@ -232,7 +226,7 @@ public class CashierMenu {
 
                 System.out.println("Top Up ID: " + topUp.getTopUpId());
                 System.out.println("Type: " + topUp.getTransactionType());
-                System.out.println("Date: " + topUp.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
                 System.out.println("Status: " + topUp.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
                 System.out.println();
@@ -259,7 +253,7 @@ public class CashierMenu {
             if (cashOut.getCashier() == cashier) {
                 System.out.println("Cash Out ID: " + cashOut.getCashOutId());
                 System.out.println("Type: " + cashOut.getTransactionType());
-                System.out.println("Date: " + cashOut.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(cashOut.getDateTime()));
                 System.out.println("Status: " + cashOut.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", cashOut.getAmount());
                 System.out.println();
@@ -299,7 +293,7 @@ public class CashierMenu {
                 System.out.println();
                 System.out.println("Top Up ID: " + topUp.getTopUpId());
                 System.out.println("Type: " + topUp.getTransactionType());
-                System.out.println("Date: " + topUp.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
                 System.out.println("Status: " + topUp.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
                 System.out.println("Handled By: " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
@@ -391,7 +385,12 @@ public class CashierMenu {
         }
 
         System.out.print("New Card UID: ");
-        String newCardUid = sc.nextLine();
+        String newCardUid = sc.nextLine().trim();
+
+        if (newCardUid.isEmpty()) {
+            ConsoleUi.showError("Card UID cannot be empty.");
+            return;
+        }
 
         if (DataStore.findCardByUid(newCardUid) != null) {
             ConsoleUi.showError("Card UID already exists.");
