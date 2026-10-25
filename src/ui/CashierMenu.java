@@ -78,12 +78,6 @@ public class CashierMenu {
             return;
         }
 
-        if (!student.getStudentWallet().isActive()) {
-            ConsoleUi.showError("Student wallet is inactive.");
-            ConsoleUi.pause(sc);
-            return;
-        }
-
         //Ask  for amount and validation
         System.out.print("Amount: PHP ");
         double amount = sc.nextDouble();
