@@ -29,7 +29,7 @@ public class ConsoleApp {
             ConsoleUi.showOption(1, "Login");
             ConsoleUi.showOption(2, "Register");
             ConsoleUi.showExitOption("Exit");
-            int choice = ConsoleUi.readInt(sc, "\n  Enter Choice: ");
+            int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
 
             switch (choice) {
                 case 1:
