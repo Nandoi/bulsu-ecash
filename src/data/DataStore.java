@@ -122,7 +122,13 @@ public class DataStore {
     private static int nextCardId = 1;
 
     public static String generateNextCardUid() {
-        return String.format("CARD-%03d", nextCardId++);
+        String cardUid;
+
+        do{
+            cardUid = String.format("CARD-%03d", nextCardId++);
+        }while (findCardByUid(cardUid) != null);
+
+        return cardUid;
     }
 
     public static void addCard(Card card) {

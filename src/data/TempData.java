@@ -45,7 +45,7 @@ public class TempData {
 
         studentWallet1.addBalance(500);
 
-        Card card1 = new Card("CARD-001", student1);
+        Card card1 = new Card(DataStore.generateNextCardUid(), student1);
 
         Account studentAccount1 = new Account(DataStore.generateNextAccountId(), "1124", student1);
 
@@ -74,7 +74,7 @@ public class TempData {
         
         studentWallet2.addBalance(500);
 
-        Card card2 = new Card("CARD-002", student2);
+        Card card2 = new Card(DataStore.generateNextCardUid(), student2);
 
         Account studentAccount2 = new Account(DataStore.generateNextAccountId(), "2222", student2);
 
