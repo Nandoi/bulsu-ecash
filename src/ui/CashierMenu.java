@@ -26,6 +26,7 @@ public class CashierMenu {
             ConsoleUi.showOption(2, "Process Vendor Cash Out");
             ConsoleUi.showOption(3, "View Top Up Records");
             ConsoleUi.showOption(4, "View Cash Out Records");   
+            ConsoleUi.showOption(5, "Search Student Top Up Records");
             ConsoleUi.showExitOption("Logout");
 
             System.out.print("\nEnter Choice: ");
@@ -51,6 +52,11 @@ public class CashierMenu {
                     ConsoleUi.pause(sc);
                     break;
 
+                case 5:
+                    searchStudentTopUpRecords(sc);
+                    ConsoleUi.pause(sc);
+                    break;
+                    
                 case 0:
                     running = false;
                     break;
@@ -256,6 +262,43 @@ public class CashierMenu {
 
         if (!found) {
             ConsoleUi.showInfo("No cash out records found.");
+        }
+    }
+
+    private static void searchStudentTopUpRecords(Scanner sc){
+        ConsoleUi.showSection("SEARCH STUDENT TOP UP RECORDS");
+
+        //Ask for student number and validation
+        System.out.print("Student Number: ");
+        String studentNumber = sc.nextLine();
+
+        Student student = DataStore.findStudentByStudentNumber(studentNumber);
+
+        if (student == null) {
+            ConsoleUi.showError("Student not found.");
+            return;
+        }
+
+        boolean found = false;
+
+        //Filter top up records belonging to the student
+        for (TopUp topUp : DataStore.getTopUps()) {
+            if (topUp.getStudent() == student) {
+                System.out.println();
+                System.out.println("Top Up ID: " + topUp.getTopUpId());
+                System.out.println("Type: " + topUp.getTransactionType());
+                System.out.println("Date: " + topUp.getDateTime());
+                System.out.println("Status: " + topUp.getStatus());
+                System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
+                System.out.println("Handled By: " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
+                System.out.println("----------------------------------------");
+
+                found = true;
+            }
+        }
+
+        if (!found){
+            ConsoleUi.showInfo("No top up records found for this student.");
         }
     }
 }
