@@ -226,7 +226,7 @@ public class CashierMenu {
 
                 System.out.println("Top Up ID: " + topUp.getTopUpId());
                 System.out.println("Type: " + topUp.getTransactionType());
-                System.out.println("Date: " + topUp.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
                 System.out.println("Status: " + topUp.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
                 System.out.println();
@@ -253,7 +253,7 @@ public class CashierMenu {
             if (cashOut.getCashier() == cashier) {
                 System.out.println("Cash Out ID: " + cashOut.getCashOutId());
                 System.out.println("Type: " + cashOut.getTransactionType());
-                System.out.println("Date: " + cashOut.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(cashOut.getDateTime()));
                 System.out.println("Status: " + cashOut.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", cashOut.getAmount());
                 System.out.println();
@@ -293,7 +293,7 @@ public class CashierMenu {
                 System.out.println();
                 System.out.println("Top Up ID: " + topUp.getTopUpId());
                 System.out.println("Type: " + topUp.getTransactionType());
-                System.out.println("Date: " + topUp.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
                 System.out.println("Status: " + topUp.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
                 System.out.println("Handled By: " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());

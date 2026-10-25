@@ -144,9 +144,9 @@ public class VendorMenu {
 
                 System.out.println("Payment ID: " + payment.getPaymentId());
                 System.out.println("Type: " + payment.getTransactionType());
-                System.out.println("Date: " + payment.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(payment.getDateTime()));
                 System.out.println("Status: " + payment.getStatus());
-                System.out.println("Amount: PHP %.2f%n" + payment.getAmount());
+                System.out.printf("Amount: PHP %.2f%n", payment.getAmount());
                 System.out.println();
                 System.out.println("Paid By: " + student.getFirstName() + " " + student.getLastName());
                 System.out.println("Student Number: " + student.getStudentNumber());
@@ -173,7 +173,7 @@ public class VendorMenu {
             if (cashOut.getVendor() == vendor) {
                 System.out.println("Cash Out ID: " + cashOut.getCashOutId());
                 System.out.println("Type: " + cashOut.getTransactionType());
-                System.out.println("Date: " + cashOut.getDateTime());
+                System.out.println("Date: " + ConsoleUi.formatDateTime(cashOut.getDateTime()));
                 System.out.println("Status: " + cashOut.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", cashOut.getAmount());
                 System.out.println();
