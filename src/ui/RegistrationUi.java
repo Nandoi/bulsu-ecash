@@ -100,9 +100,15 @@ public class RegistrationUi {
 
     private static String getConfirmedPin(Scanner sc) {
         System.out.print("Create PIN: ");
-        String pin = sc.nextLine();
+        String pin = sc.nextLine().trim();
+        if (!pin.matches("\\d{4}")) {
+            ConsoleUi.showError("PIN must contain exactly 4 digits.");
+            ConsoleUi.pause(sc);
+            return null;
+        }
+
         System.out.print("Confirm PIN: ");
-        String confirmPin = sc.nextLine();
+        String confirmPin = sc.nextLine().trim();
         if (!pin.equals(confirmPin)) {
             ConsoleUi.showError("PINs do not match.");
             ConsoleUi.pause(sc);
