@@ -385,7 +385,7 @@ public class CashierMenu {
         }
 
         System.out.print("New Card UID: ");
-        String newCardUid = sc.nextLine();
+        String newCardUid = sc.nextLine().trim();
 
         if (newCardUid.isEmpty()) {
             ConsoleUi.showError("Card UID cannot be empty.");
