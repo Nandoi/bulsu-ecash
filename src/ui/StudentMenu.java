@@ -129,6 +129,7 @@ public class StudentMenu {
         System.out.println("Current Status: " + activeCard.getStatus());
 
         if (!ConsoleUi.confirmTransaction(sc)) {
+            System.out.println();
             ConsoleUi.showInfo("Report lost card cancelled.");
             return;
         }

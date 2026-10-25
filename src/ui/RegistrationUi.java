@@ -51,9 +51,7 @@ public class RegistrationUi {
 
     private static void registerVendor(Scanner sc) {
         ConsoleUi.showSection("VENDOR REGISTRATION");
-        System.out.print("Vendor ID: ");
-        int vendorId = sc.nextInt();
-        sc.nextLine();
+        int vendorId = ConsoleUi.readInt(sc, "Vendor ID: ");
         String pin = getConfirmedPin(sc);
         if (pin == null) {
             return;
@@ -64,9 +62,7 @@ public class RegistrationUi {
 
     private static void registerCashier(Scanner sc) {
         ConsoleUi.showSection("CASHIER REGISTRATION");
-        System.out.print("Cashier ID: ");
-        int cashierId = sc.nextInt();
-        sc.nextLine();
+        int cashierId = ConsoleUi.readInt(sc, "Cashier ID: ");
         String pin = getConfirmedPin(sc);
         if (pin == null) {
             return;
