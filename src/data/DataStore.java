@@ -56,6 +56,12 @@ public class DataStore {
 
 
     // STUDENT
+    private static int nextStudentWalletId = 101;
+
+    public static int generateNextStudentWalletId() {
+        return nextStudentWalletId++;
+    }
+
     public static void addAuthorizedStudent(Student student) {
         authorizedStudents.add(student);
     }
@@ -111,6 +117,18 @@ public class DataStore {
     // CARD
     public static ArrayList<Card> getCards() {
         return cards;
+    }
+
+    private static int nextCardId = 1;
+
+    public static String generateNextCardUid() {
+        String cardUid;
+
+        do{
+            cardUid = String.format("CARD-%03d", nextCardId++);
+        }while (findCardByUid(cardUid) != null);
+
+        return cardUid;
     }
 
     public static void addCard(Card card) {
