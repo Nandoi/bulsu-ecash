@@ -6,6 +6,7 @@ import data.DataStore;
 import entities.transaction.Payment;
 import entities.transaction.TopUp;
 import entities.user.Student;
+import entities.Card;
 
 public class StudentMenu {
     public static void show(Student student, Scanner sc) {
@@ -18,11 +19,10 @@ public class StudentMenu {
             System.out.println();
             ConsoleUi.showOption(1, "View Profile");
             ConsoleUi.showOption(2, "View Transaction History");
+            ConsoleUi.showOption(3, "Report Card as Lost");
             ConsoleUi.showExitOption("Logout");
 
-            System.out.print("\n  Enter Choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
+            int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
 
             switch (choice) {
                 case 1:
@@ -35,6 +35,11 @@ public class StudentMenu {
                     ConsoleUi.pause(sc);
                     break;
 
+                case 3:
+                    reportLostCard(student, sc);
+                    ConsoleUi.pause(sc);
+                    break;
+                
                 case 0:
                     running = false;
                     break;
@@ -96,9 +101,42 @@ public class StudentMenu {
                 found = true;
             }
         }
+        
 
         if (!found) {
             ConsoleUi.showInfo("No transaction records found.");
         }
+    }
+
+    private static void reportLostCard(Student student, Scanner sc){
+        ConsoleUi.showSection("REPORT LOST CARD");
+
+        Card activeCard = null;
+
+        for (Card card : DataStore.getCards()) {
+            if (card.getStudent() == student && card.isActive()) {
+                activeCard = card;
+                break;
+            }
+        }
+
+        if (activeCard == null) {
+            ConsoleUi.showInfo("No active card found.");
+            return;
+        }
+
+        System.out.println("Card UID: " + activeCard.getCardUid());
+        System.out.println("Current Status: " + activeCard.getStatus());
+
+        if (!ConsoleUi.confirmTransaction(sc)) {
+            System.out.println();
+            ConsoleUi.showInfo("Report lost card cancelled.");
+            return;
+        }
+
+        activeCard.markLost();
+
+        ConsoleUi.showSuccess("Card reported as lost.");
+        System.out.println("New Status: " + activeCard.getStatus());
     }
 }

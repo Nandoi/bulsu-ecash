@@ -37,8 +37,4 @@ public class Card {
     public void markReplaced(){
         status = CardStatus.REPLACED;
     }
-
-    public void markExpired(){
-        status = CardStatus.EXPIRED;
-    }
 }

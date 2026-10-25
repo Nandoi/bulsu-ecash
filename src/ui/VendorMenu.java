@@ -29,10 +29,8 @@ public class VendorMenu {
             ConsoleUi.showOption(3, "View Cash Out History");
             ConsoleUi.showExitOption("Logout");
 
-            System.out.print("\nEnter Choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
-
+            int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
+            
             switch (choice) {
                 case 1:
                     processPayment(vendor, sc);
@@ -75,12 +73,17 @@ public class VendorMenu {
             return;
         }
 
+        if (!card.isActive()) {
+            ConsoleUi.showError("Card is not active.");
+            ConsoleUi.showInfo("Card Status: " + card.getStatus());
+            ConsoleUi.pause(sc);
+            return;
+        }
+
         Student student = card.getStudent();
 
         //Ask for amount and validation
-        System.out.print("Amount: PHP ");
-        double amount = sc.nextDouble();
-        sc.nextLine();
+        double amount = ConsoleUi.readDouble(sc, "Amount: PHP ");
 
         if (amount <= 0){
             ConsoleUi.showError("Amount must be greater than 0.");

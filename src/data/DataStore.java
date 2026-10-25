@@ -21,18 +21,6 @@ public class DataStore {
     private static ArrayList<TopUp> topUps = new ArrayList<>();
     private static ArrayList<CashOut> cashOuts = new ArrayList<>(); 
 
-    public static ArrayList<Payment> getPayments() {
-        return payments;
-    }
-
-    public static ArrayList<TopUp> getTopUps() {
-        return topUps;
-    }
-
-    public static ArrayList<CashOut> getCashOuts() {
-        return cashOuts;
-    }
-
     // ACCOUNT
     private static int nextAccountId = 5001;
 
@@ -121,6 +109,10 @@ public class DataStore {
     }
 
     // CARD
+    public static ArrayList<Card> getCards() {
+        return cards;
+    }
+
     public static void addCard(Card card) {
         cards.add(card);
     }
@@ -138,6 +130,10 @@ public class DataStore {
     }
 
     // PAYMENT
+    public static ArrayList<Payment> getPayments() {
+        return payments;
+    }
+
     private static int nextPaymentId = 6001;
 
     public static int generateNextPaymentId() {
@@ -149,6 +145,10 @@ public class DataStore {
     }
 
     // TOP UP
+    public static ArrayList<TopUp> getTopUps() {
+        return topUps;
+    }
+    
     private static int nextTopUpId = 7001;
 
     public static int generateNextTopUpId() {
@@ -161,6 +161,10 @@ public class DataStore {
 
 
     // CASH OUT
+    public static ArrayList<CashOut> getCashOuts() {
+        return cashOuts;
+    }
+
     private static int nextCashOutId = 8001;
 
     public static int generateNextCashOutId() {
