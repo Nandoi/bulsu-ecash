@@ -8,6 +8,12 @@ import entities.transaction.TopUp;
 import entities.user.Student;
 import entities.Card;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+import entities.transaction.TransactionRecord;
+
 public class StudentMenu {
     public static void show(Student student, Scanner sc) {
         boolean running = true;
@@ -71,11 +77,31 @@ public class StudentMenu {
     private static void showTransactionHistory(Student student) {
         ConsoleUi.showSection("TRANSACTION HISTORY");
 
-        boolean found = false;
+        ArrayList<TransactionRecord> transactions = new ArrayList<>();
 
-        //Display payment transactions of the student
         for (Payment payment : DataStore.getPayments()) {
             if (payment.getStudentWallet() == student.getStudentWallet()) {
+                transactions.add(payment);
+            }
+        }
+
+        for (TopUp topUp : DataStore.getTopUps()) {
+            if (topUp.getStudentWallet() == student.getStudentWallet()) {
+                transactions.add(topUp);
+            }
+        }
+
+        transactions.sort(Comparator.comparing(transaction -> LocalDateTime.parse(transaction.getDateTime())));
+
+        if (transactions.isEmpty()) {
+            ConsoleUi.showInfo("No transaction records found.");
+            return;
+        }
+
+        for (TransactionRecord transaction : transactions) {
+            if (transaction instanceof Payment){
+                Payment payment = (Payment) transaction;
+
                 System.out.println("Payment ID: " + payment.getPaymentId());
                 System.out.println("Type: " + payment.getTransactionType());
                 System.out.println("Date: " + ConsoleUi.formatDateTime(payment.getDateTime()));
@@ -83,33 +109,25 @@ public class StudentMenu {
                 System.out.printf("Amount: PHP %.2f%n", payment.getAmount());
                 System.out.println();
                 System.out.println("Paid To: " + payment.getVendor().getStore().getStoreName());
-                System.out.println("Handled By: " + payment.getVendor().getFirstName() + " " + payment.getVendor().getLastName());
+                System.out.println("Handled By: "
+                        + payment.getVendor().getFirstName() + " "
+                        + payment.getVendor().getLastName());
                 System.out.println("Card UID: " + payment.getCard().getCardUid());
-                System.out.println("----------------------------------------");
 
-                found = true;
-            }
-        }
+            }else if (transaction instanceof TopUp){
+                TopUp topUp = (TopUp) transaction;
 
-        //Display top up transactions of the student
-        for (TopUp topUp : DataStore.getTopUps()) {
-            if (topUp.getStudentWallet() == student.getStudentWallet()) {
                 System.out.println("Top Up ID: " + topUp.getTopUpId());
                 System.out.println("Type: " + topUp.getTransactionType());
                 System.out.println("Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
                 System.out.println("Status: " + topUp.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
                 System.out.println();
-                System.out.println("Received From: Cashier " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
-                System.out.println("----------------------------------------");
-
-                found = true;
+                System.out.println("Received From: Cashier "
+                        + topUp.getCashier().getFirstName() + " "
+                        + topUp.getCashier().getLastName());
             }
-        }
-        
-
-        if (!found) {
-            ConsoleUi.showInfo("No transaction records found.");
+            System.out.println("----------------------------------------");
         }
     }
 
