@@ -11,10 +11,6 @@ import entities.wallet.StoreWallet;
 public class CashOutService {
 
     public static CashOut processCashOut(double amount, Vendor vendor, Cashier cashier) {
-
-        int cashOutId = DataStore.generateNextCashOutId();
-        String dateTime = java.time.LocalDateTime.now().toString();
-
         // Invalid amount
         if (amount <= 0) {
             return null;
@@ -36,6 +32,9 @@ public class CashOutService {
         if (storeWallet == null) {
             return null;
         }
+        
+        int cashOutId = DataStore.generateNextCashOutId();
+        String dateTime = java.time.LocalDateTime.now().toString();
 
         // Create CashOut record
         CashOut cashOut = new CashOut(cashOutId, amount, dateTime, cashier, vendor, storeWallet);
