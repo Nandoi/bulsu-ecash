@@ -91,6 +91,7 @@ public class StudentMenu {
             }
         }
 
+        // A method used to sort all transactions by their date and time from oldest to newest.
         transactions.sort(Comparator.comparing(transaction -> LocalDateTime.parse(transaction.getDateTime())));
 
         if (transactions.isEmpty()) {
