@@ -99,10 +99,9 @@ public class StudentMenu {
             return;
         }
 
-        for (TransactionRecord transaction : transactions) {
+        for (TransactionRecord transaction : transactions){
             if (transaction instanceof Payment){
                 Payment payment = (Payment) transaction;
-
                 System.out.println("Payment ID: " + payment.getPaymentId());
                 System.out.println("Type: " + payment.getTransactionType());
                 System.out.println("Date: " + ConsoleUi.formatDateTime(payment.getDateTime()));
@@ -110,23 +109,18 @@ public class StudentMenu {
                 System.out.printf("Amount: PHP %.2f%n", payment.getAmount());
                 System.out.println();
                 System.out.println("Paid To: " + payment.getVendor().getStore().getStoreName());
-                System.out.println("Handled By: "
-                        + payment.getVendor().getFirstName() + " "
-                        + payment.getVendor().getLastName());
+                System.out.println("Handled By: " + payment.getVendor().getFirstName() + " " + payment.getVendor().getLastName());
                 System.out.println("Card UID: " + payment.getCard().getCardUid());
 
             }else if (transaction instanceof TopUp){
                 TopUp topUp = (TopUp) transaction;
-
                 System.out.println("Top Up ID: " + topUp.getTopUpId());
                 System.out.println("Type: " + topUp.getTransactionType());
                 System.out.println("Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
                 System.out.println("Status: " + topUp.getStatus());
                 System.out.printf("Amount: PHP %.2f%n", topUp.getAmount());
                 System.out.println();
-                System.out.println("Received From: Cashier "
-                        + topUp.getCashier().getFirstName() + " "
-                        + topUp.getCashier().getLastName());
+                System.out.println("Received From: Cashier " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
             }
             System.out.println("----------------------------------------");
         }

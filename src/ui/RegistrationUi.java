@@ -75,24 +75,22 @@ public class RegistrationUi {
         showRegistrationResult(account, sc);
     }
 
-    private static void showRegistrationResult(Account account, Scanner sc) {
+    private static void showRegistrationResult(Account account, Scanner sc){
         if (account == null) {
             ConsoleUi.showError("Registration failed.");
             ConsoleUi.showInfo("Check your authorized information.");
-        } else {
+            
+        }else {
             ConsoleUi.showSuccess("Registration successful.");
             ConsoleUi.showInfo("Account ID: " + account.getAccountId());
             ConsoleUi.showInfo("Role: " + account.getUser().getUserType());
+
             if (account.getUser() instanceof Student) {
                 Student student = (Student) account.getUser();
-
-                for (Card card : DataStore.getCards()) {
-                    if (card.getStudent() == student && card.isActive()) {
-                        ConsoleUi.showInfo("Card UID: " + card.getCardUid());
-                        break;
-                    }
-                }
+                Card card = DataStore.findCardByStudent(student);
+                ConsoleUi.showInfo("Card UID: " + card.getCardUid());
             }
+
             ConsoleUi.showInfo("Use your Account ID and PIN when logging in.");
         }
         ConsoleUi.pause(sc);
