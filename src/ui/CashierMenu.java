@@ -86,7 +86,7 @@ public class CashierMenu {
 
         //Ask for student number and validation
         System.out.print("Student Number: ");
-        String studentNumber = sc.nextLine();
+        String studentNumber = sc.nextLine().trim();
 
         Student student = DataStore.findStudentByStudentNumber(studentNumber);
 
@@ -276,7 +276,7 @@ public class CashierMenu {
 
         //Ask for student number and validation
         System.out.print("Student Number: ");
-        String studentNumber = sc.nextLine();
+        String studentNumber = sc.nextLine().trim();
 
         Student student = DataStore.findStudentByStudentNumber(studentNumber);
 
@@ -361,7 +361,7 @@ public class CashierMenu {
         ConsoleUi.showSection("REPLACE STUDENT CARD");
 
         System.out.print("Student Number: ");
-        String studentNumber = sc.nextLine();
+        String studentNumber = sc.nextLine().trim();
 
         Student student = DataStore.findStudentByStudentNumber(studentNumber);
 

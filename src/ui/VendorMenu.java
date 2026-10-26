@@ -63,7 +63,7 @@ public class VendorMenu {
 
         //Ask for card UID and validation
         System.out.print("Card UID: ");
-        String cardUid = sc.nextLine();
+        String cardUid = sc.nextLine().trim();
 
         Card card = DataStore.findCardByUid(cardUid);
 

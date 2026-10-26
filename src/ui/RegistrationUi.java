@@ -44,7 +44,7 @@ public class RegistrationUi {
     private static void registerStudent(Scanner sc) {
         ConsoleUi.showSection("STUDENT REGISTRATION");
         System.out.print("Student Number: ");
-        String studentNumber = sc.nextLine();
+        String studentNumber = sc.nextLine().trim();
         String pin = getConfirmedPin(sc);
         if (pin == null) {
             return;
