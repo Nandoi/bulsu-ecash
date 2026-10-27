@@ -17,20 +17,39 @@ public class VendorMenu {
         boolean running = true;
 
         while (running) {
-            ConsoleUi.showSection("VENDOR MENU");
-
-            ConsoleUi.showInfo("Vendor: " + vendor.getFirstName());
-            ConsoleUi.showInfo("Store: " + vendor.getStore().getStoreName());
-            ConsoleUi.showBalance("Store Wallet Balance", vendor.getStore().getStoreWallet().getBalance());
+            String storeName = vendor.getStore().getStoreName();
+            String balance = String.format("PHP %,.2f", vendor.getStore().getStoreWallet().getBalance());
 
             System.out.println();
-            ConsoleUi.showOption(1, "Process Payment");
-            ConsoleUi.showOption(2, "View Payment History");
-            ConsoleUi.showOption(3, "View Cash Out History");
-            ConsoleUi.showExitOption("Logout");
+            System.out.println("┌────────────────────────────────────────────────────┐");
+            System.out.printf("│ %-50s │%n", "                  VENDOR DASHBOARD");
+            System.out.println("├────────────────────────────────────────────────────┤");
+
+            System.out.printf("│ %-50s │%n", "");
+            System.out.printf("│ %-50.50s │%n", "  Welcome, " + vendor.getFirstName() + "!");
+            System.out.printf("│ %-50s │%n", "");
+
+            System.out.printf("│ %-50s │%n", "  STORE OVERVIEW");
+            System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+            System.out.printf("│ %-50.50s │%n", "  Store Name: " + storeName);
+            System.out.printf("│ %-50.50s │%n", "  Store Wallet: " + balance);
+            System.out.printf("│ %-50s │%n", "");
+
+            System.out.printf("│ %-50s │%n", "  STORE SERVICES");
+            System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+            System.out.printf("│ %-50s │%n", "");
+
+            System.out.printf("│ %-50s │%n", "  [1] Process Payment");
+            System.out.printf("│ %-50s │%n", "  [2] View Payment History");
+            System.out.printf("│ %-50s │%n", "  [3] View Cash Out History");
+            System.out.printf("│ %-50s │%n", "  [0] Logout");
+            System.out.printf("│ %-50s │%n", "");
+
+            System.out.println("└────────────────────────────────────────────────────┘");
+
 
             int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
-            
+
             switch (choice) {
                 case 1:
                     processPayment(vendor, sc);
@@ -92,13 +111,31 @@ public class VendorMenu {
         }
 
         //Ask for confirmation and display transaction details
-        ConsoleUi.showSection("CONFIRM PAYMENT");
-        System.out.println("Student: " + student.getFirstName() + " " + student.getLastName());
-        System.out.println("Student Number: " + student.getStudentNumber());
-        System.out.println("Card UID: " + card.getCardUid());
-        System.out.printf("Payment Amount: PHP %.2f%n", amount);
-        System.out.println("Store: " + vendor.getStore().getStoreName());
-        System.out.println("Handled By: " + vendor.getFirstName() + " " + vendor.getLastName());
+        System.out.println();
+        System.out.println("┌────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-50s │%n", "                PAYMENT CONFIRMATION");
+        System.out.println("├────────────────────────────────────────────────────┤");
+
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  STUDENT INFORMATION");
+        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+
+        System.out.printf("│ %-50.50s │%n", "  Student: " + student.getFirstName() + " " + student.getLastName());
+        System.out.printf("│ %-50.50s │%n", "  Student Number: " + student.getStudentNumber());
+        System.out.printf("│ %-50.50s │%n", "  Card UID: " + card.getCardUid());
+
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  PAYMENT DETAILS");
+        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+
+        System.out.printf("│ %-50.50s │%n", "  Store: " + vendor.getStore().getStoreName());
+        System.out.printf("│ %-50.50s │%n", "  Handled By: " + vendor.getFirstName() + " " + vendor.getLastName());
+
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50.50s │%n", "  TOTAL AMOUNT: " + String.format("PHP %,.2f", amount));
+        System.out.printf("│ %-50s │%n", "");
+
+        System.out.println("└────────────────────────────────────────────────────┘");
 
         //A boolean method to confirm the transaction, if not confirmed, return to the menu
         if (!ConsoleUi.confirmTransaction(sc)) {
@@ -126,12 +163,36 @@ public class VendorMenu {
         }
 
         //If payment is successful, display success message
-        ConsoleUi.showSuccess("Payment successful.");
-        ConsoleUi.showInfo("Payment ID: " + payment.getPaymentId());
-        ConsoleUi.showBalance("Store Wallet Balance", vendor.getStore().getStoreWallet().getBalance());
+        System.out.println();
+        System.out.println("┌────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-50s │%n", "                    BULSU ECASH");
+        System.out.printf("│ %-50s │%n", "                   PAYMENT RECEIPT");
+        System.out.println("├────────────────────────────────────────────────────┤");
+
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50.50s │%n", "  Transaction ID: " + payment.getPaymentId());
+        System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(payment.getDateTime()));
+        System.out.printf("│ %-50.50s │%n", "  Status: " + payment.getStatus());
+
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  TRANSACTION DETAILS");
+        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+
+        System.out.printf("│ %-50.50s │%n", "  Student: " + student.getFirstName() + " " + student.getLastName());
+        System.out.printf("│ %-50.50s │%n", "  Store: " + vendor.getStore().getStoreName());
+        System.out.printf("│ %-50.50s │%n", "  Card UID: " + card.getCardUid());
+
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+        System.out.printf("│ %-50.50s │%n", "  TOTAL PAID: " + String.format("PHP %,.2f", payment.getAmount()));
+        System.out.printf("│ %-50.50s │%n", "  Store Balance: " + String.format("PHP %,.2f", vendor.getStore().getStoreWallet().getBalance()));
+        System.out.printf("│ %-50s │%n", "");
+
+        System.out.println("└────────────────────────────────────────────────────┘");
 
         ConsoleUi.pause(sc);
     }
+
 
     private static void showPaymentHistory(Vendor vendor) {
         ConsoleUi.showSection("PAYMENT HISTORY");
@@ -142,18 +203,33 @@ public class VendorMenu {
             if (payment.getVendor() == vendor) {
                 Student student = payment.getCard().getStudent();
 
-                System.out.println("Payment ID: " + payment.getPaymentId());
-                System.out.println("Type: " + payment.getTransactionType());
-                System.out.println("Date: " + ConsoleUi.formatDateTime(payment.getDateTime()));
-                System.out.println("Status: " + payment.getStatus());
-                System.out.printf("Amount: PHP %.2f%n", payment.getAmount());
                 System.out.println();
-                System.out.println("Paid By: " + student.getFirstName() + " " + student.getLastName());
-                System.out.println("Student Number: " + student.getStudentNumber());
-                System.out.println("Card UID: " + payment.getCard().getCardUid());
-                System.out.println("Received By: " + payment.getVendor().getStore().getStoreName());
-                System.out.println("Handled By: " + payment.getVendor().getFirstName() + " " + payment.getVendor().getLastName());
-                System.out.println("----------------------------------------");
+                System.out.println("┌────────────────────────────────────────────────────┐");
+                System.out.printf("│ %-50s │%n", "                  PAYMENT HISTORY");
+                System.out.println("├────────────────────────────────────────────────────┤");
+
+                System.out.printf("│ %-50s │%n", "");
+                System.out.printf("│ %-50.50s │%n", "  Transaction ID: " + payment.getPaymentId());
+                System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(payment.getDateTime()));
+                System.out.printf("│ %-50.50s │%n", "  Status: " + payment.getStatus());
+
+                System.out.printf("│ %-50s │%n", "");
+                System.out.printf("│ %-50s │%n", "  CUSTOMER INFORMATION");
+                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+                System.out.printf("│ %-50.50s │%n", "  Student: " + student.getFirstName() + " " + student.getLastName());
+                System.out.printf("│ %-50.50s │%n", "  Student Number: " + student.getStudentNumber());
+                System.out.printf("│ %-50.50s │%n", "  Card UID: " + payment.getCard().getCardUid());
+
+                System.out.printf("│ %-50s │%n", "");
+                System.out.printf("│ %-50s │%n", "  PAYMENT DETAILS");
+                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+                System.out.printf("│ %-50.50s │%n", "  Store: " + vendor.getStore().getStoreName());
+                System.out.printf("│ %-50.50s │%n", "  Handled By: " + vendor.getFirstName() + " " + vendor.getLastName());
+
+                System.out.printf("│ %-50s │%n", "");
+                System.out.printf("│ %-50.50s │%n", "  TRANSACTION AMOUNT: " + String.format("PHP %,.2f", payment.getAmount()));
+                System.out.printf("│ %-50s │%n", "");
+                System.out.println("└────────────────────────────────────────────────────┘");
 
                 found = true;
             }
@@ -164,6 +240,8 @@ public class VendorMenu {
         }
     }
 
+
+
     private static void showCashOutHistory(Vendor vendor) {
         ConsoleUi.showSection("CASH OUT HISTORY");
 
@@ -171,16 +249,30 @@ public class VendorMenu {
 
         for (CashOut cashOut : DataStore.getCashOuts()) {
             if (cashOut.getVendor() == vendor) {
-                System.out.println("Cash Out ID: " + cashOut.getCashOutId());
-                System.out.println("Type: " + cashOut.getTransactionType());
-                System.out.println("Date: " + ConsoleUi.formatDateTime(cashOut.getDateTime()));
-                System.out.println("Status: " + cashOut.getStatus());
-                System.out.printf("Amount: PHP %.2f%n", cashOut.getAmount());
+
                 System.out.println();
-                System.out.println("Requested By: " + cashOut.getVendor().getFirstName() + " " + cashOut.getVendor().getLastName());
-                System.out.println("Store: " + cashOut.getVendor().getStore().getStoreName());
-                System.out.println("Processed By: " + cashOut.getCashier().getFirstName() + " " + cashOut.getCashier().getLastName());
-                System.out.println("----------------------------------------");
+                System.out.println("┌────────────────────────────────────────────────────┐");
+                System.out.printf("│ %-50s │%n", "                  CASH OUT HISTORY");
+                System.out.println("├────────────────────────────────────────────────────┤");
+
+                System.out.printf("│ %-50s │%n", "");
+                System.out.printf("│ %-50.50s │%n", "  Cash Out ID: " + cashOut.getCashOutId());
+                System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(cashOut.getDateTime()));
+                System.out.printf("│ %-50.50s │%n", "  Status: " + cashOut.getStatus());
+
+                System.out.printf("│ %-50s │%n", "");
+                System.out.printf("│ %-50s │%n", "  TRANSACTION DETAILS");
+                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+
+                System.out.printf("│ %-50.50s │%n", "  Vendor: " + vendor.getFirstName() + " " + vendor.getLastName());
+                System.out.printf("│ %-50.50s │%n", "  Store: " + vendor.getStore().getStoreName());
+                System.out.printf("│ %-50.50s │%n", "  Processed By: " + cashOut.getCashier().getFirstName() + " " + cashOut.getCashier().getLastName());
+
+                System.out.printf("│ %-50s │%n", "");
+                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+                System.out.printf("│ %-50.50s │%n", "  CASH OUT AMOUNT: " + String.format("PHP %,.2f", cashOut.getAmount()));
+                System.out.printf("│ %-50s │%n", "");
+                System.out.println("└────────────────────────────────────────────────────┘");
 
                 found = true;
             }

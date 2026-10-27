@@ -11,11 +11,19 @@ import services.RegistrationService;
 public class RegistrationUi {
 
     public static void show(Scanner sc) {
-        ConsoleUi.showSection("REGISTER");
-        ConsoleUi.showOption(1, "Student");
-        ConsoleUi.showOption(2, "Vendor");
-        ConsoleUi.showOption(3, "Cashier");
-        ConsoleUi.showExitOption("Back");
+        System.out.println();
+        System.out.println("┌────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-50s │%n", "                 REGISTER ACCOUNT");
+        System.out.println("├────────────────────────────────────────────────────┤");
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  SELECT ACCOUNT TYPE");
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  [1] Student");
+        System.out.printf("│ %-50s │%n", "  [2] Vendor");
+        System.out.printf("│ %-50s │%n", "  [3] Cashier");
+        System.out.printf("│ %-50s │%n", "  [0] Back");
+        System.out.printf("│ %-50s │%n", "");
+        System.out.println("└────────────────────────────────────────────────────┘");
         int choice = ConsoleUi.readInt(sc, "\nEnter Role: ");
 
         switch (choice) {
