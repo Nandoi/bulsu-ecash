@@ -16,7 +16,7 @@ public class TopUpService {
         String dateTime = java.time.LocalDateTime.now().toString();
 
         // Invalid amount
-        if (amount <= 0) {
+        if (amount <= 0 || !Double.isFinite(amount)) {
             return null;
         }
 

@@ -30,15 +30,15 @@ public abstract class Wallet {
     }
 
     public boolean addBalance(double amount){
-        if (status == WalletStatus.ACTIVE && amount > 0){
+        if (status == WalletStatus.ACTIVE && amount > 0 && Double.isFinite(amount)){
             balance += amount;
             return true;
         }
         return false;
     }
-    
+
     public boolean deductBalance(double amount){
-        if (status == WalletStatus.ACTIVE && amount > 0 && balance >= amount){
+        if (status == WalletStatus.ACTIVE && amount > 0 && balance >= amount && Double.isFinite(amount)){
             balance -= amount;
             return true;
         }
