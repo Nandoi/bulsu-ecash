@@ -11,19 +11,7 @@ import services.RegistrationService;
 public class RegistrationUi {
 
     public static void show(Scanner sc) {
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                 REGISTER ACCOUNT");
-        System.out.println("├────────────────────────────────────────────────────┤");
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  SELECT ACCOUNT TYPE");
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  [1] Student");
-        System.out.printf("│ %-50s │%n", "  [2] Vendor");
-        System.out.printf("│ %-50s │%n", "  [3] Cashier");
-        System.out.printf("│ %-50s │%n", "  [0] Back");
-        System.out.printf("│ %-50s │%n", "");
-        System.out.println("└────────────────────────────────────────────────────┘");
+        showRegistrationMenu();
         int choice = ConsoleUi.readInt(sc, "\nEnter Role: ");
 
         switch (choice) {
@@ -84,43 +72,60 @@ public class RegistrationUi {
     }
 
     private static void showRegistrationResult(Account account, Scanner sc) {
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "               REGISTRATION RESULT");
-        System.out.println("├────────────────────────────────────────────────────┤");
-        System.out.printf("│ %-50s │%n", "");
+        ConsoleUi.boxHeader("REGISTRATION RESULT");
 
         if (account == null) {
-            System.out.printf("│ %-50s │%n", "  STATUS: FAILED");
-            System.out.printf("│ %-50s │%n", "");
-            System.out.printf("│ %-50s │%n", "  Registration failed.");
-            System.out.printf("│ %-50s │%n", "  Check your authorized information.");
+            // Failed registration
+            ConsoleUi.boxLine("  Status: FAILED");
+
+            ConsoleUi.boxDivider();
+
+            ConsoleUi.boxLine("  Registration failed.");
+            ConsoleUi.boxLine("  Check your authorized information.");
 
         } else {
-            System.out.printf("│ %-50s │%n", "  STATUS: SUCCESSFUL");
-            System.out.printf("│ %-50s │%n", "");
-            System.out.printf("│ %-50.50s │%n", "  Account ID: " + account.getAccountId());
-            System.out.printf("│ %-50.50s │%n", "  Role: " + account.getUser().getUserType());
+            // Successful registration
+            ConsoleUi.boxLine("  Status: SUCCESSFUL");
 
+            ConsoleUi.boxDivider();
+
+            ConsoleUi.boxLine("  Account ID: " + account.getAccountId());
+
+            ConsoleUi.boxLine("  Role: "
+                    + account.getUser().getUserType());
+
+            // Display active card for Student accounts
             if (account.getUser() instanceof Student) {
                 Student student = (Student) account.getUser();
 
                 for (Card card : DataStore.getCards()) {
                     if (card.getStudent() == student && card.isActive()) {
-                        System.out.printf("│ %-50.50s │%n", "  Card UID: " + card.getCardUid());
+                        ConsoleUi.boxLine("  Card UID: " + card.getCardUid());
                         break;
                     }
                 }
             }
 
-            System.out.printf("│ %-50s │%n", "");
-            System.out.printf("│ %-50s │%n", "  Use your Account ID and PIN to log in.");
+            ConsoleUi.boxDivider();
+
+            ConsoleUi.boxLine( "  Use your Account ID and PIN to log in.");
         }
 
-        System.out.printf("│ %-50s │%n", "");
-        System.out.println("└────────────────────────────────────────────────────┘");
+        ConsoleUi.boxFooter();
 
         ConsoleUi.pause(sc);
+    }
+
+
+    private static void showRegistrationMenu() {
+        ConsoleUi.boxHeader("REGISTER ACCOUNT");
+
+        ConsoleUi.boxLine("  [1] Student");
+        ConsoleUi.boxLine("  [2] Vendor");
+        ConsoleUi.boxLine("  [3] Cashier");
+        ConsoleUi.boxLine("  [0] Back");
+
+        ConsoleUi.boxFooter();
     }
 
     private static String getConfirmedPin(Scanner sc) {
