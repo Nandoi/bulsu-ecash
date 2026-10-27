@@ -84,25 +84,42 @@ public class RegistrationUi {
     }
 
     private static void showRegistrationResult(Account account, Scanner sc) {
+        System.out.println();
+        System.out.println("┌────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-50s │%n", "               REGISTRATION RESULT");
+        System.out.println("├────────────────────────────────────────────────────┤");
+        System.out.printf("│ %-50s │%n", "");
+
         if (account == null) {
-            ConsoleUi.showError("Registration failed.");
-            ConsoleUi.showInfo("Check your authorized information.");
+            System.out.printf("│ %-50s │%n", "  STATUS: FAILED");
+            System.out.printf("│ %-50s │%n", "");
+            System.out.printf("│ %-50s │%n", "  Registration failed.");
+            System.out.printf("│ %-50s │%n", "  Check your authorized information.");
+
         } else {
-            ConsoleUi.showSuccess("Registration successful.");
-            ConsoleUi.showInfo("Account ID: " + account.getAccountId());
-            ConsoleUi.showInfo("Role: " + account.getUser().getUserType());
+            System.out.printf("│ %-50s │%n", "  STATUS: SUCCESSFUL");
+            System.out.printf("│ %-50s │%n", "");
+            System.out.printf("│ %-50.50s │%n", "  Account ID: " + account.getAccountId());
+            System.out.printf("│ %-50.50s │%n", "  Role: " + account.getUser().getUserType());
+
             if (account.getUser() instanceof Student) {
                 Student student = (Student) account.getUser();
 
                 for (Card card : DataStore.getCards()) {
                     if (card.getStudent() == student && card.isActive()) {
-                        ConsoleUi.showInfo("Card UID: " + card.getCardUid());
+                        System.out.printf("│ %-50.50s │%n", "  Card UID: " + card.getCardUid());
                         break;
                     }
                 }
             }
-            ConsoleUi.showInfo("Use your Account ID and PIN when logging in.");
+
+            System.out.printf("│ %-50s │%n", "");
+            System.out.printf("│ %-50s │%n", "  Use your Account ID and PIN to log in.");
         }
+
+        System.out.printf("│ %-50s │%n", "");
+        System.out.println("└────────────────────────────────────────────────────┘");
+
         ConsoleUi.pause(sc);
     }
 
