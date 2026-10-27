@@ -44,22 +44,38 @@ public class ConsoleUi {
         System.out.println("[INFO] " + message);
     }
 
+    public static void boxHeader(String title) {
+        System.out.println();
+        System.out.println("┌────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-50.50s │%n", "  " + title);
+        System.out.println("├────────────────────────────────────────────────────┤");
+    }
+
+    public static void boxRecordDivider() {
+        boxLine("  " + "-".repeat(46));
+    }
+
+    public static void boxLine(String text) {
+        // Print long text on additional lines instead of cutting it.
+        while (text.length() > 50) {
+            System.out.printf("│ %-50s │%n", text.substring(0, 50));
+            text = "    " + text.substring(50);
+        }
+
+        System.out.printf("│ %-50s │%n", text);
+    }
+
+    public static void boxDivider() {
+        System.out.println("├────────────────────────────────────────────────────┤");
+    }
+
+    public static void boxFooter() {
+        System.out.println("└────────────────────────────────────────────────────┘");
+    }
+
     public static boolean confirmTransaction(Scanner sc) {
         while (true) {
-
-            System.out.println();
-            System.out.println("┌────────────────────────────────────────────────────┐");
-            System.out.printf("│ %-50s │%n", "                   CONFIRM ACTION");
-            System.out.println("├────────────────────────────────────────────────────┤");
-
-            System.out.printf("│ %-50s │%n", "");
-            System.out.printf("│ %-50s │%n", "  [1] Confirm");
-            System.out.printf("│ %-50s │%n", "  [0] Cancel");
-            System.out.printf("│ %-50s │%n", "");
-
-            System.out.println("└────────────────────────────────────────────────────┘");
-
-            int choice = readInt(sc, "Enter Choice: ");
+            int choice = readInt(sc, "\n[1] Confirm  [0] Cancel: ");
 
             if (choice == 1) {
                 return true;

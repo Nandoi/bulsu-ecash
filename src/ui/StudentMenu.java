@@ -3,6 +3,7 @@ package ui;
 import java.util.Scanner;
 
 import data.DataStore;
+import enums.TransactionStatus;
 import entities.transaction.Payment;
 import entities.transaction.TopUp;
 import entities.user.Student;
@@ -13,17 +14,7 @@ public class StudentMenu {
         boolean running = true;
 
         while (running){
-            Card card = DataStore.findCardByStudent(student);
-
-            String cardStatus = "NO CARD";
-
-            if (card != null){
-                cardStatus = card.getStatus().toString();
-            }
-
-            String balance = String.format("PHP %,.2f", student.getStudentWallet().getBalance());
-
-            showMenu(student, balance, cardStatus);
+            showMenu(student);
             int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
 
             switch (choice) {
@@ -33,11 +24,20 @@ public class StudentMenu {
                     break;
 
                 case 2:
-                    showTransactionHistory(student);
+                    showPaymentRecords(student);
                     ConsoleUi.pause(sc);
                     break;
 
                 case 3:
+                    showTopUpRecords(student);
+                    ConsoleUi.pause(sc);
+                    break;
+
+                case 4:
+                    showTransactionSummary(student);
+                    ConsoleUi.pause(sc);
+                    break;
+                case 5:
                     reportLostCard(student, sc);
                     ConsoleUi.pause(sc);
                     break;
@@ -54,7 +54,6 @@ public class StudentMenu {
         }
     }
 
-
     private static void showProfile(Student student) {
         Card card = DataStore.findCardByStudent(student);
 
@@ -66,106 +65,200 @@ public class StudentMenu {
             cardStatus = card.getStatus().toString();
         }
 
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                  STUDENT PROFILE");
-        System.out.println("├────────────────────────────────────────────────────┤");
+        ConsoleUi.boxHeader("STUDENT PROFILE");
 
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  PERSONAL INFORMATION");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+        // Personal information
+        ConsoleUi.boxLine("  PERSONAL INFORMATION");
 
-        System.out.printf("│ %-50.50s │%n", "  Student Number: " + student.getStudentNumber());
-        System.out.printf("│ %-50.50s │%n", "  Name: " + student.getFirstName() + " " + student.getLastName());
-        System.out.printf("│ %-50.50s │%n", "  Program: " + student.getProgram());
-        System.out.printf("│ %-50.50s │%n", "  Year Level: " + student.getYearLevel());
-        System.out.printf("│ %-50.50s │%n", "  Address: " + student.getFullAddress());
-        System.out.printf("│ %-50.50s │%n", "  Email: " + student.getEmail());
+        ConsoleUi.boxLine("  Student No.: "
+                + student.getStudentNumber());
 
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  CARD INFORMATION");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+        ConsoleUi.boxLine("  Name: " + student.getFirstName()
+                + " " + student.getLastName());
 
-        System.out.printf("│ %-50.50s │%n", "  Card UID: " + cardUid);
-        System.out.printf("│ %-50.50s │%n", "  Card Status: " + cardStatus);
+        ConsoleUi.boxLine("  Program: " + student.getProgram());
+        ConsoleUi.boxLine("  Year Level: " + student.getYearLevel());
 
-        System.out.printf("│ %-50s │%n", "");
-        System.out.println("└────────────────────────────────────────────────────┘");
+        ConsoleUi.boxLine("  Address: "
+                + student.getFullAddress());
+
+        ConsoleUi.boxLine("  Email: " + student.getEmail());
+
+        ConsoleUi.boxDivider();
+
+        // Card information
+        ConsoleUi.boxLine("  CARD INFORMATION");
+        ConsoleUi.boxLine("  Card UID: " + cardUid);
+        ConsoleUi.boxLine("  Card Status: " + cardStatus);
+
+        ConsoleUi.boxFooter();
     }
 
+    private static void showPaymentRecords(Student student) {
+        ConsoleUi.boxHeader("PAYMENT HISTORY");
 
-
-    private static void showTransactionHistory(Student student) {
-        ConsoleUi.showSection("TRANSACTION HISTORY");
+        ConsoleUi.boxLine("  Student: " + student.getFirstName()
+                + " " + student.getLastName());
+        ConsoleUi.boxDivider();
 
         boolean found = false;
 
-        // PAYMENT TRANSACTIONS
         for (Payment payment : DataStore.getPayments()) {
             if (payment.getStudentWallet() == student.getStudentWallet()) {
+                if (found) {
+                    ConsoleUi.boxRecordDivider();
+                }
 
-                System.out.println();
-                System.out.println("┌────────────────────────────────────────────────────┐");
-                System.out.printf("│ %-50s │%n", "                  PAYMENT RECEIPT");
-                System.out.println("├────────────────────────────────────────────────────┤");
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50.50s │%n", "  Payment ID: " + payment.getPaymentId());
-                System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(payment.getDateTime()));
-                System.out.printf("│ %-50.50s │%n", "  Status: " + payment.getStatus());
-                System.out.printf("│ %-50s │%n", "");
-
-                System.out.printf("│ %-50s │%n", "  TRANSACTION DETAILS");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-                System.out.printf("│ %-50.50s │%n", "  Store: " + payment.getVendor().getStore().getStoreName());
-                System.out.printf("│ %-50.50s │%n", "  Handled By: " + payment.getVendor().getFirstName() + " " + payment.getVendor().getLastName());
-                System.out.printf("│ %-50.50s │%n", "  Card UID: " + payment.getCard().getCardUid());
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-                System.out.printf("│ %-50.50s │%n", "  TOTAL PAID: " + String.format("PHP %,.2f", payment.getAmount()));
-                System.out.printf("│ %-50s │%n", "");
-
-                System.out.println("└────────────────────────────────────────────────────┘");
-
-                found = true;
-            }
-        }
-
-        // TOP-UP TRANSACTIONS
-        for (TopUp topUp : DataStore.getTopUps()) {
-            if (topUp.getStudentWallet() == student.getStudentWallet()) {
-                System.out.println();
-                System.out.println("┌────────────────────────────────────────────────────┐");
-                System.out.printf("│ %-50s │%n", "                   TOP-UP RECEIPT");
-                System.out.println("├────────────────────────────────────────────────────┤");
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50.50s │%n", "  Top Up ID: " + topUp.getTopUpId());
-                System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
-                System.out.printf("│ %-50.50s │%n", "  Status: " + topUp.getStatus());
-                System.out.printf("│ %-50s │%n", "");
-
-                System.out.printf("│ %-50s │%n", "  TRANSACTION DETAILS");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-                System.out.printf("│ %-50.50s │%n", "  Processed By: " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-                System.out.printf("│ %-50.50s │%n", "  TOTAL TOP-UP: " + String.format("PHP %,.2f", topUp.getAmount()));
-                System.out.printf("│ %-50s │%n", "");
-
-                System.out.println("└────────────────────────────────────────────────────┘");
-
+                showPaymentRecord(payment);
                 found = true;
             }
         }
 
         if (!found) {
-            ConsoleUi.showInfo("No transaction records found.");
+            ConsoleUi.boxLine("  No payment records found.");
         }
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showPaymentRecord(Payment payment) {
+        ConsoleUi.boxLine("  #" + payment.getPaymentId()
+                + " | " + payment.getStatus());
+
+        ConsoleUi.boxLine("  "
+                + ConsoleUi.formatDateTime(payment.getDateTime()));
+
+        ConsoleUi.boxLine("  Store: "
+                + payment.getVendor().getStore().getStoreName());
+
+        ConsoleUi.boxLine("  Vendor: "
+                + payment.getVendor().getFirstName()
+                + " " + payment.getVendor().getLastName());
+
+        ConsoleUi.boxLine("  Card: "
+                + payment.getCard().getCardUid());
+
+        if (payment.getStatus() == TransactionStatus.SUCCESSFUL) {
+            ConsoleUi.boxLine("  PAID: "
+                    + String.format("PHP %,.2f", payment.getAmount()));
+        } else {
+            ConsoleUi.boxLine("  ATTEMPTED: "
+                    + String.format("PHP %,.2f", payment.getAmount()));
+        }
+    }
+
+
+    private static void showTopUpRecords(Student student) {
+        ConsoleUi.boxHeader("TOP-UP HISTORY");
+
+        ConsoleUi.boxLine("  Student: " + student.getFirstName()
+                + " " + student.getLastName());
+        ConsoleUi.boxDivider();
+
+        boolean found = false;
+
+        for (TopUp topUp : DataStore.getTopUps()) {
+            if (topUp.getStudentWallet() == student.getStudentWallet()) {
+                if (found) {
+                    ConsoleUi.boxRecordDivider();
+                }
+
+                showTopUpRecord(topUp);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            ConsoleUi.boxLine("  No top-up records found.");
+        }
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showTopUpRecord(TopUp topUp) {
+        ConsoleUi.boxLine("  #" + topUp.getTopUpId()
+                + " | " + topUp.getStatus());
+
+        ConsoleUi.boxLine("  "
+                + ConsoleUi.formatDateTime(topUp.getDateTime()));
+
+        ConsoleUi.boxLine("  Cashier: "
+                + topUp.getCashier().getFirstName()
+                + " " + topUp.getCashier().getLastName());
+
+        if (topUp.getStatus() == TransactionStatus.SUCCESSFUL) {
+            ConsoleUi.boxLine("  RECEIVED: "
+                    + String.format("PHP %,.2f", topUp.getAmount()));
+        } else {
+            ConsoleUi.boxLine("  ATTEMPTED: "
+                    + String.format("PHP %,.2f", topUp.getAmount()));
+        }
+    }
+
+    private static void showTransactionSummary(Student student) {
+        int paymentCount = 0;
+        int topUpCount = 0;
+
+        int successful = 0;
+        int failed = 0;
+
+        double totalPaid = 0;
+        double totalReceived = 0;
+
+        // Count payment transactions
+        for (Payment payment : DataStore.getPayments()) {
+            if (payment.getStudentWallet() == student.getStudentWallet()) {
+                paymentCount++;
+
+                if (payment.getStatus() == TransactionStatus.SUCCESSFUL) {
+                    successful++;
+                    totalPaid += payment.getAmount();
+
+                } else if (payment.getStatus() == TransactionStatus.FAILED) {
+                    failed++;
+                }
+            }
+        }
+
+        // Count top-up transactions
+        for (TopUp topUp : DataStore.getTopUps()) {
+            if (topUp.getStudentWallet() == student.getStudentWallet()) {
+                topUpCount++;
+
+                if (topUp.getStatus() == TransactionStatus.SUCCESSFUL) {
+                    successful++;
+                    totalReceived += topUp.getAmount();
+
+                } else if (topUp.getStatus() == TransactionStatus.FAILED) {
+                    failed++;
+                }
+            }
+        }
+
+        // Transaction summary UI
+        ConsoleUi.boxHeader("TRANSACTION SUMMARY");
+        ConsoleUi.boxLine("  Student: " + student.getFirstName() + " " + student.getLastName());
+        ConsoleUi.boxLine("  Student No.: " + student.getStudentNumber());
+        ConsoleUi.boxDivider();
+
+        // Payment summary
+        ConsoleUi.boxLine("  PAYMENT SUMMARY");
+        ConsoleUi.boxLine("  Total Payments: " + paymentCount);
+        ConsoleUi.boxLine("  Total Paid: " + String.format("PHP %,.2f", totalPaid));
+        ConsoleUi.boxDivider();
+
+        // Top-up summary
+        ConsoleUi.boxLine("  TOP-UP SUMMARY");
+        ConsoleUi.boxLine("  Total Top-Ups: " + topUpCount);
+        ConsoleUi.boxLine("  Total Received: " + String.format("PHP %,.2f", totalReceived));
+        ConsoleUi.boxDivider();
+
+        // Overall summary
+        ConsoleUi.boxLine("  OVERALL SUMMARY");
+        ConsoleUi.boxLine("  Successful: " + successful + "  |  Failed: " + failed);
+        ConsoleUi.boxLine("  Current Balance: " + String.format("PHP %,.2f", student.getStudentWallet().getBalance()));
+        ConsoleUi.boxLine("  Current session records only");
+        ConsoleUi.boxFooter();
     }
 
     private static void reportLostCard(Student student, Scanner sc) {
@@ -185,27 +278,8 @@ public class StudentMenu {
             return;
         }
 
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                  REPORT LOST CARD");
-        System.out.println("├────────────────────────────────────────────────────┤");
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  CARD INFORMATION");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50s │%n", "  Card UID: " + activeCard.getCardUid());
-        System.out.printf("│ %-50s │%n", "  Current Status: " + activeCard.getStatus());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  WARNING");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50s │%n", "  Reporting this card as lost will deactivate it.");
-        System.out.printf("│ %-50s │%n", "  The card can no longer be used for payments.");
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.println("└────────────────────────────────────────────────────┘");
+        // Show confirmation UI
+        showLostCardConfirmation(activeCard);
 
         // Ask student to confirm
         if (!ConsoleUi.confirmTransaction(sc)) {
@@ -216,33 +290,90 @@ public class StudentMenu {
         // Update card status
         activeCard.markLost();
 
-        ConsoleUi.showSuccess("Card reported as lost.");
-        ConsoleUi.showInfo("New Status: " + activeCard.getStatus());
+        showLostCardResult(activeCard);
     }
 
-    private static void showMenu(Student student, String balance, String cardStatus) {
+
+    private static void showLostCardConfirmation(Card card) {
+        ConsoleUi.boxHeader("REPORT LOST CARD");
+
+        // Card information
+        ConsoleUi.boxLine("  CARD INFORMATION");
+
+        ConsoleUi.boxLine("  Card UID: " + card.getCardUid());
+        ConsoleUi.boxLine("  Current Status: " + card.getStatus());
+
+        ConsoleUi.boxDivider();
+
+        // Warning
+        ConsoleUi.boxLine("  WARNING");
+
+        ConsoleUi.boxLine(
+                "  Reporting this card as lost will deactivate it.");
+
+        ConsoleUi.boxLine(
+                "  This card can no longer be used for payments.");
+
+        ConsoleUi.boxLine(
+                "  Your wallet balance will remain unchanged.");
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showLostCardResult(Card card) {
+        ConsoleUi.boxHeader("LOST CARD RESULT");
+
+        ConsoleUi.boxLine("  Status: SUCCESSFUL");
+        ConsoleUi.boxLine("  Card UID: " + card.getCardUid());
+        ConsoleUi.boxLine("  New Card Status: " + card.getStatus());
+
+        ConsoleUi.boxLine("");
+
+        ConsoleUi.boxLine(
+                "  Visit an authorized cashier for card replacement.");
+
+        ConsoleUi.boxLine(
+                "  Your wallet balance has been preserved.");
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showMenu(Student student) {
+        Card card = DataStore.findCardByStudent(student);
+
+        String cardStatus = "NO CARD";
+
+        if (card != null){
+            cardStatus = card.getStatus().toString();
+        }
+
+        String balance = String.format("PHP %,.2f", student.getStudentWallet().getBalance());
+
         System.out.println();
         System.out.println("┌────────────────────────────────────────────────────┐");
         System.out.printf("│ %-50s │%n", "                 STUDENT DASHBOARD");
         System.out.println("├────────────────────────────────────────────────────┤");
 
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  Welcome, " + student.getFirstName() + "!");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-        System.out.printf("│ %-50s │%n", "  Student Number: " + student.getStudentNumber());
-        System.out.printf("│ %-50s │%n", "  Wallet Balance: " + balance);
-        System.out.printf("│ %-50s │%n", "  Card Status: " + cardStatus);
-        System.out.printf("│ %-50s │%n", "");
+        // Student information
+        System.out.printf("│ %-50.50s │%n", "  " + "Hello, " + student.getFirstName() + " " + student.getLastName());
+        System.out.printf("│ %-50.50s │%n", "  Student No.: " + student.getStudentNumber());
+        System.out.printf("│ %-50.50s │%n", "  Card Status: " + cardStatus);
 
-        System.out.printf("│ %-50s │%n", "  ACCOUNT SERVICES");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-        System.out.printf("│ %-50s │%n", "");
+        System.out.println("├────────────────────────────────────────────────────┤");
 
+        // Wallet balance
+        System.out.printf("│ %-50s │%n", "  AVAILABLE BALANCE");
+        System.out.printf("│ %-50.50s │%n", "  " + balance);
+
+        System.out.println("├────────────────────────────────────────────────────┤");
+
+        // Menu options
         System.out.printf("│ %-50s │%n", "  [1] View Profile");
-        System.out.printf("│ %-50s │%n", "  [2] View Transaction History");
-        System.out.printf("│ %-50s │%n", "  [3] Report Card as Lost");
+        System.out.printf("│ %-50s │%n", "  [2] Payment History");
+        System.out.printf("│ %-50s │%n", "  [3] Top-Up History");
+        System.out.printf("│ %-50s │%n", "  [4] Transaction History");
+        System.out.printf("│ %-50s │%n", "  [5] Report Lost Card");
         System.out.printf("│ %-50s │%n", "  [0] Logout");
-        System.out.printf("│ %-50s │%n", "");
 
         System.out.println("└────────────────────────────────────────────────────┘");
     }

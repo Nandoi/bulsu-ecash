@@ -19,54 +19,7 @@ public class CashierMenu {
         boolean running = true;
 
         while (running) {
-            String cashierName = cashier.getFirstName() + " " + cashier.getLastName();
-
-            System.out.println();
-            System.out.println("┌────────────────────────────────────────────────────┐");
-            System.out.printf("│ %-50s │%n", "                  CASHIER DASHBOARD");
-            System.out.println("├────────────────────────────────────────────────────┤");
-
-            // Welcome
-            System.out.printf("│ %-50s │%n", "");
-            System.out.printf("│ %-50.50s │%n", "  Welcome, " + cashier.getFirstName() + "!");
-            System.out.printf("│ %-50s │%n", "");
-
-            // Cashier Information
-            System.out.printf("│ %-50s │%n", "  CASHIER INFORMATION");
-            System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-            System.out.printf("│ %-50.50s │%n", "  Cashier ID: " + cashier.getUserId());
-            System.out.printf("│ %-50.50s │%n", "  Cashier Name: " + cashierName);
-            System.out.printf("│ %-50s │%n", "");
-
-            // Transaction Services
-            System.out.printf("│ %-50s │%n", "  TRANSACTION SERVICES");
-            System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-            System.out.printf("│ %-50s │%n", "  [1] Process Student Top Up");
-            System.out.printf("│ %-50s │%n", "  [2] Process Vendor Cash Out");
-            System.out.printf("│ %-50s │%n", "");
-
-            // Transaction Records
-            System.out.printf("│ %-50s │%n", "  TRANSACTION RECORDS");
-            System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-            System.out.printf("│ %-50s │%n", "  [3] View Top Up Records");
-            System.out.printf("│ %-50s │%n", "  [4] View Cash Out Records");
-            System.out.printf("│ %-50s │%n", "  [5] Search Student Top Up Records");
-            System.out.printf("│ %-50s │%n", "  [6] View Transaction Summary");
-            System.out.printf("│ %-50s │%n", "");
-
-            // Card Management
-            System.out.printf("│ %-50s │%n", "  CARD MANAGEMENT");
-            System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-            System.out.printf("│ %-50s │%n", "  [7] Replace Student Card");
-            System.out.printf("│ %-50s │%n", "");
-
-            // Logout
-            System.out.printf("│ %-50s │%n", "  [0] Logout");
-            System.out.printf("│ %-50s │%n", "");
-
-            System.out.println("└────────────────────────────────────────────────────┘");
-
-
+            showMenu(cashier);
             int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
 
             switch (choice) {
@@ -160,29 +113,7 @@ public class CashierMenu {
         }
 
         //Ask for confirmation and display transaction details
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                 TOP-UP CONFIRMATION");
-        System.out.println("├────────────────────────────────────────────────────┤");
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  STUDENT INFORMATION");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Student: " + student.getFirstName() + " " + student.getLastName());
-        System.out.printf("│ %-50.50s │%n", "  Student Number: " + student.getStudentNumber());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  TOP-UP DETAILS");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Current Balance: " + String.format("PHP %,.2f", student.getStudentWallet().getBalance()));
-        System.out.printf("│ %-50.50s │%n", "  Top-Up Amount: " + String.format("PHP %,.2f", amount));
-        System.out.printf("│ %-50.50s │%n", "  Balance After Top-Up: " + String.format("PHP %,.2f", student.getStudentWallet().getBalance() + amount));
-        System.out.printf("│ %-50.50s │%n", "  Handled By: " + cashier.getFirstName() + " " + cashier.getLastName());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.println("└────────────────────────────────────────────────────┘");
+        showTopUpConfirmation(student, cashier, amount);
 
         //A boolean method to confirm the transaction, if not confirmed, return to the menu
         if (!ConsoleUi.confirmTransaction(sc)) {
@@ -209,37 +140,76 @@ public class CashierMenu {
             return;
         }
 
-
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                    BULSU ECASH");
-        System.out.printf("│ %-50s │%n", "                    TOP-UP RECEIPT");
-        System.out.println("├────────────────────────────────────────────────────┤");
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50.50s │%n", "  Transaction ID: " + topUp.getTopUpId());
-        System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
-        System.out.printf("│ %-50.50s │%n", "  Status: " + topUp.getStatus());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  TRANSACTION DETAILS");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Student: " + student.getFirstName() + " " + student.getLastName());
-        System.out.printf("│ %-50.50s │%n", "  Student Number: " + student.getStudentNumber());
-        System.out.printf("│ %-50.50s │%n", "  Processed By: " + cashier.getFirstName() + " " + cashier.getLastName());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  TOTAL TOP-UP: " + String.format("PHP %,.2f", topUp.getAmount()));
-        System.out.printf("│ %-50.50s │%n", "  New Balance: " + String.format("PHP %,.2f", topUp.getStudentWallet().getBalance()));
-        System.out.printf("│ %-50s │%n", "");
-
-        System.out.println("└────────────────────────────────────────────────────┘");
-
-
+        showTopUpReceipt(topUp);
         ConsoleUi.pause(sc);
+    }
+
+    private static void showTopUpConfirmation(Student student, Cashier cashier, double amount) {
+
+        ConsoleUi.boxHeader("TOP-UP CONFIRMATION");
+
+        // Student information
+        ConsoleUi.boxLine("  Student: " + student.getFirstName()
+                + " " + student.getLastName());
+
+        ConsoleUi.boxLine("  Student No.: " + student.getStudentNumber());
+
+        ConsoleUi.boxLine("  Handled By: " + cashier.getFirstName()
+                + " " + cashier.getLastName());
+
+        ConsoleUi.boxDivider();
+
+        // Balance information
+        double currentBalance = student.getStudentWallet().getBalance();
+        double newBalance = currentBalance + amount;
+
+        ConsoleUi.boxLine("  Current Balance: "
+                + String.format("PHP %,.2f", currentBalance));
+
+        ConsoleUi.boxLine("  Top-Up Amount: "
+                + String.format("PHP %,.2f", amount));
+
+        ConsoleUi.boxLine("  New Balance: "
+                + String.format("PHP %,.2f", newBalance));
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showTopUpReceipt(TopUp topUp) {
+        Student student = topUp.getStudent();
+        Cashier cashier = topUp.getCashier();
+
+        ConsoleUi.boxHeader("TOP-UP RECEIPT");
+
+        // Transaction details
+        ConsoleUi.boxLine("  Status: " + topUp.getStatus());
+        ConsoleUi.boxLine("  Transaction ID: " + topUp.getTopUpId());
+
+        ConsoleUi.boxLine("  Date: "
+                + ConsoleUi.formatDateTime(topUp.getDateTime()));
+
+        ConsoleUi.boxDivider();
+
+        // Student and cashier
+        ConsoleUi.boxLine("  Student: " + student.getFirstName()
+                + " " + student.getLastName());
+
+        ConsoleUi.boxLine("  Student No.: " + student.getStudentNumber());
+
+        ConsoleUi.boxLine("  Processed By: " + cashier.getFirstName()
+                + " " + cashier.getLastName());
+
+        ConsoleUi.boxDivider();
+
+        // Final amounts
+        ConsoleUi.boxLine("  AMOUNT LOADED: "
+                + String.format("PHP %,.2f", topUp.getAmount()));
+
+        ConsoleUi.boxLine("  New Balance: "
+                + String.format("PHP %,.2f",
+                        topUp.getStudentWallet().getBalance()));
+
+        ConsoleUi.boxFooter();
     }
 
     private static void processCashOut(Cashier cashier, Scanner sc) {
@@ -266,31 +236,7 @@ public class CashierMenu {
         }
 
         //Ask for confirmation and display transaction details
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                CASH-OUT CONFIRMATION");
-        System.out.println("├────────────────────────────────────────────────────┤");
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  VENDOR INFORMATION");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Vendor: " + vendor.getFirstName() + " " + vendor.getLastName());
-        System.out.printf("│ %-50.50s │%n", "  Vendor ID: " + vendor.getUserId());
-        System.out.printf("│ %-50.50s │%n", "  Store: " + vendor.getStore().getStoreName());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  CASH-OUT DETAILS");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Current Balance: " + String.format("PHP %,.2f", vendor.getStore().getStoreWallet().getBalance()));
-        System.out.printf("│ %-50.50s │%n", "  Cash-Out Amount: " + String.format("PHP %,.2f", amount));
-        System.out.printf("│ %-50.50s │%n", "  Balance After Cash-Out: " + String.format("PHP %,.2f", vendor.getStore().getStoreWallet().getBalance() - amount));
-        System.out.printf("│ %-50.50s │%n", "  Handled By: " + cashier.getFirstName() + " " + cashier.getLastName());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.println("└────────────────────────────────────────────────────┘");
-
+        showCashOutConfirmation(vendor, cashier, amount);
 
         //A boolean method to confirm the transaction, if not confirmed, return to the menu
         if (!ConsoleUi.confirmTransaction(sc)) {
@@ -317,184 +263,248 @@ public class CashierMenu {
             return;
         }
 
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                    BULSU ECASH");
-        System.out.printf("│ %-50s │%n", "                   CASH-OUT RECEIPT");
-        System.out.println("├────────────────────────────────────────────────────┤");
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50.50s │%n", "  Transaction ID: " + cashOut.getCashOutId());
-        System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(cashOut.getDateTime()));
-        System.out.printf("│ %-50.50s │%n", "  Status: " + cashOut.getStatus());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  TRANSACTION DETAILS");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Vendor: " + vendor.getFirstName() + " " + vendor.getLastName());
-        System.out.printf("│ %-50.50s │%n", "  Store: " + vendor.getStore().getStoreName());
-        System.out.printf("│ %-50.50s │%n", "  Processed By: " + cashier.getFirstName() + " " + cashier.getLastName());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  TOTAL CASH-OUT: " + String.format("PHP %,.2f", cashOut.getAmount()));
-        System.out.printf("│ %-50.50s │%n", "  Store Balance: " + String.format("PHP %,.2f", cashOut.getStoreWallet().getBalance()));
-        System.out.printf("│ %-50s │%n", "");
-
-        System.out.println("└────────────────────────────────────────────────────┘");
-
-
+        showCashOutReceipt(cashOut);
         ConsoleUi.pause(sc);
     }
 
+    private static void showCashOutConfirmation(Vendor vendor, Cashier cashier, double amount) {
+        double currentBalance = vendor.getStore()
+                .getStoreWallet().getBalance();
+
+        ConsoleUi.boxHeader("CASH-OUT CONFIRMATION");
+
+        // Vendor information
+        ConsoleUi.boxLine("  Vendor: " + vendor.getFirstName()
+                + " " + vendor.getLastName());
+
+        ConsoleUi.boxLine("  Vendor ID: " + vendor.getUserId());
+
+        ConsoleUi.boxLine("  Store: "
+                + vendor.getStore().getStoreName());
+
+        ConsoleUi.boxLine("  Handled By: " + cashier.getFirstName()
+                + " " + cashier.getLastName());
+
+        ConsoleUi.boxDivider();
+
+        // Cash-out information
+        ConsoleUi.boxLine("  Current Balance: "
+                + String.format("PHP %,.2f", currentBalance));
+
+        ConsoleUi.boxLine("  Cash-Out Amount: "
+                + String.format("PHP %,.2f", amount));
+
+        if (amount <= currentBalance) {
+            double newBalance = currentBalance - amount;
+
+            ConsoleUi.boxLine("  Balance if Successful: "
+                    + String.format("PHP %,.2f", newBalance));
+        } else {
+            ConsoleUi.boxLine("  Balance if Successful: N/A");
+            ConsoleUi.boxLine("  WARNING: Insufficient store funds.");
+        }
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showCashOutReceipt(CashOut cashOut) {
+        Vendor vendor = cashOut.getVendor();
+        Cashier cashier = cashOut.getCashier();
+
+        ConsoleUi.boxHeader("CASH-OUT RECEIPT");
+
+        // Transaction information
+        ConsoleUi.boxLine("  Status: " + cashOut.getStatus());
+
+        ConsoleUi.boxLine("  Transaction ID: "
+                + cashOut.getCashOutId());
+
+        ConsoleUi.boxLine("  Date: "
+                + ConsoleUi.formatDateTime(cashOut.getDateTime()));
+
+        ConsoleUi.boxDivider();
+
+        // Vendor and cashier information
+        ConsoleUi.boxLine("  Vendor: " + vendor.getFirstName()
+                + " " + vendor.getLastName());
+
+        ConsoleUi.boxLine("  Store: "
+                + vendor.getStore().getStoreName());
+
+        ConsoleUi.boxLine("  Processed By: "
+                + cashier.getFirstName()
+                + " " + cashier.getLastName());
+
+        ConsoleUi.boxDivider();
+
+        // Final transaction amounts
+        ConsoleUi.boxLine("  AMOUNT WITHDRAWN: "
+                + String.format("PHP %,.2f", cashOut.getAmount()));
+
+        ConsoleUi.boxLine("  Remaining Balance: "
+                + String.format("PHP %,.2f",
+                        cashOut.getStoreWallet().getBalance()));
+
+        ConsoleUi.boxFooter();
+    }
 
     private static void showTopUpHistory(Cashier cashier) {
-        ConsoleUi.showSection("TOP UP RECORDS");
+        ConsoleUi.boxHeader("TOP-UP RECORDS");
+
+        ConsoleUi.boxLine("  Cashier: " + cashier.getFirstName()
+                + " " + cashier.getLastName());
+
+        ConsoleUi.boxDivider();
 
         boolean found = false;
 
         for (TopUp topUp : DataStore.getTopUps()) {
             if (topUp.getCashier() == cashier) {
+                if (found) {
+                    ConsoleUi.boxRecordDivider();
+                }
 
-                Student student = topUp.getStudent();
-
-                System.out.println();
-                System.out.println("┌────────────────────────────────────────────────────┐");
-                System.out.printf("│ %-50s │%n", "                   TOP-UP RECORD");
-                System.out.println("├────────────────────────────────────────────────────┤");
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50.50s │%n", "  Transaction ID: " + topUp.getTopUpId());
-                System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
-                System.out.printf("│ %-50.50s │%n", "  Status: " + topUp.getStatus());
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50s │%n", "  STUDENT INFORMATION");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-                System.out.printf("│ %-50.50s │%n", "  Student: " + student.getFirstName() + " " + student.getLastName());
-                System.out.printf("│ %-50.50s │%n", "  Student Number: " + student.getStudentNumber());
-                System.out.printf("│ %-50.50s │%n", "  Handled By: " + cashier.getFirstName() + " " + cashier.getLastName());
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-                System.out.printf("│ %-50.50s │%n", "  TOP-UP AMOUNT: " + String.format("PHP %,.2f", topUp.getAmount()));
-                System.out.printf("│ %-50s │%n", "");
-
-                System.out.println("└────────────────────────────────────────────────────┘");
-
+                showTopUpRecord(topUp);
                 found = true;
             }
         }
 
         if (!found) {
-            ConsoleUi.showInfo("No top up records found.");
+            ConsoleUi.boxLine("  No top-up records found.");
+        }
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showTopUpRecord(TopUp topUp) {
+        Student student = topUp.getStudent();
+
+        ConsoleUi.boxLine("  #" + topUp.getTopUpId()
+                + " | " + topUp.getStatus());
+
+        ConsoleUi.boxLine("  "
+                + ConsoleUi.formatDateTime(topUp.getDateTime()));
+
+        ConsoleUi.boxLine("  Student: " + student.getFirstName()
+                + " " + student.getLastName());
+
+        ConsoleUi.boxLine("  Student No.: "
+                + student.getStudentNumber());
+
+        if (topUp.getStatus() == TransactionStatus.SUCCESSFUL) {
+            ConsoleUi.boxLine("  TOP-UP: "
+                    + String.format("PHP %,.2f", topUp.getAmount()));
+        } else {
+            ConsoleUi.boxLine("  ATTEMPTED: "
+                    + String.format("PHP %,.2f", topUp.getAmount()));
         }
     }
 
-
-
     private static void showCashOutHistory(Cashier cashier) {
-        ConsoleUi.showSection("CASH OUT RECORDS");
+        ConsoleUi.boxHeader("CASH-OUT RECORDS");
+
+        ConsoleUi.boxLine("  Cashier: " + cashier.getFirstName()
+                + " " + cashier.getLastName());
+
+        ConsoleUi.boxDivider();
 
         boolean found = false;
 
         for (CashOut cashOut : DataStore.getCashOuts()) {
             if (cashOut.getCashier() == cashier) {
+                if (found) {
+                    ConsoleUi.boxRecordDivider();
+                }
 
-                Vendor vendor = cashOut.getVendor();
-
-                System.out.println();
-                System.out.println("┌────────────────────────────────────────────────────┐");
-                System.out.printf("│ %-50s │%n", "                  CASH-OUT RECORD");
-                System.out.println("├────────────────────────────────────────────────────┤");
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50.50s │%n", "  Transaction ID: " + cashOut.getCashOutId());
-                System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(cashOut.getDateTime()));
-                System.out.printf("│ %-50.50s │%n", "  Status: " + cashOut.getStatus());
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50s │%n", "  VENDOR INFORMATION");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-                System.out.printf("│ %-50.50s │%n", "  Vendor: " + vendor.getFirstName() + " " + vendor.getLastName());
-                System.out.printf("│ %-50.50s │%n", "  Store: " + vendor.getStore().getStoreName());
-                System.out.printf("│ %-50.50s │%n", "  Handled By: " + cashier.getFirstName() + " " + cashier.getLastName());
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-                System.out.printf("│ %-50.50s │%n", "  CASH-OUT AMOUNT: " + String.format("PHP %,.2f", cashOut.getAmount()));
-                System.out.printf("│ %-50s │%n", "");
-
-                System.out.println("└────────────────────────────────────────────────────┘");
-
+                showCashOutRecord(cashOut);
                 found = true;
             }
         }
 
         if (!found) {
-            ConsoleUi.showInfo("No cash out records found.");
+            ConsoleUi.boxLine("  No cash-out records found.");
+        }
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showCashOutRecord(CashOut cashOut) {
+        Vendor vendor = cashOut.getVendor();
+
+        ConsoleUi.boxLine("  #" + cashOut.getCashOutId()
+                + " | " + cashOut.getStatus());
+
+        ConsoleUi.boxLine("  "
+                + ConsoleUi.formatDateTime(cashOut.getDateTime()));
+
+        ConsoleUi.boxLine("  Vendor: " + vendor.getFirstName()
+                + " " + vendor.getLastName());
+
+        ConsoleUi.boxLine("  Store: "
+                + vendor.getStore().getStoreName());
+
+        if (cashOut.getStatus() == TransactionStatus.SUCCESSFUL) {
+            ConsoleUi.boxLine("  CASH-OUT: "
+                    + String.format("PHP %,.2f", cashOut.getAmount()));
+        } else {
+            ConsoleUi.boxLine("  ATTEMPTED: "
+                    + String.format("PHP %,.2f", cashOut.getAmount()));
         }
     }
 
-
-
     private static void searchStudentTopUpRecords(Scanner sc) {
-        ConsoleUi.showSection("SEARCH STUDENT TOP UP RECORDS");
-
-        System.out.print("Student Number: ");
-        String studentNumber = sc.nextLine();
+        System.out.print("\nStudent Number to search: ");
+        String studentNumber = sc.nextLine().trim();
 
         Student student = DataStore.findStudentByStudentNumber(studentNumber);
 
+        ConsoleUi.boxHeader("STUDENT TOP-UP SEARCH");
+
         if (student == null) {
-            ConsoleUi.showError("Student not found.");
+            ConsoleUi.boxLine("  Student not found.");
+            ConsoleUi.boxFooter();
             return;
         }
+
+        ConsoleUi.boxLine("  Student: " + student.getFirstName() + " " + student.getLastName());
+
+        ConsoleUi.boxLine("  Student No.: " + student.getStudentNumber());
+
+        ConsoleUi.boxDivider();
 
         boolean found = false;
 
         for (TopUp topUp : DataStore.getTopUps()) {
             if (topUp.getStudent() == student) {
+                if (found) {
+                    ConsoleUi.boxRecordDivider();
+                }
 
-                System.out.println();
-                System.out.println("┌────────────────────────────────────────────────────┐");
-                System.out.printf("│ %-50s │%n", "                STUDENT TOP-UP RECORD");
-                System.out.println("├────────────────────────────────────────────────────┤");
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50.50s │%n", "  Student Number: " + student.getStudentNumber());
-                System.out.printf("│ %-50.50s │%n", "  Transaction ID: " + topUp.getTopUpId());
-                System.out.printf("│ %-50.50s │%n", "  Date: " + ConsoleUi.formatDateTime(topUp.getDateTime()));
-                System.out.printf("│ %-50.50s │%n", "  Status: " + topUp.getStatus());
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50s │%n", "  TRANSACTION DETAILS");
-                System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-                System.out.printf("│ %-50.50s │%n", "  Handled By: " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
-
-                System.out.printf("│ %-50s │%n", "");
-                System.out.printf("│ %-50.50s │%n", "  TOP-UP AMOUNT: " + String.format("PHP %,.2f", topUp.getAmount()));
-                System.out.printf("│ %-50s │%n", "");
-
-                System.out.println("└────────────────────────────────────────────────────┘");
-
+                showSearchedTopUpRecord(topUp);
                 found = true;
             }
         }
 
         if (!found) {
-            ConsoleUi.showInfo("No top up records found for this student.");
+            ConsoleUi.boxLine("  No top-up records found.");
+        }
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showSearchedTopUpRecord(TopUp topUp) {
+        ConsoleUi.boxLine("  #" + topUp.getTopUpId() + " | " + topUp.getStatus());
+        ConsoleUi.boxLine("  " + ConsoleUi.formatDateTime(topUp.getDateTime()));
+        ConsoleUi.boxLine("  Cashier: " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
+
+        if (topUp.getStatus() == TransactionStatus.SUCCESSFUL) {
+            ConsoleUi.boxLine("  TOP-UP: "  + String.format("PHP %,.2f", topUp.getAmount()));
+        } else {
+            ConsoleUi.boxLine("  ATTEMPTED: " + String.format("PHP %,.2f", topUp.getAmount()));
         }
     }
 
-
     private static void showTransactionSummary(Cashier cashier) {
-        ConsoleUi.showSection("TRANSACTION SUMMARY");
         int successfulTopUps = 0;
         int failedTopUps = 0;
         double totalTopUpAmount = 0;
@@ -503,59 +513,62 @@ public class CashierMenu {
         int failedCashOuts = 0;
         double totalCashOutAmount = 0;
 
-        //Count top up transactions handled by the cashier
+        // Count transactions handled by this cashier
         for (TopUp topUp : DataStore.getTopUps()) {
             if (topUp.getCashier() == cashier) {
+
                 if (topUp.getStatus() == TransactionStatus.SUCCESSFUL) {
                     successfulTopUps++;
                     totalTopUpAmount += topUp.getAmount();
+
                 } else if (topUp.getStatus() == TransactionStatus.FAILED) {
                     failedTopUps++;
                 }
             }
         }
 
-        //Count cash out transactions handled by the cashier
         for (CashOut cashOut : DataStore.getCashOuts()) {
             if (cashOut.getCashier() == cashier) {
+
                 if (cashOut.getStatus() == TransactionStatus.SUCCESSFUL) {
                     successfulCashOuts++;
                     totalCashOutAmount += cashOut.getAmount();
+
                 } else if (cashOut.getStatus() == TransactionStatus.FAILED) {
                     failedCashOuts++;
                 }
             }
         }
 
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                TRANSACTION SUMMARY");
-        System.out.println("├────────────────────────────────────────────────────┤");
+        // Overall totals
+        int totalSuccessful = successfulTopUps + successfulCashOuts;
+        int totalFailed = failedTopUps + failedCashOuts;
+        int totalTransactions = totalSuccessful + totalFailed;
 
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50.50s │%n", "  Cashier: " + cashier.getFirstName() + " " + cashier.getLastName());
-        System.out.printf("│ %-50s │%n", "");
+        // Display report
+        ConsoleUi.boxHeader("TRANSACTION SUMMARY");
+        ConsoleUi.boxLine("  Cashier: " + cashier.getFirstName() + " " + cashier.getLastName());
+        ConsoleUi.boxLine("  Cashier ID: " + cashier.getUserId());
+        ConsoleUi.boxDivider();
 
-        // Top-Up Summary
-        System.out.printf("│ %-50s │%n", "  TOP-UP SUMMARY");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
+        // Top-up summary
+        ConsoleUi.boxLine("  TOP-UP SUMMARY");
+        ConsoleUi.boxLine("  Successful: " + successfulTopUps + "  |  Failed: " + failedTopUps);
+        ConsoleUi.boxLine("  Total Loaded: " + String.format("PHP %,.2f", totalTopUpAmount));
+        ConsoleUi.boxDivider();
 
-        System.out.printf("│ %-50.50s │%n", "  Successful Transactions: " + successfulTopUps);
-        System.out.printf("│ %-50.50s │%n", "  Failed Transactions: " + failedTopUps);
-        System.out.printf("│ %-50.50s │%n", "  Total Top-Up Amount: " + String.format("PHP %,.2f", totalTopUpAmount));
+        // Cash-out summary
+        ConsoleUi.boxLine("  CASH-OUT SUMMARY");
+        ConsoleUi.boxLine("  Successful: " + successfulCashOuts + "  |  Failed: " + failedCashOuts);
+        ConsoleUi.boxLine("  Total Withdrawn: " + String.format("PHP %,.2f", totalCashOutAmount));
+        ConsoleUi.boxDivider();
 
-        System.out.printf("│ %-50s │%n", "");
-
-        // Cash-Out Summary
-        System.out.printf("│ %-50s │%n", "  CASH-OUT SUMMARY");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Successful Transactions: " + successfulCashOuts);
-        System.out.printf("│ %-50.50s │%n", "  Failed Transactions: " + failedCashOuts);
-        System.out.printf("│ %-50.50s │%n", "  Total Cash-Out Amount: " + String.format("PHP %,.2f", totalCashOutAmount));
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.println("└────────────────────────────────────────────────────┘");
+        // Overall summary
+        ConsoleUi.boxLine("  OVERALL SUMMARY");
+        ConsoleUi.boxLine("  Total Transactions: " + totalTransactions);
+        ConsoleUi.boxLine("  Successful: " + totalSuccessful + "  |  Failed: " + totalFailed);
+        ConsoleUi.boxLine("  Current session records only");
+        ConsoleUi.boxFooter();
     }
 
     private static void replaceStudentCard(Scanner sc) {
@@ -598,37 +611,7 @@ public class CashierMenu {
             return;
         }
 
-        ConsoleUi.showSection("CONFIRM CARD REPLACEMENT");
-
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "           CARD REPLACEMENT CONFIRMATION");
-        System.out.println("├────────────────────────────────────────────────────┤");
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  STUDENT INFORMATION");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Student: " + student.getFirstName() + " " + student.getLastName());
-        System.out.printf("│ %-50.50s │%n", "  Student Number: " + student.getStudentNumber());
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  CARD INFORMATION");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Old Card UID: " + lostCard.getCardUid());
-        System.out.printf("│ %-50.50s │%n", "  Old Card Status: " + lostCard.getStatus());
-        System.out.printf("│ %-50.50s │%n", "  New Card UID: " + newCardUid);
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  WALLET INFORMATION");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
-
-        System.out.printf("│ %-50.50s │%n", "  Wallet Balance: " + String.format("PHP %,.2f", student.getStudentWallet().getBalance()));
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.println("└────────────────────────────────────────────────────┘");
-
+        showCardReplacementConfirmation(student, lostCard, newCardUid);
 
         if (!ConsoleUi.confirmTransaction(sc)) {
             ConsoleUi.showInfo("Card replacement cancelled.");
@@ -640,31 +623,113 @@ public class CashierMenu {
         Card newCard = new Card(newCardUid, student);
         DataStore.addCard(newCard);
 
+        showCardReplacementResult(student, lostCard, newCard);
+    }
+
+    private static void showCardReplacementConfirmation(Student student, Card lostCard, String newCardUid) {
+        ConsoleUi.boxHeader("CARD REPLACEMENT CONFIRMATION");
+
+        // Student information
+        ConsoleUi.boxLine("  Student: " + student.getFirstName()
+                + " " + student.getLastName());
+
+        ConsoleUi.boxLine("  Student No.: "
+                + student.getStudentNumber());
+
+        ConsoleUi.boxDivider();
+
+        // Card information
+        ConsoleUi.boxLine("  Old Card UID: "
+                + lostCard.getCardUid());
+
+        ConsoleUi.boxLine("  Old Card Status: "
+                + lostCard.getStatus());
+
+        ConsoleUi.boxLine("  New Card UID: " + newCardUid);
+
+        ConsoleUi.boxDivider();
+
+        // Wallet information
+        ConsoleUi.boxLine("  Wallet Balance: "
+                + String.format("PHP %,.2f",
+                        student.getStudentWallet().getBalance()));
+
+        ConsoleUi.boxLine("  Existing balance will be preserved.");
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showCardReplacementResult(Student student, Card lostCard, Card newCard) {
+        ConsoleUi.boxHeader("CARD REPLACEMENT RESULT");
+
+        ConsoleUi.boxLine("  Status: SUCCESSFUL");
+
+        ConsoleUi.boxLine("  Student: " + student.getFirstName()
+                + " " + student.getLastName());
+
+        ConsoleUi.boxDivider();
+
+        // Card information
+        ConsoleUi.boxLine("  Old Card UID: "
+                + lostCard.getCardUid());
+
+        ConsoleUi.boxLine("  Old Card Status: "
+                + lostCard.getStatus());
+
+        ConsoleUi.boxLine("  New Card UID: "
+                + newCard.getCardUid());
+
+        ConsoleUi.boxLine("  New Card Status: "
+                + newCard.getStatus());
+
+        ConsoleUi.boxDivider();
+
+        // Wallet information
+        ConsoleUi.boxLine("  Wallet Balance: "
+                + String.format("PHP %,.2f",
+                        student.getStudentWallet().getBalance()));
+
+        ConsoleUi.boxLine(
+                "  Existing wallet balance has been preserved.");
+
+        ConsoleUi.boxFooter();
+    }
+
+    private static void showMenu(Cashier cashier) {
         System.out.println();
         System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "               CARD REPLACEMENT RESULT");
+        System.out.printf("│ %-50s │%n", "                  CASHIER DASHBOARD");
         System.out.println("├────────────────────────────────────────────────────┤");
 
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  STATUS: SUCCESSFUL");
+        // Cashier information
+        System.out.printf("│ %-50.50s │%n",
+                "  " + "Hello, " + cashier.getFirstName() + " " + cashier.getLastName());
+        System.out.printf("│ %-50.50s │%n",
+                "  Cashier ID: " + cashier.getUserId());
+
+        System.out.println("├────────────────────────────────────────────────────┤");
+
+        // Transaction services
+        System.out.printf("│ %-50s │%n", "  TRANSACTION SERVICES");
+        System.out.printf("│ %-50s │%n", "  [1] Student Top-Up");
+        System.out.printf("│ %-50s │%n", "  [2] Vendor Cash-Out");
         System.out.printf("│ %-50s │%n", "");
 
-        System.out.printf("│ %-50.50s │%n", "  Old Card UID: " + lostCard.getCardUid());
-        System.out.printf("│ %-50.50s │%n", "  Old Card Status: " + lostCard.getStatus());
-
+        // Records and reports
+        System.out.printf("│ %-50s │%n", "  RECORDS & REPORTS");
+        System.out.printf("│ %-50s │%n", "  [3] Top-Up Records");
+        System.out.printf("│ %-50s │%n", "  [4] Cash-Out Records");
+        System.out.printf("│ %-50s │%n", "  [5] Search Student Top-Ups");
+        System.out.printf("│ %-50s │%n", "  [6] Transaction Summary");
         System.out.printf("│ %-50s │%n", "");
 
-        System.out.printf("│ %-50.50s │%n", "  New Card UID: " + newCard.getCardUid());
-        System.out.printf("│ %-50.50s │%n", "  New Card Status: " + newCard.getStatus());
-
+        // Card management
+        System.out.printf("│ %-50s │%n", "  CARD MANAGEMENT");
+        System.out.printf("│ %-50s │%n", "  [7] Replace Lost Card");
         System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  " + "─".repeat(48));
 
-        System.out.printf("│ %-50.50s │%n", "  Wallet Balance: " + String.format("PHP %,.2f", student.getStudentWallet().getBalance()));
-
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  Existing wallet balance has been preserved.");
-        System.out.printf("│ %-50s │%n", "");
+        // Logout
+        System.out.printf("│ %-50s │%n", "  [0] Logout");
 
         System.out.println("└────────────────────────────────────────────────────┘");
     }
