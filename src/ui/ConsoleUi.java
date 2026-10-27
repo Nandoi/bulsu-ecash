@@ -8,13 +8,23 @@ public class ConsoleUi {
     private static final String LINE = "============================================================";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a");
 
+
     public static void showTitle() {
         System.out.println();
-        System.out.println(LINE);
-        System.out.println("                       BulSU eCash");
-        System.out.println("              Campus Cashless Payment System");
-        System.out.println(LINE);
+        System.out.println("┌────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-50s │%n", "                   BulSU eCash");
+        System.out.printf("│ %-50s │%n", "          Campus Cashless Payment System");
+        System.out.println("├────────────────────────────────────────────────────┤");
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  MAIN MENU");
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  [1] Login");
+        System.out.printf("│ %-50s │%n", "  [2] Register");
+        System.out.printf("│ %-50s │%n", "  [0] Exit");
+        System.out.printf("│ %-50s │%n", "");
+        System.out.println("└────────────────────────────────────────────────────┘");
     }
+
 
     public static void showSection(String title) {
         System.out.println();
@@ -49,12 +59,23 @@ public class ConsoleUi {
         System.out.printf("%s: PHP %.2f%n", label, amount);
     }
 
+
     public static boolean confirmTransaction(Scanner sc) {
         while (true) {
+
             System.out.println();
-            showOption(1, "Confirm");
-            showExitOption("Cancel");
-            int choice = readInt(sc, "\nEnter Choice: ");
+            System.out.println("┌────────────────────────────────────────────────────┐");
+            System.out.printf("│ %-50s │%n", "                   CONFIRM ACTION");
+            System.out.println("├────────────────────────────────────────────────────┤");
+
+            System.out.printf("│ %-50s │%n", "");
+            System.out.printf("│ %-50s │%n", "  [1] Confirm");
+            System.out.printf("│ %-50s │%n", "  [0] Cancel");
+            System.out.printf("│ %-50s │%n", "");
+
+            System.out.println("└────────────────────────────────────────────────────┘");
+
+            int choice = readInt(sc, "Enter Choice: ");
 
             if (choice == 1) {
                 return true;

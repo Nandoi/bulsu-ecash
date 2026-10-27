@@ -25,10 +25,6 @@ public class ConsoleApp {
 
         while (running) {
             ConsoleUi.showTitle();
-
-            ConsoleUi.showOption(1, "Login");
-            ConsoleUi.showOption(2, "Register");
-            ConsoleUi.showExitOption("Exit");
             int choice = ConsoleUi.readInt(sc, "\nEnter Choice: ");
 
             switch (choice) {
@@ -50,8 +46,6 @@ public class ConsoleApp {
                     break;
             }
         }
-
-        ConsoleUi.showSection("BulSU eCash");
         ConsoleUi.showInfo("Thank you for using the app.");
 
         sc.close();
@@ -59,7 +53,18 @@ public class ConsoleApp {
 
 
     private static void login() {
-        ConsoleUi.showSection("LOGIN");
+        System.out.println();
+        System.out.println("┌────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-50s │%n", "                    BULSU ECASH");
+        System.out.printf("│ %-50s │%n", "                   ACCOUNT LOGIN");
+        System.out.println("├────────────────────────────────────────────────────┤");
+
+        System.out.printf("│ %-50s │%n", "");
+        System.out.printf("│ %-50s │%n", "  Please enter your Account ID and PIN.");
+        System.out.printf("│ %-50s │%n", "");
+
+        System.out.println("└────────────────────────────────────────────────────┘");
+
 
         int accountId = ConsoleUi.readInt(sc, "Account ID: ");
 
