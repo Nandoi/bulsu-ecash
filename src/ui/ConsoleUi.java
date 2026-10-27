@@ -5,9 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ConsoleUi {
-    private static final String LINE = "============================================================";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a");
-
 
     public static void showTitle() {
         System.out.println();
@@ -25,20 +23,11 @@ public class ConsoleUi {
         System.out.println("└────────────────────────────────────────────────────┘");
     }
 
-
     public static void showSection(String title) {
         System.out.println();
-        System.out.println(LINE);
-        System.out.println("  " + title);
-        System.out.println(LINE);
-    }
-
-    public static void showOption(int number, String text) {
-        System.out.println("  [" + number + "] " + text);
-    }
-
-    public static void showExitOption(String text) {
-        System.out.println("  [0] " + text);
+        System.out.println("┌────────────────────────────────────────────────────┐");
+        System.out.printf("│ %-50.50s │%n", "  " + title);
+        System.out.println("└────────────────────────────────────────────────────┘");
     }
 
     public static void showSuccess(String message) {
@@ -54,11 +43,6 @@ public class ConsoleUi {
     public static void showInfo(String message) {
         System.out.println("[INFO] " + message);
     }
-
-    public static void showBalance(String label, double amount) {
-        System.out.printf("%s: PHP %.2f%n", label, amount);
-    }
-
 
     public static boolean confirmTransaction(Scanner sc) {
         while (true) {
