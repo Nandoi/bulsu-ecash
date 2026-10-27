@@ -92,7 +92,14 @@ public class ConsoleUi {
             String input = sc.nextLine();
 
             try {
-                return Double.parseDouble(input.trim());
+                double amount = Double.parseDouble(input.trim());
+
+                if (!Double.isFinite(amount)) {
+                    showError("Please enter a valid amount.");
+                    continue;
+                }
+                return amount;
+
             } catch (NumberFormatException e) {
                 showError("Please enter a valid amount.");
             }
