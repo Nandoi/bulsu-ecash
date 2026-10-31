@@ -71,65 +71,61 @@ public class TempData {
         StudentWallet studentWallet2 = new StudentWallet(DataStore.generateNextStudentWalletId());
 
         student2.assignStudentWallet(studentWallet2);
-        
+
         studentWallet2.addBalance(500);
 
         Card card2 = new Card(DataStore.generateNextCardUid(), student2);
 
         Account studentAccount2 = new Account(DataStore.generateNextAccountId(), "2222", student2);
 
-
         // Student 3
         Student student3 = new Student(
                 1003,
                 "Joshua",
-                "Cruz",
-                "Mendoza",
-                "09191234567",
-                "joshua.mendoza@email.com",
-                "78 Bonifacio Street",
-                "Tabang",
-                "Guiguinto",
-                "Bulacan",
-                "3015",
-                "2025004304",
-                "BSIT",
-                2
-        );
-
-        // Student 4
-        Student student4 = new Student(
-                1004,
-                "Angela",
-                "Dela Cruz",
-                "Garcia",
+                "Capelo",
+                "Del Carmen",
                 "09201234567",
-                "angela.garcia@email.com",
-                "22 Luna Street",
-                "Sta. Clara",
-                "Santa Maria",
-                "Bulacan",
-                "3022",
-                "2025004305",
-                "BSIT",
-                2
-        );
-
-
-        // Student 5
-        Student student5 = new Student(
-                1005,
-                "Miguel",
-                "Lopez",
-                "Torres",
-                "09211234567",
-                "miguel.torres@email.com",
+                "joshuadelcarmen@email.com",
                 "90 Del Pilar Street",
                 "Banga",
                 "Meycauayan",
                 "Bulacan",
                 "3020",
-                "2025004306",
+                "2025004209",
+                "BSIT",
+                2
+        );
+
+        Student student4 = new Student(
+                1004,
+                "Maam",
+                "Robethel",
+                "Andres",
+                "09953095621",
+                "maambetong@email.com",
+                "23 Walisan",
+                "Loma de Gato",
+                "Guiguinto",
+                "Bulacan",
+                "3005",
+                "2025005050",
+                "BSIT",
+                4
+        );
+
+        Student student5 = new Student(
+                1005,
+                "Jason",
+                "Vorhees",
+                "Di",
+                "09234312518",
+                "jasondi@email.com",
+                "1 Insulator",
+                "Lias",
+                "Marilao",
+                "Bulacan",
+                "3019",
+                "2025001234",
                 "BSIT",
                 2
         );
@@ -139,18 +135,11 @@ public class TempData {
         // STORES AND VENDORS
         // =========================
 
-        // Store 1
-        StoreWallet storeWallet1 = new StoreWallet(201);
-        storeWallet1.addBalance(3000);
+        // =========================
+        // VENDOR 1 - REGISTERED
+        // =========================
 
-        Store store1 = new Store(
-                1,
-                "BulSU Canteen",
-                "Food",
-                "Main Campus",
-                storeWallet1
-        );
-
+        // Create authorized Vendor first
         Vendor vendor1 = new Vendor(
                 2001,
                 "Juan",
@@ -163,36 +152,53 @@ public class TempData {
                 "Malolos",
                 "Bulacan",
                 "3000",
-                store1
+                null
         );
 
+        // Existing Store Wallet
+        StoreWallet storeWallet1 = new StoreWallet(201);
+        storeWallet1.addBalance(3000);
 
-        // Store 2
-        StoreWallet storeWallet2 = new StoreWallet(202);
-        storeWallet2.addBalance(1500);
-
-        Store store2 = new Store(
-                2,
-                "BulSU Print Shop",
-                "Printing",
+        // Existing Store
+        Store store1 = new Store(
+                1,
+                "BulSU Canteen",
+                "Food",
                 "Main Campus",
-                storeWallet2
+                storeWallet1
         );
 
+        // Assign Store to registered Vendor
+        vendor1.assignStore(store1);
+
+        Account vendorAccount1 = new Account(
+                DataStore.generateNextAccountId(),
+                "3333",
+                vendor1
+        );
+
+        // =========================
+        // VENDOR 2 - NOT REGISTEREDs
+        // =========================
+
+        // Authorized Vendor without Account or Store
         Vendor vendor2 = new Vendor(
                 2002,
-                "Carlos",
+                "Jullian",
                 "Reyes",
-                "Mendoza",
+                "Manarang",
                 "09178881234",
-                "carlos.mendoza@email.com",
+                "julian.mendoza@email.com",
                 "17 Rizal Street",
                 "Sumapang Matanda",
                 "Malolos",
                 "Bulacan",
                 "3000",
-                store2
+                null
         );
+
+        // Vendor 2 will receive a Store and Store Wallet
+        // only after successful eCash registration.
 
 
         // =========================
@@ -213,28 +219,28 @@ public class TempData {
                 "3000"
         );
 
+        Account cashierAccount1 = new Account(DataStore.generateNextAccountId(), "4444", cashier1);
+
         Cashier cashier2 = new Cashier(
                 3002,
-                "Paolo",
-                "Santos",
-                "Garcia",
-                "09179991234",
-                "paolo.garcia@email.com",
-                "55 Bonifacio Street",
-                "Mojon",
-                "Malolos",
+                "Michelle",
+                "Eugenio",
+                "Jumaquio",
+                "09211234567",
+                "michellejumaquio@email.com",
+                "12 Kawayan",
+                "Loma de Gato",
+                "Plaridel",
                 "Bulacan",
-                "3000"
+                "3020"
         );
+
+
 
 
         // =========================
         // PRE-CREATED ACCOUNTS
         // =========================
-
-        Account vendorAccount1 = new Account(DataStore.generateNextAccountId(), "3333", vendor1);
-
-        Account cashierAccount1 = new Account(DataStore.generateNextAccountId(), "4444", cashier1);
 
 
         // =========================

@@ -17,6 +17,11 @@ import services.AuthenticationService;
 
 public class ConsoleApp {
     private static final Scanner sc = new Scanner(System.in);
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+    private static final long LOGIN_COOLDOWN_MS = 30_000L;
+
+    private static int failedLoginAttempts = 0;
+    private static long loginLockedUntil = 0;
 
     public static void start() {
         TempData.load();
@@ -51,38 +56,89 @@ public class ConsoleApp {
         sc.close();
     }
 
-
     private static void login() {
-        System.out.println();
-        System.out.println("┌────────────────────────────────────────────────────┐");
-        System.out.printf("│ %-50s │%n", "                    BULSU ECASH");
-        System.out.printf("│ %-50s │%n", "                   ACCOUNT LOGIN");
-        System.out.println("├────────────────────────────────────────────────────┤");
 
-        System.out.printf("│ %-50s │%n", "");
-        System.out.printf("│ %-50s │%n", "  Please enter your Account ID and PIN.");
-        System.out.printf("│ %-50s │%n", "");
+        long currentTime = System.currentTimeMillis();
 
-        System.out.println("└────────────────────────────────────────────────────┘");
+        // Check whether the cooldown is still active
+        if (currentTime < loginLockedUntil) {
 
+            long remainingSeconds =
+                    (loginLockedUntil - currentTime + 999) / 1000;
 
-        int accountId = ConsoleUi.readInt(sc, "Account ID: ");
+            ConsoleUi.showError("Login temporarily locked.");
+            ConsoleUi.showInfo("Try again in "
+                    + remainingSeconds + " seconds.");
 
-        System.out.print("PIN: ");
-        String pin = sc.nextLine();
-
-        Account account = AuthenticationService.login(accountId, pin);
-
-        if (account == null) {
-            ConsoleUi.showError("Invalid Account ID or PIN.");
             ConsoleUi.pause(sc);
             return;
         }
 
-        ConsoleUi.showSuccess("Login successful.");
+        // Reset failed attempts after cooldown expires
+        if (loginLockedUntil != 0) {
+            failedLoginAttempts = 0;
+            loginLockedUntil = 0;
+        }
 
-        openUserMenu(account);
+        ConsoleUi.boxHeader("ACCOUNT LOGIN");
+        ConsoleUi.boxLine("  Enter your Account ID and PIN.");
+        ConsoleUi.boxLine("  Maximum attempts: 3");
+        ConsoleUi.boxFooter();
+
+        while (failedLoginAttempts < MAX_LOGIN_ATTEMPTS) {
+
+            int accountId = ConsoleUi.readInt(
+                    sc, "\nAccount ID: ");
+
+            System.out.print("PIN: ");
+            String pin = sc.nextLine();
+
+            // Authenticate user
+            Account account = AuthenticationService.login(
+                    accountId, pin);
+
+            // Successful login
+            if (account != null) {
+                failedLoginAttempts = 0;
+                loginLockedUntil = 0;
+
+                ConsoleUi.showSuccess("Login successful.");
+
+                openUserMenu(account);
+                return;
+            }
+
+            // Failed login
+            failedLoginAttempts++;
+
+            int remainingAttempts =
+                    MAX_LOGIN_ATTEMPTS - failedLoginAttempts;
+
+            // Reached maximum failed attempts
+            if (remainingAttempts == 0) {
+
+                loginLockedUntil =
+                        System.currentTimeMillis()
+                        + LOGIN_COOLDOWN_MS;
+
+                ConsoleUi.showError(
+                        "Maximum login attempts reached.");
+
+                ConsoleUi.showInfo(
+                        "Login locked for 30 seconds.");
+
+                ConsoleUi.pause(sc);
+                return;
+            }
+
+            ConsoleUi.showError(
+                    "Invalid Account ID or PIN.");
+
+            ConsoleUi.showInfo(
+                    "Remaining attempts: " + remainingAttempts);
+        }
     }
+
 
     private static void openUserMenu(Account account){
         if (account.getUser() instanceof Student) {

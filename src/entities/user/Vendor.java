@@ -44,4 +44,13 @@ public class Vendor extends User{
     public Store getStore(){
         return store;
     }
+
+    public boolean assignStore(Store store) {
+        if (this.store != null || store == null) {
+            return false;
+        }
+
+        this.store = store;
+        return true;
+    }
 }

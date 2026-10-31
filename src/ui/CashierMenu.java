@@ -42,16 +42,11 @@ public class CashierMenu {
                     break;
 
                 case 5:
-                    searchStudentTopUpRecords(sc);
-                    ConsoleUi.pause(sc);
-                    break;
-
-                case 6:
                     showTransactionSummary(cashier);
                     ConsoleUi.pause(sc);
                     break;
 
-                case 7:
+                case 6:
                     replaceStudentCard(sc);
                     ConsoleUi.pause(sc);
                     break;
@@ -226,6 +221,18 @@ public class CashierMenu {
             return;
         }
 
+        if (vendor.getStore() == null) {
+        ConsoleUi.showError("Vendor has no assigned store.");
+        ConsoleUi.pause(sc);
+        return;
+        }
+
+        if (vendor.getStore().getStoreWallet() == null) {
+            ConsoleUi.showError("Vendor store has no wallet.");
+            ConsoleUi.pause(sc);
+            return;
+        }
+
         //Ask for amount and validation
         double amount = ConsoleUi.readDouble(sc, "Amount: PHP ");
 
@@ -268,19 +275,16 @@ public class CashierMenu {
     }
 
     private static void showCashOutConfirmation(Vendor vendor, Cashier cashier, double amount) {
-        double currentBalance = vendor.getStore()
-                .getStoreWallet().getBalance();
+        double currentBalance = vendor.getStore().getStoreWallet().getBalance();
 
         ConsoleUi.boxHeader("CASH-OUT CONFIRMATION");
 
         // Vendor information
-        ConsoleUi.boxLine("  Vendor: " + vendor.getFirstName()
-                + " " + vendor.getLastName());
+        ConsoleUi.boxLine("  Vendor: " + vendor.getFirstName() + " " + vendor.getLastName());
 
         ConsoleUi.boxLine("  Vendor ID: " + vendor.getUserId());
 
-        ConsoleUi.boxLine("  Store: "
-                + vendor.getStore().getStoreName());
+        ConsoleUi.boxLine("  Store: " + vendor.getStore().getStoreName());
 
         ConsoleUi.boxLine("  Handled By: " + cashier.getFirstName()
                 + " " + cashier.getLastName());
@@ -452,58 +456,6 @@ public class CashierMenu {
         }
     }
 
-    private static void searchStudentTopUpRecords(Scanner sc) {
-        System.out.print("\nStudent Number to search: ");
-        String studentNumber = sc.nextLine().trim();
-
-        Student student = DataStore.findStudentByStudentNumber(studentNumber);
-
-        ConsoleUi.boxHeader("STUDENT TOP-UP SEARCH");
-
-        if (student == null) {
-            ConsoleUi.boxLine("  Student not found.");
-            ConsoleUi.boxFooter();
-            return;
-        }
-
-        ConsoleUi.boxLine("  Student: " + student.getFirstName() + " " + student.getLastName());
-
-        ConsoleUi.boxLine("  Student No.: " + student.getStudentNumber());
-
-        ConsoleUi.boxDivider();
-
-        boolean found = false;
-
-        for (TopUp topUp : DataStore.getTopUps()) {
-            if (topUp.getStudent() == student) {
-                if (found) {
-                    ConsoleUi.boxRecordDivider();
-                }
-
-                showSearchedTopUpRecord(topUp);
-                found = true;
-            }
-        }
-
-        if (!found) {
-            ConsoleUi.boxLine("  No top-up records found.");
-        }
-
-        ConsoleUi.boxFooter();
-    }
-
-    private static void showSearchedTopUpRecord(TopUp topUp) {
-        ConsoleUi.boxLine("  #" + topUp.getTopUpId() + " | " + topUp.getStatus());
-        ConsoleUi.boxLine("  " + ConsoleUi.formatDateTime(topUp.getDateTime()));
-        ConsoleUi.boxLine("  Cashier: " + topUp.getCashier().getFirstName() + " " + topUp.getCashier().getLastName());
-
-        if (topUp.getStatus() == TransactionStatus.SUCCESSFUL) {
-            ConsoleUi.boxLine("  TOP-UP: "  + String.format("PHP %,.2f", topUp.getAmount()));
-        } else {
-            ConsoleUi.boxLine("  ATTEMPTED: " + String.format("PHP %,.2f", topUp.getAmount()));
-        }
-    }
-
     private static void showTransactionSummary(Cashier cashier) {
         int successfulTopUps = 0;
         int failedTopUps = 0;
@@ -598,8 +550,8 @@ public class CashierMenu {
             return;
         }
 
-        System.out.print("New Card UID: ");
-        String newCardUid = sc.nextLine().trim();
+        System.out.print("New Card UID: CARD-");
+        String newCardUid = "CARD-1" + sc.nextLine().trim();
 
         if (newCardUid.isEmpty()) {
             ConsoleUi.showError("Card UID cannot be empty.");
@@ -719,13 +671,12 @@ public class CashierMenu {
         System.out.printf("│ %-50s │%n", "  RECORDS & REPORTS");
         System.out.printf("│ %-50s │%n", "  [3] Top-Up Records");
         System.out.printf("│ %-50s │%n", "  [4] Cash-Out Records");
-        System.out.printf("│ %-50s │%n", "  [5] Search Student Top-Ups");
-        System.out.printf("│ %-50s │%n", "  [6] Transaction Summary");
+        System.out.printf("│ %-50s │%n", "  [5] Transaction Summary");
         System.out.printf("│ %-50s │%n", "");
 
         // Card management
         System.out.printf("│ %-50s │%n", "  CARD MANAGEMENT");
-        System.out.printf("│ %-50s │%n", "  [7] Replace Lost Card");
+        System.out.printf("│ %-50s │%n", "  [6] Replace Lost Card");
         System.out.printf("│ %-50s │%n", "");
 
         // Logout

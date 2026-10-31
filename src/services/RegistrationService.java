@@ -8,6 +8,8 @@ import entities.user.User;
 import entities.user.Vendor;
 import entities.Card;
 import entities.wallet.StudentWallet;
+import entities.Store;
+import entities.wallet.StoreWallet;
 
 public class RegistrationService {
     // STUDENT
@@ -45,16 +47,68 @@ public class RegistrationService {
 
 
     // VENDOR
-    public static Account registerVendor(String pin,int userId){
+    public static Account registerVendor(
+            String pin,
+            int userId,
+            String storeName,
+            String storeType,
+            String location) {
+
+        // Find authorized Vendor
         Vendor vendor = DataStore.findVendorByUserId(userId);
 
         if (vendor == null) {
             return null;
         }
 
-        return createAccount(pin, vendor);
-    }
+        // Prevent duplicate registration
+        if (DataStore.findAccountByUserId(userId) != null) {
+            return null;
+        }
 
+        // Prevent duplicate Store assignment
+        if (vendor.getStore() != null) {
+            return null;
+        }
+
+        // Validate Store information
+        if (storeName == null || storeType == null || location == null
+                || storeName.trim().isEmpty()
+                || storeType.trim().isEmpty()
+                || location.trim().isEmpty()) {
+            return null;
+        }
+
+        // Create Store Wallet
+        StoreWallet storeWallet = new StoreWallet(
+                DataStore.generateNextStoreWalletId()
+        );
+
+        // Create Store linked to its Wallet
+        Store store = new Store(
+                DataStore.generateNextStoreId(),
+                storeName.trim(),
+                storeType.trim(),
+                location.trim(),
+                storeWallet
+        );
+
+        // Assign Store to Vendor
+        if (!vendor.assignStore(store)) {
+            return null;
+        }
+
+        // Create account only after validation
+        Account account = new Account(
+                DataStore.generateNextAccountId(),
+                pin,
+                vendor
+        );
+
+        DataStore.addAccount(account);
+
+        return account;
+    }
 
     // CASHIER
     public static Account registerCashier(String pin, int userId) {

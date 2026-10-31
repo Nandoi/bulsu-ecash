@@ -49,16 +49,40 @@ public class RegistrationUi {
         showRegistrationResult(account, sc);
     }
 
+
     private static void registerVendor(Scanner sc) {
         ConsoleUi.showSection("VENDOR REGISTRATION");
+
         int vendorId = ConsoleUi.readInt(sc, "Vendor ID: ");
+
         String pin = getConfirmedPin(sc);
+
         if (pin == null) {
             return;
         }
-        Account account = RegistrationService.registerVendor(pin, vendorId);
+
+        ConsoleUi.showSection("STORE INFORMATION");
+
+        System.out.print("Store Name: ");
+        String storeName = sc.nextLine().trim();
+
+        System.out.print("Store Type: ");
+        String storeType = sc.nextLine().trim();
+
+        System.out.print("Store Location: ");
+        String location = sc.nextLine().trim();
+
+        Account account = RegistrationService.registerVendor(
+                pin,
+                vendorId,
+                storeName,
+                storeType,
+                location
+        );
+
         showRegistrationResult(account, sc);
     }
+
 
     private static void registerCashier(Scanner sc) {
         ConsoleUi.showSection("CASHIER REGISTRATION");

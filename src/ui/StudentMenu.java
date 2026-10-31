@@ -199,6 +199,12 @@ public class StudentMenu {
         int paymentCount = 0;
         int topUpCount = 0;
 
+        int psuc = 0;
+        int pfail = 0;
+
+        int tsuc = 0;
+        int tfail = 0;
+
         int successful = 0;
         int failed = 0;
 
@@ -212,10 +218,12 @@ public class StudentMenu {
 
                 if (payment.getStatus() == TransactionStatus.SUCCESSFUL) {
                     successful++;
+                    psuc++;
                     totalPaid += payment.getAmount();
 
                 } else if (payment.getStatus() == TransactionStatus.FAILED) {
                     failed++;
+                    pfail++;
                 }
             }
         }
@@ -227,10 +235,12 @@ public class StudentMenu {
 
                 if (topUp.getStatus() == TransactionStatus.SUCCESSFUL) {
                     successful++;
+                    tsuc++;
                     totalReceived += topUp.getAmount();
 
                 } else if (topUp.getStatus() == TransactionStatus.FAILED) {
                     failed++;
+                    tfail++;
                 }
             }
         }
@@ -244,12 +254,14 @@ public class StudentMenu {
         // Payment summary
         ConsoleUi.boxLine("  PAYMENT SUMMARY");
         ConsoleUi.boxLine("  Total Payments: " + paymentCount);
+        ConsoleUi.boxLine("  Successful: " + psuc + "  |  Failed: " + pfail);
         ConsoleUi.boxLine("  Total Paid: " + String.format("PHP %,.2f", totalPaid));
         ConsoleUi.boxDivider();
 
         // Top-up summary
         ConsoleUi.boxLine("  TOP-UP SUMMARY");
         ConsoleUi.boxLine("  Total Top-Ups: " + topUpCount);
+        ConsoleUi.boxLine("  Successful: " + tsuc + "  |  Failed: " + tfail);
         ConsoleUi.boxLine("  Total Received: " + String.format("PHP %,.2f", totalReceived));
         ConsoleUi.boxDivider();
 
@@ -371,7 +383,7 @@ public class StudentMenu {
         System.out.printf("│ %-50s │%n", "  [1] View Profile");
         System.out.printf("│ %-50s │%n", "  [2] Payment History");
         System.out.printf("│ %-50s │%n", "  [3] Top-Up History");
-        System.out.printf("│ %-50s │%n", "  [4] Transaction History");
+        System.out.printf("│ %-50s │%n", "  [4] Transaction Summary");
         System.out.printf("│ %-50s │%n", "  [5] Report Lost Card");
         System.out.printf("│ %-50s │%n", "  [0] Logout");
 
